@@ -10,6 +10,6 @@ namespace PathsOfPower.Models
     {
         public string Index { get; set; }
         public string Description { get; set; }
-        public IEnumerable<Option> Options { get; set; }
+        public IEnumerable<Option>? Options { get; set; }
     }
 }
