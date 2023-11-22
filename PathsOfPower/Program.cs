@@ -33,6 +33,7 @@ var quests = new List<Quest>()
     }
 };
 
+
 var questOne = quests.FirstOrDefault(x => x.Index == "1");
 Console.WriteLine(questOne.Description);
 Console.WriteLine("---------------------");
@@ -41,5 +42,8 @@ foreach (var option in questOne.Options)
     Console.WriteLine($"[{option.Index}] - {option.Name}");
 }
 
-var choice = Console.ReadKey(true);
+var choice = Console.ReadLine();
 
+var finishingQuest = quests.FirstOrDefault(x => x.Index == questOne.Index + "." + choice);
+Console.WriteLine(finishingQuest.Description);
+Console.WriteLine("The end");
