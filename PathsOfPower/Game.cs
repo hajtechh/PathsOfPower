@@ -11,6 +11,44 @@ public class Game
 {
     public void Run()
     {
+        PrintMenu();
+
+        var menuChoice = GetInput();
+        switch (menuChoice)
+        {
+            case "1":
+                StartGame();
+                break;
+            case "2":
+                LoadGame();
+                break;
+            case "3":
+                QuitGame();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void QuitGame()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void LoadGame()
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void PrintMenu()
+    {
+        Console.WriteLine($"[1] Start new game \r\n" +
+            $"[2] Load game \r\n" +
+            $"[3] Quit game");
+    }
+
+    private void StartGame()
+    {
         //setup game
         var quests = CreateSomeQuests();
         var quest = GetQuestFromIndex("1", quests);
