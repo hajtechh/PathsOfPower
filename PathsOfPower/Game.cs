@@ -32,7 +32,7 @@ public class Game
 
     private void QuitGame()
     {
-        throw new NotImplementedException();
+        Environment.Exit(0);
     }
 
     private void LoadGame()
