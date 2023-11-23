@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace PathsOfPower.Cli
 
         public UserInteraction(IConsoleWrapper consoleWrapper)
         {
-            _consoleWrapper = consoleWrapper;                                                                                                                                                                                                           
+            _consoleWrapper = consoleWrapper;
         }
 
         public void Print(string message)
@@ -30,12 +31,13 @@ namespace PathsOfPower.Cli
             return _consoleWrapper.ReadLine() ?? string.Empty;
         }
 
-        public string GetKeyToString()
+        public char GetKeyChar()
         {
-            return _consoleWrapper.ReadKey().ToString();
+            return _consoleWrapper.ReadChar();
         }
+
         public ConsoleKey GetKey()
-        {
+       {
             return _consoleWrapper.ReadKey();
         }
 

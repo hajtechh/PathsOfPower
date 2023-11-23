@@ -71,8 +71,8 @@ public class Game
 
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
-                var choice = _userInteraction.GetKeyToString();
-                var index = CreateQuestIndex(quest.Index, choice);
+                var choice = _userInteraction.GetKeyChar();
+                var index = CreateQuestIndex(quest.Index, choice.ToString());
                 quest = GetQuestFromIndex(index, quests);
             }
             else

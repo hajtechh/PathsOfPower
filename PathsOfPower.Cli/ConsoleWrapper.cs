@@ -10,6 +10,8 @@ namespace PathsOfPower.Cli
     {
         public void Clear() => Console.Clear();
 
+        public char ReadChar() => Console.ReadKey(true).KeyChar;
+
         public ConsoleKey ReadKey() => Console.ReadKey(true).Key;
 
         public string? ReadLine() => Console.ReadLine();

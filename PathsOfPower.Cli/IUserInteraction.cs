@@ -13,6 +13,6 @@ namespace PathsOfPower.Cli
         void ClearConsole();
         void Print(string message);
         ConsoleKey GetKey();
-        string GetKeyToString();
+        char GetKeyChar();
     }
 }
