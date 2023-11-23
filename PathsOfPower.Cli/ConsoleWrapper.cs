@@ -12,8 +12,6 @@ namespace PathsOfPower.Cli
 
         public char ReadChar() => Console.ReadKey(true).KeyChar;
 
-        public ConsoleKey ReadKey() => Console.ReadKey(true).Key;
-
         public string? ReadLine() => Console.ReadLine();
 
         public void WriteLine(string s) => Console.WriteLine(s);

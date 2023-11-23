@@ -10,7 +10,6 @@ namespace PathsOfPower.Cli
     {
         void WriteLine(string s);
         string? ReadLine();
-        ConsoleKey ReadKey();
         char ReadChar();
         void Clear();
     }
