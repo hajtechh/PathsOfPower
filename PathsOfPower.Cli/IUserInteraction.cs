@@ -9,10 +9,8 @@ namespace PathsOfPower.Cli
     public interface IUserInteraction
     {
         string GetInput(string message);
-        int ParseInputToInt();
         void ClearConsole();
         void Print(string message);
-        ConsoleKey GetKey();
-        char GetKeyChar();
+        char GetChar();
     }
 }

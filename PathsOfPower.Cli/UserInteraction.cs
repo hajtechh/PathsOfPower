@@ -31,24 +31,9 @@ namespace PathsOfPower.Cli
             return _consoleWrapper.ReadLine() ?? string.Empty;
         }
 
-        public char GetKeyChar()
+        public char GetChar()
         {
             return _consoleWrapper.ReadChar();
-        }
-
-        public ConsoleKey GetKey()
-       {
-            return _consoleWrapper.ReadKey();
-        }
-
-        public int ParseInputToInt()
-        {
-            int number;
-            while (int.TryParse(_consoleWrapper.ReadLine(), out number) is false)
-            {
-                _consoleWrapper.WriteLine("You must enter digits, please try again!");
-            }
-            return number;
         }
     }
 }

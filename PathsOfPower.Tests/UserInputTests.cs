@@ -4,23 +4,58 @@ namespace PathsOfPower.Tests;
 
 public class UserInputTests
 {
-    [Fact]
-    public void GetInputShouldReturnOne()
+    [Theory]
+    [InlineData('1')]
+    [InlineData('2')]
+    [InlineData('3')]
+    [InlineData('8')]
+    [InlineData('9')]
+    public void GetKeyCharShouldReturnExpected(char expected)
     {
         //Arrange
-        //var expected = ConsoleKey.D1;
-        var expected = "1";
+
         var mock = new Mock<IConsoleWrapper>();
-        mock.Setup(x => x.ReadKey())
-            .Returns(ConsoleKey.D1);
+        mock.Setup(x => x.ReadChar())
+            .Returns(expected);
 
         var sut = new UserInteraction(mock.Object);
-        
+
         //Act
-        var actual = sut.GetKeyChar().ToString();
+        var actual = sut.GetChar();
         
         //Assert
         Assert.Equal(expected, actual);
-        mock.Verify(x => x.ReadKey(), Times.Once());
+        mock.Verify(x => x.ReadChar(), Times.Once());
     }
+
+    [Fact]
+    public void PrintShouldCallWriteLine()
+    {
+        //Arrange
+        var mock = new Mock<IConsoleWrapper>();
+        mock.Setup(x => x.WriteLine(It.IsAny<string>()));
+
+        var sut = new UserInteraction(mock.Object);
+
+        //Act
+        sut.Print("Hello");    
+
+        //Assert
+        mock.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Once());
+    }
+
+    [Fact]
+    public void ClearConsoleShouldCallClear()
+    {
+        //Arrange
+        var mock = new Mock<IConsoleWrapper>();
+        var sut = new UserInteraction(mock.Object);
+
+        //Act
+        sut.ClearConsole();
+
+        //Assert
+        mock.Verify(x => x.Clear(), Times.Once());
+    }
+
 }

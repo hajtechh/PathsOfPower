@@ -19,19 +19,16 @@ public class Game
     {
         PrintMenu();
 
-        var menuChoice = _userInteraction.GetKey();
+        var menuChoice = _userInteraction.GetChar();
         switch (menuChoice)
         {
-            case ConsoleKey.D1:
-            case ConsoleKey.NumPad1:
+            case '1':
                 StartGame();
                 break;
-            case ConsoleKey.D2:
-            case ConsoleKey.NumPad2:
+            case '2':
                 LoadGame();
                 break;
-            case ConsoleKey.D3:
-            case ConsoleKey.NumPad3:
+            case '3':
                 QuitGame();
                 break;
             default:
@@ -71,8 +68,8 @@ public class Game
 
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
-                var choice = _userInteraction.GetKeyChar();
-                var index = CreateQuestIndex(quest.Index, choice.ToString());
+                var choice = _userInteraction.GetChar();
+                var index = CreateQuestIndex(quest.Index, choice);
                 quest = GetQuestFromIndex(index, quests);
             }
             else
@@ -84,7 +81,7 @@ public class Game
         }
     }
 
-    private string CreateQuestIndex(string parentQuestIndex, string choice)
+    private string CreateQuestIndex(string parentQuestIndex, char choice)
     {
         return $"{parentQuestIndex}.{choice}";
     }
