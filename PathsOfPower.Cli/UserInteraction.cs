@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathsOfPower.Cli
 {
-    internal class UserInteraction : IUserInteraction
+    public class UserInteraction : IUserInteraction
     {
         private readonly IConsoleWrapper _consoleWrapper;
 
@@ -15,6 +15,10 @@ namespace PathsOfPower.Cli
             _consoleWrapper = consoleWrapper;                                                                                                                                                                                                           
         }
 
+        public void Print(string message)
+        {
+            _consoleWrapper.WriteLine(message);
+        }
         public void ClearConsole()
         {
             _consoleWrapper.Clear();
@@ -26,6 +30,10 @@ namespace PathsOfPower.Cli
             return _consoleWrapper.ReadLine() ?? string.Empty;
         }
 
+        public string GetKeyToString()
+        {
+            return _consoleWrapper.ReadKey().ToString();
+        }
         public ConsoleKey GetKey()
         {
             return _consoleWrapper.ReadKey();

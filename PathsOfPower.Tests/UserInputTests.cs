@@ -1,15 +1,20 @@
-namespace PathsOfPower.Tests
+namespace PathsOfPower.Tests;
+
+public class UserInputTests
 {
-    public class UserInputTests
+    [Fact]
+    public void GetInputShouldReturnOne()
     {
-        [Fact]
-        public void GetInputShouldReturnOne()
-        {
-            //Arrange
+        //Arrange
+        var expected = "1";
+        var mock = new Mock<IConsoleWrapper>();
+        mock.Setup(x => x.ReadLine()).Returns(expected);
 
-            //Act
-
-            //Assert
-        }
+        var sut = new UserInteraction(mock.Object);
+        
+        //Act
+        var actual = sut.GetInput("Starta spelet");
+        
+        //Assert
     }
 }

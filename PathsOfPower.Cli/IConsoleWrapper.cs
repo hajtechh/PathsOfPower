@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathsOfPower.Cli
 {
-    internal interface IConsoleWrapper
+    public interface IConsoleWrapper
     {
         void WriteLine(string s);
         string? ReadLine();

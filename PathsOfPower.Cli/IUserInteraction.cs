@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace PathsOfPower.Cli
 {
-    internal interface IUserInteraction
+    public interface IUserInteraction
     {
         string GetInput(string message);
         int ParseInputToInt();
         void ClearConsole();
+        void Print(string message);
         ConsoleKey GetKey();
+        string GetKeyToString();
     }
 }

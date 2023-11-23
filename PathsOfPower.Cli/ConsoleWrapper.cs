@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathsOfPower.Cli
 {
-    internal class ConsoleWrapper : IConsoleWrapper
+    public class ConsoleWrapper : IConsoleWrapper
     {
         public void Clear() => Console.Clear();
 

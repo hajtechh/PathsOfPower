@@ -1,4 +1,5 @@
-﻿using PathsOfPower.Models;
+﻿using PathsOfPower.Cli;
+using PathsOfPower.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +10,28 @@ namespace PathsOfPower;
 
 public class Game
 {
+    private readonly IUserInteraction _userInteraction;
+    public Game(IUserInteraction userInteraction)
+    {
+        _userInteraction = userInteraction;
+    }
     public void Run()
     {
         PrintMenu();
 
-        var menuChoice = GetInput();
+        var menuChoice = _userInteraction.GetKey();
         switch (menuChoice)
         {
-            case "1":
+            case ConsoleKey.D1:
+            case ConsoleKey.NumPad1:
                 StartGame();
                 break;
-            case "2":
+            case ConsoleKey.D2:
+            case ConsoleKey.NumPad2:
                 LoadGame();
                 break;
-            case "3":
+            case ConsoleKey.D3:
+            case ConsoleKey.NumPad3:
                 QuitGame();
                 break;
             default:
@@ -40,9 +49,9 @@ public class Game
         throw new NotImplementedException();
     }
 
-    private static void PrintMenu()
+    private void PrintMenu()
     {
-        Console.WriteLine($"[1] Start new game \r\n" +
+        _userInteraction.Print($"[1] Start new game \r\n" +
             $"[2] Load game \r\n" +
             $"[3] Quit game");
     }
@@ -56,20 +65,20 @@ public class Game
         var isRunning = true;
         while (isRunning)
         {
-            Console.Clear();
+            _userInteraction.ClearConsole();
 
             PrintQuest(quest);
 
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
-                var choice = GetInput();
+                var choice = _userInteraction.GetKeyToString();
                 var index = CreateQuestIndex(quest.Index, choice);
                 quest = GetQuestFromIndex(index, quests);
             }
             else
             {
                 isRunning = false;
-                Console.WriteLine("The end");
+                _userInteraction.Print("The end");
             }
 
         }
@@ -80,22 +89,17 @@ public class Game
         return $"{parentQuestIndex}.{choice}";
     }
 
-    private string GetInput()
-    {
-        return Console.ReadKey(true).KeyChar.ToString();
-    }
-
     private void PrintQuest(Quest quest)
     {
-        Console.WriteLine(quest.Description);
-        Console.WriteLine("---------------------");
+        _userInteraction.Print(quest.Description);
+        _userInteraction.Print("---------------------");
 
         if (quest.Options is null)
             return;
 
         foreach (var option in quest.Options)
         {
-            Console.WriteLine($"[{option.Index}] - {option.Name}");
+            _userInteraction.Print($"[{option.Index}] - {option.Name}");
         }
     }
 

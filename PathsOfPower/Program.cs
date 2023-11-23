@@ -1,4 +1,7 @@
 ﻿using PathsOfPower;
+using PathsOfPower.Cli;
 
-var game = new Game();
+IConsoleWrapper consoleWrapper  = new ConsoleWrapper();
+IUserInteraction userInteraction = new UserInteraction(consoleWrapper);
+var game = new Game(userInteraction);
 game.Run();
