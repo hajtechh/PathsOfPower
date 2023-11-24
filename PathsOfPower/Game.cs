@@ -13,6 +13,7 @@ namespace PathsOfPower;
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
+    private readonly string _baseQuestPath = "../../../../PathsOfPower/Quests/chapter";
     public List<Quest> Quests { get; set; }
     public Character Character { get; set; }
 
@@ -29,7 +30,7 @@ public class Game
         {
             case '1':
                 Setup();
-                StartGame();
+                StartGame(1);
                 break;
             case '2':
                 LoadGame();
@@ -59,9 +60,11 @@ public class Game
             $"[3] Quit game");
     }
 
-    private void StartGame()
+    private void StartGame(int chapter)
     {
-        var quest = GetQuestFromIndex("1", Quests);
+        Quests = GetQuests(chapter);
+
+        var quest = GetQuestFromIndex(chapter.ToString(), Quests);
 
         var isRunning = true;
         while (isRunning)
@@ -75,6 +78,13 @@ public class Game
                 var choice = _userInteraction.GetChar();
                 var index = CreateQuestIndex(quest.Index, choice);
                 quest = GetQuestFromIndex(index, Quests);
+            }
+            else if(File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
+            {
+                chapter++;
+                Quests = GetQuests(chapter);
+                quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                _userInteraction.GetChar();
             }
             else
             {
@@ -111,13 +121,13 @@ public class Game
 
     public List<Quest> GetQuests(int chapterNumber)
     {
-        var jsonText = File.ReadAllText($"../../../../PathsOfPower/Quests/chapter{chapterNumber}.json");
+        var jsonText = File.ReadAllText($"{_baseQuestPath}{chapterNumber}.json");
         return JsonSerializer.Deserialize<List<Quest>>(jsonText);
     }
 
     public void Setup()
     {
-        Quests = GetQuests(1);
+        //Quests = GetQuests(1);
         Character = CreateCharacter();
     }
 
