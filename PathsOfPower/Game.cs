@@ -13,6 +13,9 @@ namespace PathsOfPower;
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
+    public List<Quest> Quests { get; set; }
+    public Character Character { get; set; }
+
     public Game(IUserInteraction userInteraction)
     {
         _userInteraction = userInteraction;
@@ -25,6 +28,7 @@ public class Game
         switch (menuChoice)
         {
             case '1':
+                Setup();
                 StartGame();
                 break;
             case '2':
@@ -57,9 +61,7 @@ public class Game
 
     private void StartGame()
     {
-        //setup game
-        var quests = GetQuests(1);
-        var quest = GetQuestFromIndex("1", quests);
+        var quest = GetQuestFromIndex("1", Quests);
 
         var isRunning = true;
         while (isRunning)
@@ -72,7 +74,7 @@ public class Game
             {
                 var choice = _userInteraction.GetChar();
                 var index = CreateQuestIndex(quest.Index, choice);
-                quest = GetQuestFromIndex(index, quests);
+                quest = GetQuestFromIndex(index, Quests);
             }
             else
             {
@@ -109,8 +111,29 @@ public class Game
 
     public List<Quest> GetQuests(int chapterNumber)
     {
-        //var text = File.ReadAllText($"./Quests/chapter{chapterNumber}.json");
         var jsonText = File.ReadAllText($"../../../../PathsOfPower/Quests/chapter{chapterNumber}.json");
         return JsonSerializer.Deserialize<List<Quest>>(jsonText);
+    }
+
+    public void Setup()
+    {
+        Quests = GetQuests(1);
+        Character = CreateCharacter();
+    }
+
+    public Character CreateCharacter()
+    {
+        _userInteraction.ClearConsole();
+        var name = _userInteraction.GetInput("Choose the name of your character.");
+        while (string.IsNullOrEmpty(name))
+        {
+            _userInteraction.ClearConsole();
+            name = _userInteraction.GetInput("Your character have to have a name.");
+        }
+
+        return new Character()
+        {
+            Name = name
+        };
     }
 }
