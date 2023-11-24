@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PathsOfPower;
@@ -56,7 +58,7 @@ public class Game
     private void StartGame()
     {
         //setup game
-        var quests = CreateSomeQuests();
+        var quests = GetQuests(1);
         var quest = GetQuestFromIndex("1", quests);
 
         var isRunning = true;
@@ -105,38 +107,10 @@ public class Game
         return quests.FirstOrDefault(x => x.Index == index);
     }
 
-    private List<Quest> CreateSomeQuests()
+    public List<Quest> GetQuests(int chapterNumber)
     {
-        return new List<Quest>()
-        {
-            new Quest()
-            {
-                Index = "1",
-                Description = "You are in a classroom at Hogwarts. What do you want to teach your students today?",
-                Options = new List<Option>()
-                {
-                    new Option()
-                    {
-                        Index = 1,
-                        Name = "Boggarts"
-                    },
-                    new Option()
-                    {
-                        Index = 2,
-                        Name = "Unforgivable curses"
-                    }
-                }
-            },
-            new Quest()
-            {
-                Index = "1.1",
-                Description = "You teach the class about boggarts."
-            },
-            new Quest()
-            {
-                Index = "1.2",
-                Description = "You teach the class about the unforgivable curses."
-            }
-        };
+        //var text = File.ReadAllText($"./Quests/chapter{chapterNumber}.json");
+        var jsonText = File.ReadAllText($"../../../../PathsOfPower/Quests/chapter{chapterNumber}.json");
+        return JsonSerializer.Deserialize<List<Quest>>(jsonText);
     }
 }
