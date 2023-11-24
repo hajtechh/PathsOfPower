@@ -1,0 +1,94 @@
+[
+	{
+		"Index": "1",
+		"Description": "You are in a classroom at Hogwarts. What do you want to teach your students today?",
+		"Options": [
+			{
+				"Index": 1,
+				"Name": "Boggarts"
+			},
+			{
+				"Index": 2,
+				"Name": "Unforgivable curses"
+			}
+		]
+	},
+	{
+		"Index": "1.1",
+		"Description": "You teach the class about boggarts.",
+		"Options": [
+			{
+				"Index": 1,
+				"Name": "Demonstrate on yourself"
+			},
+			{
+				"Index": 2,
+				"Name": "Let your students try on themselves"
+			}
+		]
+	},
+	{
+		"Index": "1.1.1",
+		"Description": "You stand in front of the boggart. What shape does it take?",
+		"Options": [
+			{
+				"Index": 1,
+				"Name": "Snake"
+			},
+			{
+				"Index": 2,
+				"Name": "Spider"
+			},
+			{
+				"Index": 3,
+				"Name": "Clown"
+			}
+		]
+	},
+	{
+		"Index": "1.1.1.1",
+		"Description": "The boggart take the shape of a snake."
+	},
+	{
+		"Index": "1.1.1.2",
+		"Description": "The boggart take the shape of a spider."
+	},
+	{
+		"Index": "1.1.1.3",
+		"Description": "The boggart take the shape of a clown."
+	},
+	{
+		"Index": "1.1.2",
+		"Description": "The students take turns standing in front of the boggart"
+	},
+	{
+		"Index": "1.2",
+		"Description": "You demonstrate one of the curses on a crow. Which curse do you choose?",
+		"Options": [
+			{
+				"Index": 1,
+				"Name": "Imperio"
+			},
+			{
+				"Index": 2,
+				"Name": "Crucio"
+			},
+			{
+				"Index": 3,
+				"Name": "Avada kedavra"
+			}
+		]
+	},
+	{
+		"Index": "1.2.1",
+		"Description": "You cast imperio on the crow, which flies around the room."
+	},
+	{
+		"Index": "1.2.2",
+		"Description": "You cast crucio on the crow, and it cries with pain."
+	},
+	{
+		"Index": "1.2.3",
+		"Description": "You cast avada kedavra on the crow, and it drops dead with feathers flying around."
+	}
+]
