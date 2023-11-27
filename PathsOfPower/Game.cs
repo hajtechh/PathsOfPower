@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -54,10 +55,7 @@ public class Game
     public void SaveGame(string questIndex)
     {
         // userinteraction
-        _userInteraction.Print("Choose slot to save your game\r\n" +
-            "Slot [1] \r\n" +
-            "Slot [2] \r\n" +
-            "Slot [3] \r\n");
+        PrintSavedGames();
         var choice = _userInteraction.GetChar();
 
         //Prepare objekt
@@ -65,6 +63,43 @@ public class Game
 
         // save game
         WriteToFile(choice, jsonString);
+    }
+
+    public void PrintSavedGames()
+    {
+        string savedGamesDirectory = _basePath + "SavedGameFiles/";
+        List<SavedGame> savedGames = new List<SavedGame>();
+
+        foreach (string filePath in Directory.GetFiles(savedGamesDirectory, "*.json"))
+        {
+            string jsonContent = File.ReadAllText(filePath);
+            var savedGame = new SavedGame();
+            if (!string.IsNullOrEmpty(jsonContent))
+            {
+                savedGame = JsonSerializer.Deserialize<SavedGame>(jsonContent);
+            }
+            else
+            {
+                savedGame = new SavedGame();
+            }
+            savedGames.Add(savedGame);
+        }
+
+        _userInteraction.Print("Choose slot\r\n");
+        var counter = 1;
+        foreach (SavedGame savedGame in savedGames)
+        {
+            if (savedGame.Character != null)
+            {
+                _userInteraction.Print($"[{counter}] {savedGame.Character.Name}");
+            }
+            else
+            {
+                _userInteraction.Print($"[{counter}] Empty slot");
+            }
+            _userInteraction.Print("-------");
+            counter++;
+        }
     }
 
     public void WriteToFile(char choice, string jsonString)
@@ -85,7 +120,7 @@ public class Game
 
     private void LoadGame()
     {
-        throw new NotImplementedException();
+        PrintSavedGames();
     }
 
     private void PrintMenu()
@@ -114,7 +149,7 @@ public class Game
                 var index = CreateQuestIndex(quest.Index, choice);
                 quest = GetQuestFromIndex(index, Quests);
             }
-            else if(File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
+            else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
             {
                 chapter++;
                 Quests = GetQuests(chapter);
