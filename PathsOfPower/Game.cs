@@ -1,6 +1,7 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,9 @@ namespace PathsOfPower;
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
-    private readonly string _baseQuestPath = "../../../../PathsOfPower/Quests/chapter";
+    const string _basePath = "../../../../PathsOfPower/";
+    private readonly string _baseQuestPath = _basePath + "Quests/chapter";
+    private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
     public Character Character { get; set; }
 
@@ -48,22 +51,38 @@ public class Game
         Environment.Exit(0);
     }
 
-    private void SaveGame(Quest quest)
+    public void SaveGame(string questIndex)
     {
+        // userinteraction
         _userInteraction.Print("Choose slot to save your game\r\n" +
             "Slot [1] \r\n" +
             "Slot [2] \r\n" +
             "Slot [3] \r\n");
         var choice = _userInteraction.GetChar();
-        string fileName = $"slot{choice}.json";
-        string jsonString = JsonSerializer.Serialize(
+
+        //Prepare objekt
+        var jsonString = SerializeSavedGame(questIndex);
+
+        // save game
+        WriteToFile(choice, jsonString);
+    }
+
+    public void WriteToFile(char choice, string jsonString)
+    {
+        var path = $"{_baseSavePath}{choice}.json";
+        File.WriteAllText(path, jsonString);
+    }
+
+    public string SerializeSavedGame(string questIndex)
+    {
+        return JsonSerializer.Serialize(
             new SavedGame
             {
                 Character = Character,
-                Quest = quest
-            }) ;
-        File.WriteAllText(fileName, jsonString);
+                QuestIndex = questIndex
+            });
     }
+
     private void LoadGame()
     {
         throw new NotImplementedException();
