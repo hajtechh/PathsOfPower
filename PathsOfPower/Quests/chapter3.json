@@ -1,0 +1,205 @@
+[
+  {
+    "Index": "3",
+    "Description": "The day pass, and when you finish up your last class of the day, you notice your supply of leech juice is low.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go down to the lake to collect more"
+      },
+      {
+        "Index": 2,
+        "Name": "Sneak into the Potions classroom to steal some"
+      }
+    ]
+  },
+
+  {
+    "Index": "3.1",
+    "Description": "You take a stroll to the nearby lake. As you walk along the shoreline, looking for leeches, you spot an unusual looking stick in the sand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take a closer look at the stick"
+      },
+      {
+        "Index": 2,
+        "Name": "Throw the stick into the lake"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1",
+    "Description": "You bury you hand in the sand and pull out a wand, broken in two pieces, barely holding the two parts together. You wonder where it came from, and who it belongs to.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask one of your colleagues for help"
+      },
+      {
+        "Index": 2,
+        "Name": "Go to the library for answers"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1.1",
+    "Description": "You know the Professor of Charms, Ms Malfoy, posess a great knowledge in wands. You leave the lake and walk towards her office with the broken wand in your hand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": ""
+      },
+      {
+        "Index": 2,
+        "Name": ""
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1.2",
+    "Description": "You leave the lake with the wand in your hand, and you walk towards the library.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": ""
+      },
+      {
+        "Index": 2,
+        "Name": ""
+      }
+    ]
+  },
+
+  {
+    "Index": "3.1.2",
+    "Description": "You pull the stick out of the sand, and it looks like a broken wand, split in two, barely holding the two parts together.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Keep the wand and find out where it came from"
+      },
+      {
+        "Index": 2,
+        "Name": "Throw it into the water"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.1",
+    "Description": "The mysterious wand sparked your curiosity, and you want to know who it belonged to.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to the library"
+      },
+      {
+        "Index": 2,
+        "Name": "Ask one of your colleagues for help"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.1.1",
+    "Description": "You leave the lake with the wand in your hand, and you walk towards the library.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": ""
+      },
+      {
+        "Index": 2,
+        "Name": ""
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.1.2",
+    "Description": "You know the Professor of Charms, Ms Malfoy, posess a great knowledge in wands. You leave the lake and walk towards her office with the broken wand in your hand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": ""
+      },
+      {
+        "Index": 2,
+        "Name": ""
+      }
+    ]
+  },
+
+  {
+    "Index": "3.1.2.2",
+    "Description": "You launch the wand towards the water, annd it disappears with a small splash.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go back to your office"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.2.1",
+    "Description": "You hear a sizzling sound behind you, and you turn around to see the water bubbling, where the wand had sunk. An explosion of red and green lightning brings you to the ground, and the wand comes flying, landing in front of your feet.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to the library to find out more about the wand"
+      }
+    ]
+  },
+
+  {
+    "Index": "3.2",
+    "Description": "You need to distract Professor Granger to access his classroom undisturbed.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Send an anonymous letter, asking him to meet you at the lake"
+      },
+      {
+        "Index": 2,
+        "Name": "Use the Imperio curse to make him give you the leech juice"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1",
+    "Description": "You write the letter and send of an owl towards Mr Grangers office. You wait around and when he leaves the office, you sneak in.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Start rummaging through the office"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1",
+    "Description": "You look in every bookshelf and in every cabinet, but you do not find any leech juice. You forget about the time and suddenly the door opens. Mr Granger stares at you with a surprised look.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Be honest"
+      },
+      {
+        "Index": 2,
+        "Name": "Lie"
+      }
+    ]
+  },
+
+  {
+    "Index": "3.2.2",
+    "Description": "You go to Mr Grangers office and walk into the room. He smiles and greet you, asking what he can help you with.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast the Imperio curse on him"
+      },
+      {
+        "Index": 2,
+        "Name": "Ask him if you can borrow some leech juice"
+      }
+    ]
+  }
+]
