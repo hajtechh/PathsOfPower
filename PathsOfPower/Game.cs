@@ -48,6 +48,22 @@ public class Game
         Environment.Exit(0);
     }
 
+    private void SaveGame(Quest quest)
+    {
+        _userInteraction.Print("Choose slot to save your game\r\n" +
+            "Slot [1] \r\n" +
+            "Slot [2] \r\n" +
+            "Slot [3] \r\n");
+        var choice = _userInteraction.GetChar();
+        string fileName = $"slot{choice}.json";
+        string jsonString = JsonSerializer.Serialize(
+            new SavedGame
+            {
+                Character = Character,
+                Quest = quest
+            }) ;
+        File.WriteAllText(fileName, jsonString);
+    }
     private void LoadGame()
     {
         throw new NotImplementedException();
