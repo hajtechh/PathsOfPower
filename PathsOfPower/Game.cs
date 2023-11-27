@@ -29,7 +29,7 @@ public class Game
     {
         PrintMenu();
 
-        var menuChoice = _userInteraction.GetChar();
+        var menuChoice = _userInteraction.GetChar().KeyChar;
         switch (menuChoice)
         {
             case '1':
@@ -54,51 +54,38 @@ public class Game
 
     public void SaveGame(string questIndex)
     {
-        // userinteraction
         PrintSavedGames();
-        var choice = _userInteraction.GetChar();
+        var choice = _userInteraction.GetChar().KeyChar;
 
-        //Prepare objekt
         var jsonString = SerializeSavedGame(questIndex);
 
-        // save game
         WriteToFile(choice, jsonString);
     }
 
     public void PrintSavedGames()
     {
-        string savedGamesDirectory = _basePath + "SavedGameFiles/";
-        List<SavedGame> savedGames = new List<SavedGame>();
+        var savedGamesDirectory = _basePath + "SavedGameFiles/";
+        var savedGames = new List<SavedGame>();
 
-        foreach (string filePath in Directory.GetFiles(savedGamesDirectory, "*.json"))
+        foreach (var filePath in Directory.GetFiles(savedGamesDirectory, "*.json"))
         {
-            string jsonContent = File.ReadAllText(filePath);
+            var jsonContent = File.ReadAllText(filePath);
             var savedGame = new SavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
                 savedGame = JsonSerializer.Deserialize<SavedGame>(jsonContent);
             }
-            else
-            {
-                savedGame = new SavedGame();
-            }
-            savedGames.Add(savedGame);
+            savedGames.Add(savedGame ?? new SavedGame());
         }
 
         _userInteraction.Print("Choose slot\r\n");
-        var counter = 1;
-        foreach (SavedGame savedGame in savedGames)
+        for (int i = 1; i <= savedGames.Count; i++)
         {
-            if (savedGame.Character != null)
-            {
-                _userInteraction.Print($"[{counter}] {savedGame.Character.Name}");
-            }
-            else
-            {
-                _userInteraction.Print($"[{counter}] Empty slot");
-            }
-            _userInteraction.Print("-------");
-            counter++;
+            var text = $"[{i}] ";
+            text += savedGames[i].Character != null ?
+                savedGames[i].Character.Name :
+                "Empty slot";
+            _userInteraction.Print($"{text} \r\n -------");
         }
     }
 
@@ -137,8 +124,22 @@ public class Game
         var quest = GetQuestFromIndex(chapter.ToString(), Quests);
 
         var isRunning = true;
+        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        {
+            { ConsoleKey.Q, QuitGame },
+        };
         while (isRunning)
         {
+            Thread.Sleep(10);
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+
+                if (keyActions.TryGetValue(key.Key, out Action action))
+                {
+                    action.Invoke();
+                }
+            }
             _userInteraction.ClearConsole();
 
             PrintQuest(quest);
@@ -146,8 +147,18 @@ public class Game
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
                 var choice = _userInteraction.GetChar();
-                var index = CreateQuestIndex(quest.Index, choice);
-                quest = GetQuestFromIndex(index, Quests);
+                if (char.IsDigit(choice.KeyChar))
+                {
+                    var index = CreateQuestIndex(quest.Index, choice.KeyChar);
+                    quest = GetQuestFromIndex(index, Quests);
+                }
+                else
+                {
+                    if (keyActions.TryGetValue(choice.Key, out Action action))
+                    {
+                        action.Invoke();
+                    }
+                }
             }
             else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
             {
@@ -161,7 +172,6 @@ public class Game
                 isRunning = false;
                 _userInteraction.Print("The end");
             }
-
         }
     }
 
