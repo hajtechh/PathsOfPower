@@ -31,7 +31,7 @@ namespace PathsOfPower.Cli
             return _consoleWrapper.ReadLine() ?? string.Empty;
         }
 
-        public char GetChar()
+        public ConsoleKeyInfo GetChar()
         {
             return _consoleWrapper.ReadChar();
         }

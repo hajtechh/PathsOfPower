@@ -1,8 +1,10 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,7 +15,9 @@ namespace PathsOfPower;
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
-    private readonly string _baseQuestPath = "../../../../PathsOfPower/Quests/chapter";
+    const string _basePath = "../../../../PathsOfPower/";
+    private readonly string _baseQuestPath = _basePath + "Quests/chapter";
+    private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
     public Character Character { get; set; }
 
@@ -25,12 +29,12 @@ public class Game
     {
         PrintMenu();
 
-        var menuChoice = _userInteraction.GetChar();
+        var menuChoice = _userInteraction.GetChar().KeyChar;
         switch (menuChoice)
         {
             case '1':
                 Setup();
-                StartGame(1);
+                StartGame(4);
                 break;
             case '2':
                 LoadGame();
@@ -48,9 +52,62 @@ public class Game
         Environment.Exit(0);
     }
 
+    public void SaveGame(string questIndex)
+    {
+        PrintSavedGames();
+        var choice = _userInteraction.GetChar().KeyChar;
+
+        var jsonString = SerializeSavedGame(questIndex);
+
+        WriteToFile(choice, jsonString);
+    }
+
+    public void PrintSavedGames()
+    {
+        var savedGamesDirectory = _basePath + "SavedGameFiles/";
+        var savedGames = new List<SavedGame>();
+
+        foreach (var filePath in Directory.GetFiles(savedGamesDirectory, "*.json"))
+        {
+            var jsonContent = File.ReadAllText(filePath);
+            var savedGame = new SavedGame();
+            if (!string.IsNullOrEmpty(jsonContent))
+            {
+                savedGame = JsonSerializer.Deserialize<SavedGame>(jsonContent);
+            }
+            savedGames.Add(savedGame ?? new SavedGame());
+        }
+
+        _userInteraction.Print("Choose slot\r\n");
+        for (int i = 1; i <= savedGames.Count; i++)
+        {
+            var text = $"[{i}] ";
+            text += savedGames[i].Character != null ?
+                savedGames[i].Character.Name :
+                "Empty slot";
+            _userInteraction.Print($"{text} \r\n -------");
+        }
+    }
+
+    public void WriteToFile(char choice, string jsonString)
+    {
+        var path = $"{_baseSavePath}{choice}.json";
+        File.WriteAllText(path, jsonString);
+    }
+
+    public string SerializeSavedGame(string questIndex)
+    {
+        return JsonSerializer.Serialize(
+            new SavedGame
+            {
+                Character = Character,
+                QuestIndex = questIndex
+            });
+    }
+
     private void LoadGame()
     {
-        throw new NotImplementedException();
+        PrintSavedGames();
     }
 
     private void PrintMenu()
@@ -67,8 +124,22 @@ public class Game
         var quest = GetQuestFromIndex(chapter.ToString(), Quests);
 
         var isRunning = true;
+        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        {
+            { ConsoleKey.Q, QuitGame },
+        };
         while (isRunning)
         {
+            Thread.Sleep(10);
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+
+                if (keyActions.TryGetValue(key.Key, out Action action))
+                {
+                    action.Invoke();
+                }
+            }
             _userInteraction.ClearConsole();
 
             PrintQuest(quest);
@@ -76,10 +147,20 @@ public class Game
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
                 var choice = _userInteraction.GetChar();
-                var index = CreateQuestIndex(quest.Index, choice);
-                quest = GetQuestFromIndex(index, Quests);
+                if (char.IsDigit(choice.KeyChar))
+                {
+                    var index = CreateQuestIndex(quest.Index, choice.KeyChar);
+                    quest = GetQuestFromIndex(index, Quests);
+                }
+                else
+                {
+                    if (keyActions.TryGetValue(choice.Key, out Action action))
+                    {
+                        action.Invoke();
+                    }
+                }
             }
-            else if(File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
+            else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
             {
                 chapter++;
                 Quests = GetQuests(chapter);
@@ -91,7 +172,6 @@ public class Game
                 isRunning = false;
                 _userInteraction.Print("The end");
             }
-
         }
     }
 

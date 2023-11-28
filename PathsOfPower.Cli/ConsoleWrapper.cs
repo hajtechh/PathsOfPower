@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +11,10 @@ namespace PathsOfPower.Cli
     {
         public void Clear() => Console.Clear();
 
-        public char ReadChar() => Console.ReadKey(true).KeyChar;
+        public ConsoleKeyInfo ReadChar()
+        {
+            return  Console.ReadKey(true);
+        }
 
         public string? ReadLine() => Console.ReadLine();
 
