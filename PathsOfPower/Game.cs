@@ -34,7 +34,7 @@ public class Game
         {
             case '1':
                 Setup();
-                StartGame(1);
+                StartGame("1");
                 break;
             case '2':
                 LoadGame();
@@ -47,11 +47,13 @@ public class Game
         }
     }
 
-    private void StartGame(int chapter)
+    private void StartGame(string questIndex)
     {
+        var currentChapter = questIndex.Substring(0, 1);
+        int chapter = int.Parse(currentChapter);
         Quests = GetQuests(chapter);
 
-        var quest = GetQuestFromIndex(chapter.ToString(), Quests);
+        var quest = GetQuestFromIndex(questIndex, Quests);
 
         var isRunning = true;
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
@@ -94,7 +96,7 @@ public class Game
             {
                 chapter++;
                 Quests = GetQuests(chapter);
-                quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                quest = GetQuestFromIndex(questIndex, Quests);
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {
@@ -111,6 +113,18 @@ public class Game
                 _userInteraction.Print("The end");
             }
         }
+    }
+
+    private void LoadGame()
+    {
+        PrintSavedGames();
+
+        var choice = _userInteraction.GetChar().KeyChar;
+        var path = $"{_baseSavePath}{choice}.json";
+        var text = File.ReadAllText(path);
+        var chosenGame = JsonSerializer.Deserialize<SavedGame>(text);
+        Character = chosenGame.Character;
+        StartGame(chosenGame.QuestIndex);
     }
 
     private void QuitGame()
@@ -169,11 +183,6 @@ public class Game
                 Character = Character,
                 QuestIndex = questIndex
             });
-    }
-
-    private void LoadGame()
-    {
-        PrintSavedGames();
     }
 
     private void PrintMenu()
