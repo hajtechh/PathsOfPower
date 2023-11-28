@@ -39,6 +39,7 @@
     ]
   },
 
+
   {
     "Index": "3.1.2",
     "Description": "You pull the stick out of the sand, and it looks like a broken wand, split in two, barely holding the two parts together.",
@@ -66,7 +67,7 @@
 
   {
     "Index": "3.1.2.2",
-    "Description": "You launch the wand towards the water, annd it disappears with a small splash.",
+    "Description": "You launch the wand towards the water, and it disappears with a small splash.",
     "Options": [
       {
         "Index": 1,

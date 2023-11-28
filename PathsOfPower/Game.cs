@@ -34,7 +34,7 @@ public class Game
         {
             case '1':
                 Setup();
-                StartGame(4);
+                StartGame(1);
                 break;
             case '2':
                 LoadGame();
@@ -44,6 +44,72 @@ public class Game
                 break;
             default:
                 break;
+        }
+    }
+
+    private void StartGame(int chapter)
+    {
+        Quests = GetQuests(chapter);
+
+        var quest = GetQuestFromIndex(chapter.ToString(), Quests);
+
+        var isRunning = true;
+        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        {
+            { ConsoleKey.Q, QuitGame },
+            {ConsoleKey.S, () => SaveGame(quest.Index) }
+        };
+        while (isRunning)
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+
+                if (keyActions.TryGetValue(key.Key, out Action action))
+                {
+                    action.Invoke();
+                }
+            }
+            _userInteraction.ClearConsole();
+
+            PrintQuest(quest);
+
+            if (quest.Options is not null /* || quest.Options.Count() > 0*/)
+            {
+                var choice = _userInteraction.GetChar();
+                if (char.IsDigit(choice.KeyChar))
+                {
+                    var index = CreateQuestIndex(quest.Index, choice.KeyChar);
+                    quest = GetQuestFromIndex(index, Quests);
+                }
+                else
+                {
+                    if (keyActions.TryGetValue(choice.Key, out Action action))
+                    {
+                        action.Invoke();
+                    }
+                }
+            }
+            else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
+            {
+                chapter++;
+                Quests = GetQuests(chapter);
+                quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                var input = _userInteraction.GetChar();
+                if (keyActions.TryGetValue(input.Key, out Action action))
+                {
+                    action.Invoke();
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                isRunning = false;
+                _userInteraction.Print("The end");
+            }
         }
     }
 
@@ -79,9 +145,9 @@ public class Game
         }
 
         _userInteraction.Print("Choose slot\r\n");
-        for (int i = 1; i <= savedGames.Count; i++)
+        for (int i = 0; i < savedGames.Count; i++)
         {
-            var text = $"[{i}] ";
+            var text = $"[{i + 1}] ";
             text += savedGames[i].Character != null ?
                 savedGames[i].Character.Name :
                 "Empty slot";
@@ -115,64 +181,6 @@ public class Game
         _userInteraction.Print($"[1] Start new game \r\n" +
             $"[2] Load game \r\n" +
             $"[3] Quit game");
-    }
-
-    private void StartGame(int chapter)
-    {
-        Quests = GetQuests(chapter);
-
-        var quest = GetQuestFromIndex(chapter.ToString(), Quests);
-
-        var isRunning = true;
-        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
-        {
-            { ConsoleKey.Q, QuitGame },
-        };
-        while (isRunning)
-        {
-            Thread.Sleep(10);
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
-
-                if (keyActions.TryGetValue(key.Key, out Action action))
-                {
-                    action.Invoke();
-                }
-            }
-            _userInteraction.ClearConsole();
-
-            PrintQuest(quest);
-
-            if (quest.Options is not null /* || quest.Options.Count() > 0*/)
-            {
-                var choice = _userInteraction.GetChar();
-                if (char.IsDigit(choice.KeyChar))
-                {
-                    var index = CreateQuestIndex(quest.Index, choice.KeyChar);
-                    quest = GetQuestFromIndex(index, Quests);
-                }
-                else
-                {
-                    if (keyActions.TryGetValue(choice.Key, out Action action))
-                    {
-                        action.Invoke();
-                    }
-                }
-            }
-            else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
-            {
-                chapter++;
-                Quests = GetQuests(chapter);
-                quest = GetQuestFromIndex(chapter.ToString(), Quests);
-                _userInteraction.GetChar();
-            }
-            else
-            {
-                isRunning = false;
-                _userInteraction.Print("The end");
-            }
-        }
     }
 
     private string CreateQuestIndex(string parentQuestIndex, char choice)
