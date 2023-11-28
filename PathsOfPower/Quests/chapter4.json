@@ -1,0 +1,26 @@
+[
+  {
+    "Index": "4",
+    "Description": "You enter your office, and sit down by your desk. You place the wand in front of you, looking wide-eyed at it. You have never felt the precence of such a powerful object before.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Pick up the wand"
+      }
+    ]
+  },
+  {
+    "Index": "4.1",
+    "Description": "The broken piece hangs on by dark threads, perhaps pieces of hair. (i nästa kapitel, börja med detta beslut när du vet allt osince it was made by death, make a pact with death itself, or defeat the old master, Harry Potter)",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": ""
+      },
+      {
+        "Index": 2,
+        "Name": "intimidated"
+      }
+    ]
+  }
+]

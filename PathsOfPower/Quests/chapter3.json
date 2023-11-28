@@ -30,43 +30,11 @@
   },
   {
     "Index": "3.1.1",
-    "Description": "You bury you hand in the sand and pull out a wand, broken in two pieces, barely holding the two parts together. You wonder where it came from, and who it belongs to.",
+    "Description": "You bury you hand in the sand and pull out a wand, broken in two pieces, barely holding the two parts together. Suddenly you feel an electric current going through your hand towards the wand.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Ask one of your colleagues for help"
-      },
-      {
-        "Index": 2,
-        "Name": "Go to the library for answers"
-      }
-    ]
-  },
-  {
-    "Index": "3.1.1.1",
-    "Description": "You know the Professor of Charms, Ms Malfoy, posess a great knowledge in wands. You leave the lake and walk towards her office with the broken wand in your hand.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": ""
-      },
-      {
-        "Index": 2,
-        "Name": ""
-      }
-    ]
-  },
-  {
-    "Index": "3.1.1.2",
-    "Description": "You leave the lake with the wand in your hand, and you walk towards the library.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": ""
-      },
-      {
-        "Index": 2,
-        "Name": ""
+        "Name": "Go back to your office"
       }
     ]
   },
@@ -77,53 +45,21 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Keep the wand and find out where it came from"
+        "Name": "Hold onto the wand"
       },
       {
         "Index": 2,
-        "Name": "Throw it into the water"
+        "Name": "Throw it"
       }
     ]
   },
   {
     "Index": "3.1.2.1",
-    "Description": "The mysterious wand sparked your curiosity, and you want to know who it belonged to.",
+    "Description": "The mysterious wand sparked your curiosity, and you want to know who it belonged to. Suddenly you feel an electtric current going through you hand, towards the wand.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Go to the library"
-      },
-      {
-        "Index": 2,
-        "Name": "Ask one of your colleagues for help"
-      }
-    ]
-  },
-  {
-    "Index": "3.1.2.1.1",
-    "Description": "You leave the lake with the wand in your hand, and you walk towards the library.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": ""
-      },
-      {
-        "Index": 2,
-        "Name": ""
-      }
-    ]
-  },
-  {
-    "Index": "3.1.2.1.2",
-    "Description": "You know the Professor of Charms, Ms Malfoy, posess a great knowledge in wands. You leave the lake and walk towards her office with the broken wand in your hand.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": ""
-      },
-      {
-        "Index": 2,
-        "Name": ""
+        "Name": "Go back to your office"
       }
     ]
   },
@@ -144,28 +80,14 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Go to the library to find out more about the wand"
+        "Name": "Pick up the wand"
       }
     ]
   },
 
   {
     "Index": "3.2",
-    "Description": "You need to distract Professor Granger to access his classroom undisturbed.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Send an anonymous letter, asking him to meet you at the lake"
-      },
-      {
-        "Index": 2,
-        "Name": "Use the Imperio curse to make him give you the leech juice"
-      }
-    ]
-  },
-  {
-    "Index": "3.2.1",
-    "Description": "You write the letter and send of an owl towards Mr Grangers office. You wait around and when he leaves the office, you sneak in.",
+    "Description": "You need to distract Professor Granger to access his classroom undisturbed. You write the letter and send of an owl towards Mr Grangers office. You wait around and when he leaves the office, you sneak in.",
     "Options": [
       {
         "Index": 1,
@@ -174,7 +96,7 @@
     ]
   },
   {
-    "Index": "3.2.1.1",
+    "Index": "3.2.1",
     "Description": "You look in every bookshelf and in every cabinet, but you do not find any leech juice. You forget about the time and suddenly the door opens. Mr Granger stares at you with a surprised look.",
     "Options": [
       {
@@ -183,22 +105,51 @@
       },
       {
         "Index": 2,
-        "Name": "Lie"
+        "Name": "Lie(not written past this)"
       }
     ]
   },
-
   {
-    "Index": "3.2.2",
-    "Description": "You go to Mr Grangers office and walk into the room. He smiles and greet you, asking what he can help you with.",
+    "Index": "3.2.1.1",
+    "Description": "You tell Mr Granger the truth. He looks surprised, but he tells you that he unfortunately does not have any leech juice either.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Cast the Imperio curse on him"
+        "Name": "Go back to your office"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1",
+    "Description": "You excuse yourself and walk towards the door. Mr Granger stops you, and asks you to take a look at something he found by the lake.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you are not interested"
       },
       {
         "Index": 2,
-        "Name": "Ask him if you can borrow some leech juice"
+        "Name": "Ask him what it is"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1.1",
+    "Description": "He pulls out a broken wand from his robe. He begs you to at least take it off his hands. He says you are better equipped to find out what it is, than he is. He holds it out to you, and you can feel an electric current going through your hand, towards the wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the wand"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1.2",
+    "Description": "He pulls out a broken wand from his robe. He explains he found it minutes ago, but he already feels ill by its precence. He begs you to take it instead, and to find out where it came from. He holds it out to you, and you can feel an electric current going through your hand, towards the wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the wand"
       }
     ]
   }

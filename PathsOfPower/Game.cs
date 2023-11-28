@@ -34,7 +34,7 @@ public class Game
         {
             case '1':
                 Setup();
-                StartGame(1);
+                StartGame(4);
                 break;
             case '2':
                 LoadGame();
