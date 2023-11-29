@@ -4,16 +4,11 @@ namespace PathsOfPower.Tests;
 
 public class UserInputTests
 {
-    [Theory]
-    [InlineData('1')]
-    [InlineData('2')]
-    [InlineData('3')]
-    [InlineData('8')]
-    [InlineData('9')]
-    public void GetKeyCharShouldReturnExpected(char expected)
+    [Fact]
+    public void GetCharShouldReturnExpectedAndRunOnce()
     {
         //Arrange
-
+        var expected = new ConsoleKeyInfo((char)ConsoleKey.D1, ConsoleKey.D1, false, false, false);
         var mock = new Mock<IConsoleWrapper>();
         mock.Setup(x => x.ReadChar())
             .Returns(expected);

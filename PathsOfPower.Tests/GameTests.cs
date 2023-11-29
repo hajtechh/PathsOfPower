@@ -58,6 +58,25 @@ public class GameTests
         Assert.Equal(expected, actual);
     }
 
+    [Theory]
+    [InlineData(0)]
+    public void ReadFromFileShouldReturnNotReturnNull(int slotNumber)
+    {
+        // Arrange
+        var path = $"../../../../PathsOfPower/SavedGameFiles/slot{slotNumber}.json";
+        var mock = new Mock<IUserInteraction>();
+        var sut = new Game(mock.Object);
+
+
+        // Act
+        var actual = sut.ReadFromFile(path);
+
+        // Assert
+        Assert.NotNull(actual);
+    }
+
+    #region AskDaniel
+    //TODO: Fråga Daniel
     //[Fact]
     //public void SavedGameShouldWriteToTextFile()
     //{
@@ -85,4 +104,5 @@ public class GameTests
     //    // Assert
     //    mockGame.Verify(x => x.WriteToFile(It.IsAny<char>(), It.IsAny<string>()), Times.Once());
     //}
+    #endregion
 }

@@ -3,12 +3,14 @@ using PathsOfPower.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PathsOfPower;
 
@@ -115,16 +117,21 @@ public class Game
         }
     }
 
-    private void LoadGame()
+    public void LoadGame()
     {
         PrintSavedGames();
 
-        var choice = _userInteraction.GetChar().KeyChar;
-        var path = $"{_baseSavePath}{choice}.json";
-        var text = File.ReadAllText(path);
-        var chosenGame = JsonSerializer.Deserialize<SavedGame>(text);
+        var slotNumber = _userInteraction.GetChar().KeyChar;
+        var path = $"{_baseSavePath}{slotNumber}.json";
+        var text = ReadFromFile(path);
+        var chosenGame = DeserializeSavedGame(text);
         Character = chosenGame.Character;
         StartGame(chosenGame.QuestIndex);
+    }
+
+    public string? ReadFromFile(string path)
+    {
+        return File.ReadAllText(path);
     }
 
     private void QuitGame()
@@ -185,6 +192,11 @@ public class Game
             });
     }
 
+    public SavedGame? DeserializeSavedGame(string jsonString)
+    {
+        return JsonSerializer.Deserialize<SavedGame>(jsonString);
+    }
+
     private void PrintMenu()
     {
         _userInteraction.Print($"[1] Start new game \r\n" +
@@ -224,7 +236,6 @@ public class Game
 
     public void Setup()
     {
-        //Quests = GetQuests(1);
         Character = CreateCharacter();
     }
 
