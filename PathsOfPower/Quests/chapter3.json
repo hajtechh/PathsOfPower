@@ -1,0 +1,186 @@
+[
+  {
+    "Index": "3",
+    "Description": "The day pass, and when you finish up your last class of the day, you notice your supply of leech juice is low.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go down to the lake to collect more"
+      },
+      {
+        "Index": 2,
+        "Name": "Sneak into the Potions classroom to steal some"
+      }
+    ]
+  },
+
+  {
+    "Index": "3.1",
+    "Description": "You take a stroll to the nearby lake. As you walk along the shoreline, looking for leeches, you spot an unusual looking stick in the sand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take a closer look at the stick"
+      },
+      {
+        "Index": 2,
+        "Name": "Throw the stick into the lake"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1",
+    "Description": "You bury you hand in the sand and pull out a wand, broken in two pieces, barely holding itself together. Suddenly you feel an electric current going through your hand towards the wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Examine the wand"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1.1",
+    "Description": "You hold the broken wand in front of you, feeling the same current in an irregular pattern. You want to figure out what to make of all this.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go back to your office"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1.1.1",
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+  },
+
+  {
+    "Index": "3.1.2",
+    "Description": "You pull the stick out of the sand, and it looks like a broken wand, split in two, barely holding itself together.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Hold onto the wand"
+      },
+      {
+        "Index": 2,
+        "Name": "Throw it"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.1",
+    "Description": "The mysterious wand sparked your curiosity, and you want to know who it belonged to. Suddenly you feel an electric current going through you hand, towards the wand. You want to figure out what to make of all this.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go back to your office"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.1.1",
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+  },
+
+  {
+    "Index": "3.1.2.2",
+    "Description": "You launch the wand towards the water, and it disappears with a small splash.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go back to your office"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.2.1",
+    "Description": "You hear a sizzling sound behind you, and you turn around to see the water bubbling, where the wand had sunk. An explosion of red and green lightning brings you to the ground, and the wand comes flying, landing in front of your feet.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Pick up the wand"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.2.2.1.1",
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through Hogwarts grounds, back to your office."
+  },
+
+  {
+    "Index": "3.2",
+    "Description": "You need to distract Professor Granger to access his classroom undisturbed. You write the letter and send of an owl towards Mr Grangers office. You wait around and when he leaves the office, you sneak in.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Start rummaging through the office"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1",
+    "Description": "You look in every bookshelf and in every cabinet, but you do not find any leech juice. You forget about the time and suddenly the door opens. Mr Granger stares at you with a surprised look.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Be honest"
+      },
+      {
+        "Index": 2,
+        "Name": "Lie(not written past this)"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1",
+    "Description": "You tell Mr Granger the truth. He looks surprised, but he tells you that he unfortunately does not have any leech juice either.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go back to your office"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1",
+    "Description": "You excuse yourself and walk towards the door. Mr Granger stops you, and asks you to take a look at something he found by the lake.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you are not interested"
+      },
+      {
+        "Index": 2,
+        "Name": "Ask him what it is"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1.1",
+    "Description": "He pulls out a broken wand from his robe. He begs you to at least take it off his hands. He says you are better equipped to find out what it is, than he is, being the Defence aganst the Dark Arts teacher. He holds it out for you, and you can feel an electric current going through your hand, towards the wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the wand"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1.1.1",
+    "Description": "You reluctantly put the wand in your robe and walk through the school corridors, back to your office."
+  },
+  {
+    "Index": "3.2.1.1.1.2",
+    "Description": "He pulls out a broken wand from his robe. He explains he found it minutes ago, but he already feels ill by its precence. He begs you to take it instead, and to find out where it came from. He holds it out to you, and you can feel an electric current going through your hand, towards the wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the wand"
+      }
+    ]
+  },
+  {
+    "Index": "3.2.1.1.1.2.1",
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through the schools corridors, back to your office."
+  }
+]

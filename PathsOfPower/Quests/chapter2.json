@@ -1,0 +1,114 @@
+[
+  {
+    "Index": "2",
+    "Description": "You finish the lesson and the students leave the classroom. All except for one student, that stays in their seat, looking down at the desk.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask the student what's wrong"
+      },
+      {
+        "Index": 2,
+        "Name": "Tell the student to leave the classroom"
+      }
+    ]
+  },
+  {
+    "Index": "2.1",
+    "Description": "You approach the student and ask them what's wrong. They hesitate, then they tell you about their parents, who are on the run from the Deatheaters.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask the student why their parents are running"
+      },
+      {
+        "Index": 2,
+        "Name": "Tell the student to leave, you do not have time for this"
+      }
+    ]
+  },
+  {
+    "Index": "2.1.1",
+    "Description": "The student tells you their parents are powerful aurors who have stopped several of the Deatheaters plans. Now they want revenge. They have not heard from their parents since they left for their hiding spot.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell the student to contact the Ministry of Magic, and seek their help"
+      },
+      {
+        "Index": 2,
+        "Name": "Tell the student their parents can probably defend themselves"
+      },
+      {
+        "Index": 3,
+        "Name": "Ask the student where their parents are hiding" 
+      }
+    ]
+  },
+  {
+    "Index": "2.1.1.1",
+    "Description": "The student thanks you for listening and leaves the classroom"
+  },
+  {
+    "Index": "2.1.1.2",
+    "Description": "The student gets a sad look on their face, and leaves the classroom"
+  },
+  {
+    "Index": "2.1.1.3",
+    "Description": "The student tells you their parents are in an abandoned house in Fort William. You tell the student to stay safe and they leave the classroom."
+  },
+
+  {
+    "Index": "2.1.2",
+    "Description": "The student calls you rude and leaves the classroom. You have a few minutes before you next class.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tidy up the classroom"
+      },
+      {
+        "Index": 2,
+        "Name": "Practice some spells"
+      }
+    ]
+  },
+  {
+    "Index": "2.1.2.1",
+    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory."
+  },
+  {
+    "Index": "2.1.2.2",
+    "Description": "After a few practice-runs, you perfect a spellcast.(+power)" 
+  },
+
+  {
+    "Index": "2.2",
+    "Description": "The student leaves with a sad look on their face. You have the time to brew a potion before your next class begins.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Brew a bottle of Draught of Living Death (sleeping-curse)"
+      },
+      {
+        "Index": 2,
+        "Name": "Brew a bottle of Wiggenweld potion (healing potion)"
+      },
+      {
+        "Index": 3,
+        "Name": "Brew a bottle of Veritaserum (truth-telling serum)"
+      }
+    ]
+  },
+  {
+    "Index": "2.2.1",
+    "Description": "A bottle of Draught of Living Death has been added to your inventory."
+  },
+  {
+    "Index": "2.2.2",
+    "Description": "A bottle of Wiggenweld potion has been added to your inventory."
+  },
+  {
+    "Index": "2.2.3",
+    "Description": "A bottle of Veritaserum has been added to your inventory."
+  }
+]

@@ -25,6 +25,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\PathsOfPower.Cli\PathsOfPower.Cli.csproj" />
+    <ProjectReference Include="..\PathsOfPower\PathsOfPower.csproj" />
   </ItemGroup>
 
 </Project>

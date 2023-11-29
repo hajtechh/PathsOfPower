@@ -1,1 +1,1 @@
-# PathsOfPower
+# HAJtech - PathsOfPower
