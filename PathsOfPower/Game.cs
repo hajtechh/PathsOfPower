@@ -1,31 +1,23 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PathsOfPower;
 
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
+    private readonly Graphics _graphics;
     const string _basePath = "../../../../PathsOfPower/";
     private readonly string _baseQuestPath = _basePath + "Quests/chapter";
     private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
     public Character Character { get; set; }
 
-    public Game(IUserInteraction userInteraction)
+    public Game(IUserInteraction userInteraction, Graphics graphics)
     {
         _userInteraction = userInteraction;
+        _graphics = graphics;
     }
     public void Run()
     {
@@ -208,9 +200,8 @@ public class Game
 
     private void PrintMenu()
     {
-        _userInteraction.Print($"[1] Start new game \r\n" +
-            $"[2] Load game \r\n" +
-            $"[3] Quit game");
+        var menu = _graphics.GetMenu();
+        _userInteraction.Print(menu);
     }
 
     private string CreateQuestIndex(string parentQuestIndex, char choice)
@@ -220,16 +211,8 @@ public class Game
 
     private void PrintQuest(Quest quest)
     {
-        _userInteraction.Print(quest.Description);
-        _userInteraction.Print("---------------------");
-
-        if (quest.Options is null)
-            return;
-
-        foreach (var option in quest.Options)
-        {
-            _userInteraction.Print($"[{option.Index}] - {option.Name}");
-        }
+        var text = _graphics.GetQuestWithOptions(quest);
+        _userInteraction.Print(text);
     }
 
     private Quest? GetQuestFromIndex(string index, List<Quest> quests)
