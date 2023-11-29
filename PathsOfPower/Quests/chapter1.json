@@ -9,7 +9,8 @@
 			},
 			{
 				"Index": 2,
-				"Name": "Unforgivable curses"
+				"Name": "Unforgivable curses",
+				"MoralityScore": -1
 			}
 		]
 	},
@@ -19,11 +20,13 @@
 		"Options": [
 			{
 				"Index": 1,
-				"Name": "Demonstrate on yourself"
+				"Name": "Demonstrate on yourself",
+				"MoralityScore": 1
 			},
 			{
 				"Index": 2,
-				"Name": "Let your students try on themselves"
+				"Name": "Let your students try on themselves",
+				"MoralityScore": -1
 			}
 		]
 	},
@@ -72,11 +75,13 @@
 			},
 			{
 				"Index": 2,
-				"Name": "Crucio"
+				"Name": "Crucio",
+				"MoralityScore": -2
 			},
 			{
 				"Index": 3,
-				"Name": "Avada kedavra"
+				"Name": "Avada kedavra",
+				"MoralityScore": -3
 			}
 		]
 	},
