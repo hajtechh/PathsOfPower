@@ -38,13 +38,14 @@ public class GameTests
     public void SerializeSavedGameShouldSeralizeObjectAndReturnExpected()
     {
         // Arrange
-        var expected = @"{""Character"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
+        var expected = @"{""Character"":{""Name"":""Haj"",""MoralitySpectrum"":0},""QuestIndex"":""1.2""}";
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object)
         {
             Character = new Character()
             {
-                Name = "Haj"
+                Name = "Haj",
+                MoralitySpectrum = 0
             }
         };
 
@@ -109,7 +110,29 @@ public class GameTests
         Assert.Throws<FileNotFoundException>(() => sut.ReadFromFile(path));
     }
 
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(13)]
+    public void ApplyMoralityScoreAppliesExpectedValueToCharactersMoralitySpectrum(int expected)
+    {
+        // Arrange
+        var mock = new Mock<IUserInteraction>();
+        var sut = new Game(mock.Object);
+        var mockCharacter = new Mock<Character>(); 
+        mockCharacter.SetupAllProperties();
+        mockCharacter.Object.MoralitySpectrum = 0;
+        mockCharacter.Object.Name = "Test";
+        sut.Character = mockCharacter.Object;
 
+        // Act
+        sut.ApplyMoralityScore(expected);
+        var actual = mockCharacter.Object.MoralitySpectrum;
+
+        // Assert
+       Assert.Equal(expected, actual);
+    }
 
     #region AskDaniel
     //TODO: Fråga Daniel

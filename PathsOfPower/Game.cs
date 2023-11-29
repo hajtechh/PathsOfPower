@@ -123,7 +123,7 @@ public class Game
         }
     }
 
-    private void ApplyMoralityScore(int? moralityScore)
+    public void ApplyMoralityScore(int? moralityScore)
     {
         Character.MoralitySpectrum += moralityScore ?? 0;
     }
