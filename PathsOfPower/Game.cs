@@ -123,7 +123,16 @@ public class Game
 
         var slotNumber = _userInteraction.GetChar().KeyChar;
         var path = $"{_baseSavePath}{slotNumber}.json";
-        var text = ReadFromFile(path);
+        string? text;
+        try
+        {
+            text = ReadFromFile(path);
+        }
+        catch (FileNotFoundException ex)
+        {
+            _userInteraction.Print($"File doesn't exist: {ex.Message}");
+            return;
+        }
         var chosenGame = DeserializeSavedGame(text);
         Character = chosenGame.Character;
         StartGame(chosenGame.QuestIndex);

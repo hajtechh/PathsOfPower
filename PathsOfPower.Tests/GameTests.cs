@@ -1,7 +1,4 @@
-﻿using PathsOfPower.Models;
-using System.Text.Json;
-
-namespace PathsOfPower.Tests;
+﻿namespace PathsOfPower.Tests;
 
 public class GameTests
 {
@@ -58,15 +55,35 @@ public class GameTests
         Assert.Equal(expected, actual);
     }
 
+    [Fact]
+    public void DeserializeSavedGameReturnsASavedGame()
+    {
+        // Arrange
+        var mock = new Mock<IUserInteraction>();
+        var sut = new Game(mock.Object);
+        var jsonString = @"{""Character"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
+
+        // Act
+        var actual = sut.DeserializeSavedGame(jsonString);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Character);
+        Assert.NotNull(actual.Character.Name);
+        Assert.NotNull(actual.QuestIndex);
+    }
+
     [Theory]
-    [InlineData(0)]
-    public void ReadFromFileShouldReturnNotReturnNull(int slotNumber)
+    // Check out valid slotnumbers in directory SavedGameFiles
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    public void ReadFromFileShouldReturnNotNull(int slotNumber)
     {
         // Arrange
         var path = $"../../../../PathsOfPower/SavedGameFiles/slot{slotNumber}.json";
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object);
-
 
         // Act
         var actual = sut.ReadFromFile(path);
@@ -74,6 +91,25 @@ public class GameTests
         // Assert
         Assert.NotNull(actual);
     }
+
+    [Theory]
+    // Check for out of bounds slotnumbers in directory SavedGameFiles
+    [InlineData(-1)]
+    [InlineData(0)]
+    [InlineData(4)]
+    public void ReadFromFileShouldThrowFileNotFoundExceptionWhenSlotNumberIsOutOfBounds(int slotNumber)
+    {
+        // Arrange
+        var path = $"../../../../PathsOfPower/SavedGameFiles/slot{slotNumber}.json";
+        var mock = new Mock<IUserInteraction>();
+        var sut = new Game(mock.Object);
+
+        // Act
+        // Assert
+        Assert.Throws<FileNotFoundException>(() => sut.ReadFromFile(path));
+    }
+
+
 
     #region AskDaniel
     //TODO: Fråga Daniel
