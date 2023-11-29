@@ -59,7 +59,7 @@ public class Game
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
-            {ConsoleKey.S, () => SaveGame(quest.Index) }
+            {ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
         };
         while (isRunning)
         {
@@ -96,7 +96,7 @@ public class Game
             {
                 chapter++;
                 Quests = GetQuests(chapter);
-                quest = GetQuestFromIndex(questIndex, Quests);
+                quest = GetQuestFromIndex(chapter.ToString(), Quests);
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {

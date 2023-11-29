@@ -30,7 +30,17 @@
   },
   {
     "Index": "3.1.1",
-    "Description": "You bury you hand in the sand and pull out a wand, broken in two pieces, barely holding the two parts together. Suddenly you feel an electric current going through your hand towards the wand.",
+    "Description": "You bury you hand in the sand and pull out a wand, broken in two pieces, barely holding itself together. Suddenly you feel an electric current going through your hand towards the wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Examine the wand"
+      }
+    ]
+  },
+  {
+    "Index": "3.1.1.1",
+    "Description": "You hold the broken wand in front of you, feeling the same current in an irregular pattern. You want to figure out what to make of all this.",
     "Options": [
       {
         "Index": 1,
@@ -38,11 +48,14 @@
       }
     ]
   },
-
+  {
+    "Index": "3.1.1.1.1",
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+  },
 
   {
     "Index": "3.1.2",
-    "Description": "You pull the stick out of the sand, and it looks like a broken wand, split in two, barely holding the two parts together.",
+    "Description": "You pull the stick out of the sand, and it looks like a broken wand, split in two, barely holding itself together.",
     "Options": [
       {
         "Index": 1,
@@ -56,13 +69,17 @@
   },
   {
     "Index": "3.1.2.1",
-    "Description": "The mysterious wand sparked your curiosity, and you want to know who it belonged to. Suddenly you feel an electtric current going through you hand, towards the wand.",
+    "Description": "The mysterious wand sparked your curiosity, and you want to know who it belonged to. Suddenly you feel an electric current going through you hand, towards the wand. You want to figure out what to make of all this.",
     "Options": [
       {
         "Index": 1,
         "Name": "Go back to your office"
       }
     ]
+  },
+  {
+    "Index": "3.1.2.1.1",
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
   },
 
   {
@@ -84,6 +101,10 @@
         "Name": "Pick up the wand"
       }
     ]
+  },
+  {
+    "Index": "3.1.2.2.1.1",
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through Hogwarts grounds, back to your office."
   },
 
   {
@@ -136,13 +157,17 @@
   },
   {
     "Index": "3.2.1.1.1.1",
-    "Description": "He pulls out a broken wand from his robe. He begs you to at least take it off his hands. He says you are better equipped to find out what it is, than he is. He holds it out to you, and you can feel an electric current going through your hand, towards the wand.",
+    "Description": "He pulls out a broken wand from his robe. He begs you to at least take it off his hands. He says you are better equipped to find out what it is, than he is, being the Defence aganst the Dark Arts teacher. He holds it out for you, and you can feel an electric current going through your hand, towards the wand.",
     "Options": [
       {
         "Index": 1,
         "Name": "Take the wand"
       }
     ]
+  },
+  {
+    "Index": "3.2.1.1.1.1.1",
+    "Description": "You reluctantly put the wand in your robe and walk through the school corridors, back to your office."
   },
   {
     "Index": "3.2.1.1.1.2",
@@ -153,5 +178,9 @@
         "Name": "Take the wand"
       }
     ]
+  },
+  {
+    "Index": "3.2.1.1.1.2.1",
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through the schools corridors, back to your office."
   }
 ]
