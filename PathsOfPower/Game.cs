@@ -2,21 +2,24 @@
 using PathsOfPower.Models;
 using PathsOfPower.Interfaces;
 using System.Text.Json;
+using PathsOfPower.Helpers;
 
 namespace PathsOfPower;
 
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
+    private readonly IFileHelper _fileHelper;
     const string _basePath = "../../../../PathsOfPower/";
     private readonly string _baseQuestPath = _basePath + "Quests/chapter";
     private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
     public Character Character { get; set; }
 
-    public Game(IUserInteraction userInteraction)
+    public Game(IUserInteraction userInteraction, IFileHelper fileHelper)
     {
         _userInteraction = userInteraction;
+        _fileHelper = fileHelper;
     }
     public void Run()
     {
@@ -76,7 +79,7 @@ public class Game
                 {
                     var test2 = int.Parse(choice.KeyChar.ToString());
                     var option = quest.Options.FirstOrDefault(x => x.Index == test2);
-                    if(option != null && option.MoralityScore != 0)
+                    if (option != null && option.MoralityScore != 0)
                     {
                         ApplyMoralityScore(option.MoralityScore);
                     }
@@ -95,7 +98,7 @@ public class Game
                     }
                 }
             }
-            else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
+            else if (_fileHelper.IsNextChapterExisting(chapter.ToString()))
             {
                 chapter++;
                 Quests = GetQuests(chapter);
@@ -132,11 +135,10 @@ public class Game
         PrintSavedGames();
 
         var slotNumber = _userInteraction.GetChar().KeyChar;
-        var path = $"{_baseSavePath}{slotNumber}.json";
         string? text;
         try
         {
-            text = ReadFromFile(path);
+            text = _fileHelper.GetSavedGameTextFromFile(slotNumber);
         }
         catch (FileNotFoundException ex)
         {
@@ -146,11 +148,6 @@ public class Game
         var chosenGame = DeserializeSavedGame(text);
         Character = chosenGame.Character;
         StartGame(chosenGame.QuestIndex);
-    }
-
-    public string? ReadFromFile(string path)
-    {
-        return File.ReadAllText(path);
     }
 
     private void QuitGame()

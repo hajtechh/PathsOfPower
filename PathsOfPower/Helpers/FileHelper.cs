@@ -2,23 +2,24 @@
 
 public class FileHelper : IFileHelper
 {
-    public string[]? GetFiles(string path)
-    {
-        throw new NotImplementedException();
-    }
+    const string _basePath = "../../../../PathsOfPower/";
+    private readonly string _baseQuestPath = _basePath + "Quests/chapter";
+    private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
 
-    public bool IsExisting(string path)
-    {
-        throw new NotImplementedException();
-    }
+    public bool IsNextChapterExisting(string currentChapter) =>
+        File.Exists($"{_baseQuestPath}{currentChapter + 1}.json");
 
-    public string? ReadAllText(string path)
+    public string[]? GetSavedGameFilesFromDirectory()
     {
-        throw new NotImplementedException();
+        var path = $"{_basePath}SavedGameFiles/";
+        return Directory.GetFiles(path, "*.json");
     }
 
     public bool WriteAllText(string path)
     {
         throw new NotImplementedException();
     }
+
+    public string? GetSavedGameTextFromFile(int slotNumber) =>
+        File.ReadAllText($"{_baseSavePath}{slotNumber}.json");
 }

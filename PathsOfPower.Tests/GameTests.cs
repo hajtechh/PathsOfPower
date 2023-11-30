@@ -1,4 +1,6 @@
-﻿namespace PathsOfPower.Tests;
+﻿using PathsOfPower.Helpers;
+
+namespace PathsOfPower.Tests;
 
 public class GameTests
 {
@@ -7,7 +9,8 @@ public class GameTests
     {
         // Arrange
         var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object);
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mock.Object, mockFileHelper.Object);
 
         // Act
         var actual = sut.GetQuests(1);
@@ -21,10 +24,11 @@ public class GameTests
     {
         // Arrange
         var mock = new Mock<IUserInteraction>();
+        var mockFileHelper = new Mock<IFileHelper>();
         mock.SetupSequence(x => x.GetInput(It.IsAny<string>()))
             .Returns("")
             .Returns("Ron");
-        var sut = new Game(mock.Object);
+        var sut = new Game(mock.Object, mockFileHelper.Object);
 
         // Act
         var actual = sut.CreateCharacter();
@@ -38,9 +42,10 @@ public class GameTests
     public void SerializeSavedGameShouldSeralizeObjectAndReturnExpected()
     {
         // Arrange
-        var expected = @"{""Character"":{""Name"":""Haj"",""MoralitySpectrum"":0},""QuestIndex"":""1.2""}";
+        var expected = @"{""Character"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
         var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object)
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mock.Object, mockFileHelper.Object)
         {
             Character = new Character()
             {
@@ -61,7 +66,8 @@ public class GameTests
     {
         // Arrange
         var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object);
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mock.Object, mockFileHelper.Object);
         var jsonString = @"{""Character"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
 
         // Act
@@ -75,42 +81,6 @@ public class GameTests
     }
 
     [Theory]
-    // Check out valid slotnumbers in directory SavedGameFiles
-    [InlineData(1)]
-    [InlineData(2)]
-    [InlineData(3)]
-    public void ReadFromFileShouldReturnNotNull(int slotNumber)
-    {
-        // Arrange
-        var path = $"../../../../PathsOfPower/SavedGameFiles/slot{slotNumber}.json";
-        var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object);
-
-        // Act
-        var actual = sut.ReadFromFile(path);
-
-        // Assert
-        Assert.NotNull(actual);
-    }
-
-    [Theory]
-    // Check for out of bounds slotnumbers in directory SavedGameFiles
-    [InlineData(-1)]
-    [InlineData(0)]
-    [InlineData(4)]
-    public void ReadFromFileShouldThrowFileNotFoundExceptionWhenSlotNumberIsOutOfBounds(int slotNumber)
-    {
-        // Arrange
-        var path = $"../../../../PathsOfPower/SavedGameFiles/slot{slotNumber}.json";
-        var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object);
-
-        // Act
-        // Assert
-        Assert.Throws<FileNotFoundException>(() => sut.ReadFromFile(path));
-    }
-
-    [Theory]
     [InlineData(-1)]
     [InlineData(0)]
     [InlineData(1)]
@@ -119,7 +89,8 @@ public class GameTests
     {
         // Arrange
         var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object);
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mock.Object, mockFileHelper.Object);
         var mockCharacter = new Mock<Character>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.MoralitySpectrum = 0;
@@ -142,7 +113,8 @@ public class GameTests
         mockCharacter.Object.InventoryItems = new List<InventoryItem>();
 
         var mock = new Mock<IUserInteraction>();
-        var sut = new Game(mock.Object)
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mock.Object, mockFileHelper.Object)
         {
             Character = mockCharacter.Object
         };
