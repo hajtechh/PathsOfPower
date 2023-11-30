@@ -82,6 +82,10 @@ public class Game
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
+                    if (quest.Item is not null)
+                    {
+                        AddInventoryItem(quest.Item);
+                    }
                 }
                 else
                 {
@@ -96,6 +100,10 @@ public class Game
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                if (quest.Item is not null)
+                {
+                    AddInventoryItem(quest.Item);
+                }
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {
@@ -150,10 +158,11 @@ public class Game
         Environment.Exit(0);
     }
 
-    public void AddInventoryItem(IInventoryItem item)
+    public void AddInventoryItem(InventoryItem item)
     {
         Character.InventoryItems.Add(item);
     }
+
     public void SaveGame(string questIndex)
     {
         PrintSavedGames();
@@ -268,8 +277,7 @@ public class Game
         {
             Name = name,
             MoralitySpectrum = 0,
-            InventoryItems = new List<IInventoryItem>()
-            
+            InventoryItems = new List<InventoryItem>()
         };
     }
 }

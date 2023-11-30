@@ -51,7 +51,10 @@
   },
   {
     "Index": "3.1.1.1.1",
-    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
 
   {
@@ -81,7 +84,10 @@
   },
   {
     "Index": "3.1.2.1.1",
-    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
 
   {
@@ -106,7 +112,10 @@
   },
   {
     "Index": "3.1.2.2.1.1",
-    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through Hogwarts grounds, back to your office."
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through Hogwarts grounds, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
 
   {
@@ -172,7 +181,10 @@
   },
   {
     "Index": "3.2.1.1.1.1.1",
-    "Description": "You reluctantly put the wand in your robe and walk through the school corridors, back to your office."
+    "Description": "You reluctantly put the wand in your robe and walk through the school corridors, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
   {
     "Index": "3.2.1.1.1.2",
@@ -186,6 +198,9 @@
   },
   {
     "Index": "3.2.1.1.1.2.1",
-    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through the schools corridors, back to your office."
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through the schools corridors, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   }
 ]
