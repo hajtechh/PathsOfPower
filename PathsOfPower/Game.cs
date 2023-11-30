@@ -49,7 +49,7 @@ public class Game
         var quest = GetQuestFromIndex(questIndex, Quests);
 
         var isRunning = true;
-        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        var keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
             {ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
@@ -58,7 +58,7 @@ public class Game
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+                var key = Console.ReadKey(intercept: true);
 
                 if (keyActions.TryGetValue(key.Key, out Action action))
                 {
