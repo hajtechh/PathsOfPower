@@ -1,16 +1,7 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
+using PathsOfPower.Interfaces;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PathsOfPower;
 
@@ -91,6 +82,10 @@ public class Game
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
+                    if (quest.Item is not null)
+                    {
+                        AddInventoryItem(quest.Item);
+                    }
                 }
                 else
                 {
@@ -105,6 +100,10 @@ public class Game
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                if (quest.Item is not null)
+                {
+                    AddInventoryItem(quest.Item);
+                }
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {
@@ -157,6 +156,11 @@ public class Game
     private void QuitGame()
     {
         Environment.Exit(0);
+    }
+
+    public void AddInventoryItem(InventoryItem item)
+    {
+        Character.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -272,7 +276,8 @@ public class Game
         return new Character()
         {
             Name = name,
-            MoralitySpectrum = 0
+            MoralitySpectrum = 0,
+            InventoryItems = new List<InventoryItem>()
         };
     }
 }

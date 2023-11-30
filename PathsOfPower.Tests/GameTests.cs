@@ -120,18 +120,44 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object);
-        var mockCharacter = new Mock<Character>(); 
+        var mockCharacter = new Mock<Character>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.MoralitySpectrum = 0;
-        mockCharacter.Object.Name = "Test";
         sut.Character = mockCharacter.Object;
 
         // Act
         sut.ApplyMoralityScore(expected);
-        var actual = mockCharacter.Object.MoralitySpectrum;
+        var actual = sut.Character.MoralitySpectrum;
 
         // Assert
        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void AddInventoryItemShouldAddExpectedItemToInventory()
+    {
+        // Arrange
+        var mockCharacter = new Mock<Character>();
+        mockCharacter.SetupAllProperties();
+        mockCharacter.Object.InventoryItems = new List<InventoryItem>();
+
+        var mock = new Mock<IUserInteraction>();
+        var sut = new Game(mock.Object)
+        {
+            Character = mockCharacter.Object
+        };
+
+        var expected = new InventoryItem()
+        {
+            Name = "The Elder Wand"
+        };
+
+        // Act
+        sut.AddInventoryItem(expected);
+        var actual = sut.Character.InventoryItems.FirstOrDefault();
+
+        // Assert
+        Assert.Equal(expected, actual);
     }
 
     #region AskDaniel
