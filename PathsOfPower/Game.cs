@@ -12,7 +12,7 @@ public class Game
     private readonly string _baseQuestPath = _basePath + "Quests/chapter";
     private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
-    public Character Character { get; set; }
+    public Player Character { get; set; }
 
     public Game(IUserInteraction userInteraction)
     {
@@ -263,7 +263,7 @@ public class Game
         Character = CreateCharacter();
     }
 
-    public Character CreateCharacter()
+    public Player CreateCharacter()
     {
         _userInteraction.ClearConsole();
         var name = _userInteraction.GetInput("Choose the name of your character.");
@@ -273,7 +273,7 @@ public class Game
             name = _userInteraction.GetInput("Your character have to have a name.");
         }
 
-        return new Character()
+        return new Player()
         {
             Name = name,
             MoralitySpectrum = 0,

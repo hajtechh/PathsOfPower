@@ -42,7 +42,7 @@ public class GameTests
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object)
         {
-            Character = new Character()
+            Character = new Player()
             {
                 Name = "Haj",
                 MoralitySpectrum = 0
@@ -120,7 +120,7 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object);
-        var mockCharacter = new Mock<Character>();
+        var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.MoralitySpectrum = 0;
         sut.Character = mockCharacter.Object;
@@ -137,7 +137,7 @@ public class GameTests
     public void AddInventoryItemShouldAddExpectedItemToInventory()
     {
         // Arrange
-        var mockCharacter = new Mock<Character>();
+        var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.InventoryItems = new List<InventoryItem>();
 
