@@ -12,7 +12,7 @@ public class Game
     private readonly string _baseQuestPath = _basePath + "Quests/chapter";
     private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
-    public Player Character { get; set; }
+    public Player Player { get; set; }
 
     public Game(IUserInteraction userInteraction)
     {
@@ -71,12 +71,19 @@ public class Game
 
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
+                var enemyInQuest = CheckForEnemyInQuest(quest);
+                if (enemyInQuest)
+                {
+                    _userInteraction.GetChar();
+                    FightEnemy(quest.Enemy, quest.Index);
+                }
+
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
                 {
                     var test2 = int.Parse(choice.KeyChar.ToString());
                     var option = quest.Options.FirstOrDefault(x => x.Index == test2);
-                    if(option != null && option.MoralityScore != 0)
+                    if (option != null && option.MoralityScore != 0)
                     {
                         ApplyMoralityScore(option.MoralityScore);
                     }
@@ -97,6 +104,13 @@ public class Game
             }
             else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
             {
+                var enemyInQuest = CheckForEnemyInQuest(quest);
+                if (enemyInQuest)
+                {
+                    _userInteraction.GetChar();
+                    FightEnemy(quest.Enemy, quest.Index);
+                }
+
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
@@ -122,10 +136,6 @@ public class Game
         }
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
-    {
-        Character.MoralitySpectrum += moralityScore ?? 0;
-    }
 
     public void LoadGame()
     {
@@ -144,8 +154,44 @@ public class Game
             return;
         }
         var chosenGame = DeserializeSavedGame(text);
-        Character = chosenGame.Character;
+        Player = chosenGame.Player;
         StartGame(chosenGame.QuestIndex);
+    }
+
+    public bool CheckForEnemyInQuest(Quest quest)
+    {
+        if (quest.Enemy != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void FightEnemy(Enemy enemy, string questIndex)
+    {
+        bool isFighting = true;
+
+        while(isFighting)
+        {
+            enemy.CurrentHealthPoints -= Player.Power;
+            Player.CurrentHealthPoints -= enemy.Power;
+
+            if(Player.CurrentHealthPoints <= 0)
+            {
+                Player.CurrentHealthPoints = Player.MaxHealthPoints;
+                SaveGame(questIndex);
+                QuitGame();
+            }
+            if(enemy.CurrentHealthPoints <= 0) 
+            {
+                isFighting = false;
+            }
+        }
+    }
+
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        Player.MoralitySpectrum += moralityScore ?? 0;
     }
 
     public string? ReadFromFile(string path)
@@ -160,7 +206,7 @@ public class Game
 
     public void AddInventoryItem(InventoryItem item)
     {
-        Character.InventoryItems.Add(item);
+        Player.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -193,8 +239,8 @@ public class Game
         for (int i = 0; i < savedGames.Count; i++)
         {
             var text = $"[{i + 1}] ";
-            text += savedGames[i].Character != null ?
-                savedGames[i].Character.Name :
+            text += savedGames[i].Player != null ?
+                savedGames[i].Player.Name :
                 "Empty slot";
             _userInteraction.Print($"{text} \r\n -------");
         }
@@ -211,7 +257,7 @@ public class Game
         return JsonSerializer.Serialize(
             new SavedGame
             {
-                Character = Character,
+                Player = Player,
                 QuestIndex = questIndex
             });
     }
@@ -260,7 +306,7 @@ public class Game
 
     public void Setup()
     {
-        Character = CreateCharacter();
+        Player = CreateCharacter();
     }
 
     public Player CreateCharacter()

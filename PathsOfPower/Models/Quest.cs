@@ -7,4 +7,5 @@ public class Quest
     public string Description { get; set; }
     public IEnumerable<Option>? Options { get; set; }
     public InventoryItem? Item { get; set; }
+    public Enemy? Enemy { get; set; }
 }

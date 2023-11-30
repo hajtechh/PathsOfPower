@@ -58,7 +58,13 @@
 	},
 	{
 		"Index": "1.1.1.3",
-		"Description": "The boggart take the shape of a clown."
+		"Description": "The boggart take the shape of a clown.",
+		"Enemy": {
+			"Name": "Clown-looking Boggart",
+			"MaxHealthPoints": 10,
+			"CurrentHealthPoints": 10,
+			"Power": 1
+		}
 	},
 	{
 		"Index": "1.1.2",
