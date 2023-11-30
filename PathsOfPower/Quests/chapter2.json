@@ -5,11 +5,13 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Ask the student what's wrong"
+        "Name": "Ask the student what's wrong",
+        "MoralityScore": 2
       },
       {
         "Index": 2,
-        "Name": "Tell the student to leave the classroom"
+        "Name": "Tell the student to leave the classroom",
+        "MoralityScore": -2
       }
     ]
   },
@@ -23,7 +25,8 @@
       },
       {
         "Index": 2,
-        "Name": "Tell the student to leave, you do not have time for this"
+        "Name": "Tell the student to leave, you do not have time for this",
+        "MoralityScore": -2
       }
     ]
   },
@@ -33,7 +36,8 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell the student to contact the Ministry of Magic, and seek their help"
+        "Name": "Tell the student to contact the Ministry of Magic, and seek their help",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
@@ -41,7 +45,7 @@
       },
       {
         "Index": 3,
-        "Name": "Ask the student where their parents are hiding" 
+        "Name": "Ask the student where their parents are hiding"
       }
     ]
   },
@@ -87,7 +91,8 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Brew a bottle of Draught of Living Death (sleeping-curse)"
+        "Name": "Brew a bottle of Draught of Living Death (sleeping-curse)",
+        "MoralityScore": -3
       },
       {
         "Index": 2,

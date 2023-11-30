@@ -83,6 +83,12 @@ public class Game
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
                 {
+                    var test2 = int.Parse(choice.KeyChar.ToString());
+                    var option = quest.Options.FirstOrDefault(x => x.Index == test2);
+                    if(option != null && option.MoralityScore != 0)
+                    {
+                        ApplyMoralityScore(option.MoralityScore);
+                    }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
                 }
@@ -115,6 +121,11 @@ public class Game
                 _userInteraction.Print("The end");
             }
         }
+    }
+
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        Character.MoralitySpectrum += moralityScore ?? 0;
     }
 
     public void LoadGame()
@@ -260,7 +271,8 @@ public class Game
 
         return new Character()
         {
-            Name = name
+            Name = name,
+            MoralitySpectrum = 0
         };
     }
 }
