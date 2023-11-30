@@ -17,8 +17,19 @@ public class Graphics
         $"[2] Load game{NewLine}" +
         $"[3] Quit game";
 
+    private readonly string _gameMenu = $"[1] Continue game{NewLine}" +
+        $"[2] Save game{NewLine}" +
+        $"[3] Main Menu{NewLine}" +
+        $"[4] Quit game";
+
+    private readonly string _gameMenuButton = $"{NewLine}[M] Game Menu{NewLine}";
+
 
     public string GetMenu() => _menu;
+
+    public string GetGameMenuString() => _gameMenu;
+
+    public string GetGameMenuButton() => _gameMenuButton;
     
     public string GetQuestWithOptions(Quest quest)
     {
@@ -45,6 +56,22 @@ public class Graphics
             text += $"{BorderCharacter}{quest.Description.PadLeft(PadLeft + quest.Description.Length / 2).PadRight(PadRight)}{BorderCharacter}{NewLine}";
         }
         text += $"{_rowDeliminator}";
+        return text;
+    }
+
+    public string GetSavedGamesString(List<SavedGame> savedGames)
+    {
+        var text = ($"Choose slot{NewLine}");
+        for (int i = 0; i < savedGames.Count; i++)
+        {
+            text += $"[{i + 1}] ";
+            text += savedGames[i].Character != null ?
+                savedGames[i].Character.Name :
+                "Empty slot";
+            text += NewLine;
+            text += "---------";
+            text += NewLine;
+        }
         return text;
     }
 }

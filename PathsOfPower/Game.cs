@@ -21,6 +21,7 @@ public class Game
     }
     public void Run()
     {
+        _userInteraction.ClearConsole();
         PrintMenu();
 
         var menuChoice = _userInteraction.GetChar().KeyChar;
@@ -52,8 +53,7 @@ public class Game
         var isRunning = true;
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
         {
-            { ConsoleKey.Q, QuitGame },
-            {ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
+            { ConsoleKey.M, () => GameMenu(quest.Index) },
         };
         while (isRunning)
         {
@@ -67,6 +67,9 @@ public class Game
                 }
             }
             _userInteraction.ClearConsole();
+
+            var menuButton = _graphics.GetGameMenuButton();
+            _userInteraction.Print(menuButton);
 
             PrintQuest(quest);
 
@@ -109,6 +112,32 @@ public class Game
         }
     }
 
+    public void GameMenu(string questIndex)
+    {
+        _userInteraction.ClearConsole();
+        var text = _graphics.GetGameMenuString();
+        _userInteraction.Print(text);
+
+        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        {
+          { ConsoleKey.D1, () => StartGame(questIndex) },
+          { ConsoleKey.D2, () => SaveGame(questIndex) },
+          { ConsoleKey.D3, Run },
+          { ConsoleKey.D4, QuitGame },
+        };
+
+        var choice = _userInteraction.GetChar();
+
+        if (keyActions.TryGetValue(choice.Key, out Action action))
+        {
+            action.Invoke();
+        }
+        else
+        {
+            GameMenu(questIndex);
+        }
+    }
+
     public void LoadGame()
     {
         PrintSavedGames();
@@ -148,6 +177,8 @@ public class Game
         var jsonString = SerializeSavedGame(questIndex);
 
         WriteToFile(choice, jsonString);
+
+        StartGame(questIndex); // fortsätt spelet
     }
 
     public void PrintSavedGames()
@@ -166,15 +197,8 @@ public class Game
             savedGames.Add(savedGame ?? new SavedGame());
         }
 
-        _userInteraction.Print("Choose slot\r\n");
-        for (int i = 0; i < savedGames.Count; i++)
-        {
-            var text = $"[{i + 1}] ";
-            text += savedGames[i].Character != null ?
-                savedGames[i].Character.Name :
-                "Empty slot";
-            _userInteraction.Print($"{text} \r\n -------");
-        }
+        var text = _graphics.GetSavedGamesString(savedGames);
+        _userInteraction.Print(text);
     }
 
     public void WriteToFile(char choice, string jsonString)
