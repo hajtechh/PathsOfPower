@@ -1,16 +1,7 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
+using PathsOfPower.Interfaces;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PathsOfPower;
 
@@ -159,6 +150,10 @@ public class Game
         Environment.Exit(0);
     }
 
+    public void AddInventoryItem(IInventoryItem item)
+    {
+        Character.InventoryItems.Add(item);
+    }
     public void SaveGame(string questIndex)
     {
         PrintSavedGames();
@@ -272,7 +267,9 @@ public class Game
         return new Character()
         {
             Name = name,
-            MoralitySpectrum = 0
+            MoralitySpectrum = 0,
+            InventoryItems = new List<IInventoryItem>()
+            
         };
     }
 }

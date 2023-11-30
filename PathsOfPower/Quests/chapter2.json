@@ -78,7 +78,8 @@
   },
   {
     "Index": "2.1.2.1",
-    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory."
+    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory.",
+    "Item": "Wigenweld potion"
   },
   {
     "Index": "2.1.2.2",
@@ -106,14 +107,17 @@
   },
   {
     "Index": "2.2.1",
-    "Description": "A bottle of Draught of Living Death has been added to your inventory."
+    "Description": "A bottle of Draught of Living Death has been added to your inventory.",
+    "Item": "Draught of Living Death"
   },
   {
     "Index": "2.2.2",
-    "Description": "A bottle of Wiggenweld potion has been added to your inventory."
+    "Description": "A bottle of Wiggenweld potion has been added to your inventory.",
+    "Item":  "Wiggenweld potion"
   },
   {
     "Index": "2.2.3",
-    "Description": "A bottle of Veritaserum has been added to your inventory."
+    "Description": "A bottle of Veritaserum has been added to your inventory.",
+    "Item":  "Veritaserum"
   }
 ]
