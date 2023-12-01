@@ -120,7 +120,7 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if(quest.PowerUpScore != null)
+                if (quest.PowerUpScore != null)
                 {
                     ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
                 }
@@ -229,11 +229,6 @@ public class Game
         target.CurrentHealthPoints -= attacker.Power;
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
-    {
-        Player.MoralitySpectrum += moralityScore ?? 0;
-    }
-
     public string? ReadFromFile(string path)
     {
         return File.ReadAllText(path);
@@ -258,7 +253,14 @@ public class Game
 
         WriteToFile(choice, jsonString);
 
-        StartGame(questIndex); // fortsätt spelet
+        var savedGame = DeserializeSavedGame(jsonString);
+        if (savedGame != null)
+        {
+            var text = _graphics.GetConfirmationForSavedGame(savedGame);
+            _userInteraction.Print(text);
+        }
+        _userInteraction.GetChar();
+        GameMenu(questIndex);
     }
 
     public void PrintSavedGames()

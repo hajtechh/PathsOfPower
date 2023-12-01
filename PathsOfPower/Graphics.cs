@@ -65,14 +65,20 @@ public class Graphics
         for (int i = 0; i < savedGames.Count; i++)
         {
             text += $"[{i + 1}] ";
-            text += savedGames[i].Character != null ?
-                savedGames[i].Character.Name :
+            text += savedGames[i].Player != null ?
+                savedGames[i].Player.Name :
                 "Empty slot";
             text += NewLine;
             text += "---------";
             text += NewLine;
         }
         return text;
+    }
+
+    public string GetConfirmationForSavedGame(SavedGame savedGame)
+    {
+        return $"Successfully saved game for {savedGame.Player.Name}.{NewLine}" +
+            $"Press any button to continue.";
     }
 
     public string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
