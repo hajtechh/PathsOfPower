@@ -1,4 +1,6 @@
-﻿namespace PathsOfPower.Tests;
+﻿using Moq;
+
+namespace PathsOfPower.Tests;
 
 public class GameTests
 {
@@ -158,6 +160,68 @@ public class GameTests
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void CheckForEnemyInQuestShouldReturnTrueWhenQuestHasEnemy()
+    {
+        //Arrange
+        var mockQuest = new Mock<Quest>();
+        mockQuest.SetupAllProperties();
+        mockQuest.Object.Enemy = new Enemy();
+
+        var mockUserInteraction = new Mock<IUserInteraction>();
+        var sut = new Game(mockUserInteraction.Object);
+
+        //Act
+        var actual = sut.CheckForEnemyInQuest(mockQuest.Object);
+
+        //Assert
+        Assert.True(actual);
+    }
+
+    [Fact]
+    public void CheckForEnemyInQuestShouldReturnFalseWhenQuestDoesNotHaveEnemy()
+    {
+        //Arrange
+        var mockQuest = new Mock<Quest>();
+
+        var mockUserInteraction = new Mock<IUserInteraction>();
+        var sut = new Game(mockUserInteraction.Object);
+
+        //Act
+        var actual = sut.CheckForEnemyInQuest(mockQuest.Object);
+
+        //Assert
+        Assert.False(actual);
+    }
+
+    [Fact]
+    public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
+    {
+        //Arrange
+        var mockPlayer = new Mock<Player>();
+        mockPlayer.SetupAllProperties();
+        mockPlayer.Object.Power = 10;
+        mockPlayer.Object.CurrentHealthPoints = 10;
+
+        var mockQuest = new Mock<Quest>();
+        mockQuest.SetupAllProperties();
+        mockQuest.Object.Enemy = new Enemy()
+        {
+            CurrentHealthPoints = 10,
+            Power = 1
+        };
+
+        var mockUserInteraction = new Mock<IUserInteraction>();
+        var sut = new Game(mockUserInteraction.Object);
+        sut.Player = mockPlayer.Object;
+
+        //Act 
+        var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
+
+        //Assert
+        Assert.True(actual);
     }
 
     #region AskDaniel

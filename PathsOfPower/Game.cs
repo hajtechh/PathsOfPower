@@ -167,26 +167,26 @@ public class Game
         return false;
     }
 
-    public void FightEnemy(Enemy enemy, string questIndex)
+    public bool FightEnemy(Enemy enemy, string questIndex)
     {
-        bool isFighting = true;
-
-        while(isFighting)
+        while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
         {
-            enemy.CurrentHealthPoints -= Player.Power;
-            Player.CurrentHealthPoints -= enemy.Power;
-
-            if(Player.CurrentHealthPoints <= 0)
-            {
-                Player.CurrentHealthPoints = Player.MaxHealthPoints;
-                SaveGame(questIndex);
-                QuitGame();
-            }
-            if(enemy.CurrentHealthPoints <= 0) 
-            {
-                isFighting = false;
-            }
+            PerformAttack(Player, enemy);
+            PerformAttack(enemy, Player);
         }
+
+        if (Player.CurrentHealthPoints <= 0)
+        {
+            Player.CurrentHealthPoints = Player.MaxHealthPoints;
+            SaveGame(questIndex);
+            QuitGame();
+        }
+        return true;
+    }
+
+    private void PerformAttack(ICharacter attacker, ICharacter target)
+    {
+        target.CurrentHealthPoints -= attacker.Power;
     }
 
     public void ApplyMoralityScore(int? moralityScore)
