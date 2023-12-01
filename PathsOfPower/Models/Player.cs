@@ -2,7 +2,7 @@
 
 namespace PathsOfPower.Models;
 
-public class Character
+public class Player
 {
     public string Name { get; set; }
     public int MoralitySpectrum { get; set; }

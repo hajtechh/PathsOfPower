@@ -2,6 +2,6 @@
 
 public class SavedGame
 {
-    public Character Character { get; set; }
+    public Player Character { get; set; }
     public string QuestIndex { get; set; }
 }

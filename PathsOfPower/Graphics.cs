@@ -30,7 +30,7 @@ public class Graphics
     public string GetGameMenuString() => _gameMenu;
 
     public string GetGameMenuButton() => _gameMenuButton;
-    
+
     public string GetQuestWithOptions(Quest quest)
     {
         var text = $"{_rowDeliminator}{NewLine}";
@@ -73,6 +73,28 @@ public class Graphics
             text += NewLine;
         }
         return text;
+    }
+
+    public string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
+    {
+        var text = "You are: ";
+        switch (moralitySpectrum)
+        {
+            case int n when n < -10:
+                return text += "Super evil" + NewLine;
+            case int n when n < -5:
+                return text += "Evil" + NewLine;
+            case int n when n <= 0:
+                return text += "Neutral" + NewLine;
+            case int n when n < 5:
+                return text += "Decent" + NewLine;
+            case int n when n < 10:
+                return text += "Good" + NewLine;
+            case int n when n < 15:
+                return text += "Saint" + NewLine;
+            default:
+                return "No data available" + NewLine;
+        }
     }
 }
 

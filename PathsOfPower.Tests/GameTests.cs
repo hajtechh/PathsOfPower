@@ -42,7 +42,7 @@ public class GameTests
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object)
         {
-            Character = new Character()
+            Player = new Player()
             {
                 Name = "Haj",
                 MoralitySpectrum = 0
@@ -120,14 +120,14 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object);
-        var mockCharacter = new Mock<Character>();
+        var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.MoralitySpectrum = 0;
-        sut.Character = mockCharacter.Object;
+        sut.Player = mockCharacter.Object;
 
         // Act
         sut.ApplyMoralityScore(expected);
-        var actual = sut.Character.MoralitySpectrum;
+        var actual = sut.Player.MoralitySpectrum;
 
         // Assert
        Assert.Equal(expected, actual);
@@ -137,14 +137,14 @@ public class GameTests
     public void AddInventoryItemShouldAddExpectedItemToInventory()
     {
         // Arrange
-        var mockCharacter = new Mock<Character>();
+        var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.InventoryItems = new List<InventoryItem>();
 
         var mock = new Mock<IUserInteraction>();
         var sut = new Game(mock.Object)
         {
-            Character = mockCharacter.Object
+            Player = mockCharacter.Object
         };
 
         var expected = new InventoryItem()
@@ -154,7 +154,7 @@ public class GameTests
 
         // Act
         sut.AddInventoryItem(expected);
-        var actual = sut.Character.InventoryItems.FirstOrDefault();
+        var actual = sut.Player.InventoryItems.FirstOrDefault();
 
         // Assert
         Assert.Equal(expected, actual);

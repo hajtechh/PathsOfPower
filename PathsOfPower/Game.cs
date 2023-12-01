@@ -13,7 +13,7 @@ public class Game
     private readonly string _baseQuestPath = _basePath + "Quests/chapter";
     private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
     public List<Quest> Quests { get; set; }
-    public Character Character { get; set; }
+    public Player Player { get; set; }
 
     public Game(IUserInteraction userInteraction, Graphics graphics)
     {
@@ -72,6 +72,9 @@ public class Game
             var menuButton = _graphics.GetGameMenuButton();
             _userInteraction.Print(menuButton);
 
+            var moralityText = _graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+            _userInteraction.Print(moralityText);
+
             PrintQuest(quest);
 
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
@@ -129,7 +132,7 @@ public class Game
 
     public void ApplyMoralityScore(int? moralityScore)
     {
-        Character.MoralitySpectrum += moralityScore ?? 0;
+        Player.MoralitySpectrum += moralityScore ?? 0;
     }
 
     public void GameMenu(string questIndex)
@@ -175,7 +178,7 @@ public class Game
             return;
         }
         var chosenGame = DeserializeSavedGame(text);
-        Character = chosenGame.Character;
+        Player = chosenGame.Character;
         StartGame(chosenGame.QuestIndex);
     }
 
@@ -191,7 +194,7 @@ public class Game
 
     public void AddInventoryItem(InventoryItem item)
     {
-        Character.InventoryItems.Add(item);
+        Player.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -237,7 +240,7 @@ public class Game
         return JsonSerializer.Serialize(
             new SavedGame
             {
-                Character = Character,
+                Character = Player,
                 QuestIndex = questIndex
             });
     }
@@ -277,10 +280,10 @@ public class Game
 
     public void Setup()
     {
-        Character = CreateCharacter();
+        Player = CreateCharacter();
     }
 
-    public Character CreateCharacter()
+    public Player CreateCharacter()
     {
         _userInteraction.ClearConsole();
         var name = _userInteraction.GetInput("Choose the name of your character.");
@@ -290,7 +293,7 @@ public class Game
             name = _userInteraction.GetInput("Your character have to have a name.");
         }
 
-        return new Character()
+        return new Player()
         {
             Name = name,
             MoralitySpectrum = 0,
