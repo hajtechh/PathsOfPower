@@ -95,7 +95,7 @@ public class Game
                     }
                 }
             }
-            else if (_fileHelper.IsNextChapterExisting(chapter.ToString()))
+            else if (_fileHelper.IsNextChapterExisting(chapter))
             {
                 chapter++;
                 Quests = GetQuests(chapter);

@@ -35,4 +35,48 @@ public class FileHelperTests
         // Assert
         Assert.Throws<FileNotFoundException>(() => sut.GetSavedGameFromFile(slotNumber));
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    public void CheckIfNextChapterExistsShouldReturnTrue(int currentChapter)
+    {
+        // Arrange
+        var sut = new FileHelper();
+
+        // Act
+        var actual = sut.IsNextChapterExisting(currentChapter);
+        // Assert
+        Assert.True(actual);
+    }
+
+    [Theory]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(-1)]
+    public void CheckIfNextChapterExistsShouldReturnFalse(int currentChapter)
+    {
+        // Arrange
+        var sut = new FileHelper();
+
+        // Act
+        var actual = sut.IsNextChapterExisting(currentChapter);
+        // Assert
+        Assert.False(actual);
+    }
+    
+    [Fact]
+    public void GetAllSavedGameFilesFromDirectoryShouldNotReturnNullOrEmpty()
+    {
+        // Arrange
+        var sut = new FileHelper();
+
+        // Act
+        var actual = sut.GetAllSavedGameFilesFromDirectory();
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
+    }
 }
