@@ -61,6 +61,16 @@ public class Graphics
         return text;
     }
 
+    public string GetPlayerInventoryAsString(Player player)
+    {
+        var text = $"Inventory:{NewLine}";
+        foreach (var item in player.InventoryItems)
+        {
+            text += $"{item.Name}{NewLine}";
+        }
+        return text;
+    }
+
     public string GetCharacterStatisticsString(ICharacter character)
     {
         return $"Health: {character.CurrentHealthPoints}/{character.MaxHealthPoints} | Power: {character.Power}{NewLine}";

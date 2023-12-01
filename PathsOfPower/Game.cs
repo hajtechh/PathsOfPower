@@ -80,6 +80,9 @@ public class Game
 
             PrintQuest(quest);
 
+            var inventory = _graphics.GetPlayerInventoryAsString(Player);
+            _userInteraction.Print(inventory);
+
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
                 if (quest.Enemy != null)
