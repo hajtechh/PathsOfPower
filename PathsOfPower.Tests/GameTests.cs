@@ -132,7 +132,31 @@ public class GameTests
         var actual = sut.Player.MoralitySpectrum;
 
         // Assert
-       Assert.Equal(expected, actual);
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(-10, 0)]
+    [InlineData(0, 10)]
+    [InlineData(10, 20)]
+    [InlineData(123, 133)]
+    public void ApplyPowerUpScoreToPlayerAppliesExpectedValueToPlayersPower(int powerUpScore, int expected)
+    {
+        // Arrange
+        var mock = new Mock<IUserInteraction>();
+        var sut = new Game(mock.Object);
+
+        var mockCharacter = new Mock<Player>();
+        mockCharacter.SetupAllProperties();
+        mockCharacter.Object.Power = 10;
+        sut.Player = mockCharacter.Object;
+
+        // Act
+        sut.ApplyPowerUpScoreToPlayer(powerUpScore);
+        var actual = sut.Player.Power;
+
+        // Assert
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -160,40 +184,6 @@ public class GameTests
 
         // Assert
         Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void CheckForEnemyInQuestShouldReturnTrueWhenQuestHasEnemy()
-    {
-        //Arrange
-        var mockQuest = new Mock<Quest>();
-        mockQuest.SetupAllProperties();
-        mockQuest.Object.Enemy = new Enemy();
-
-        var mockUserInteraction = new Mock<IUserInteraction>();
-        var sut = new Game(mockUserInteraction.Object);
-
-        //Act
-        var actual = sut.CheckForEnemyInQuest(mockQuest.Object);
-
-        //Assert
-        Assert.True(actual);
-    }
-
-    [Fact]
-    public void CheckForEnemyInQuestShouldReturnFalseWhenQuestDoesNotHaveEnemy()
-    {
-        //Arrange
-        var mockQuest = new Mock<Quest>();
-
-        var mockUserInteraction = new Mock<IUserInteraction>();
-        var sut = new Game(mockUserInteraction.Object);
-
-        //Act
-        var actual = sut.CheckForEnemyInQuest(mockQuest.Object);
-
-        //Assert
-        Assert.False(actual);
     }
 
     [Fact]

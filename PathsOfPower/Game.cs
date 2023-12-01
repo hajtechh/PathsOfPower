@@ -78,7 +78,7 @@ public class Game
                 }
                 if (quest.PowerUpScore != null)
                 {
-                    ApplyPowerUpToPlayer(quest.PowerUpScore);
+                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
                 }
 
                 var choice = _userInteraction.GetChar();
@@ -114,7 +114,7 @@ public class Game
                 }
                 if(quest.PowerUpScore != null)
                 {
-                    ApplyPowerUpToPlayer(quest.PowerUpScore);
+                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
                 }
 
                 chapter++;
@@ -163,7 +163,7 @@ public class Game
         StartGame(chosenGame.QuestIndex);
     }
 
-    public void ApplyPowerUpToPlayer(int? powerUpScore)
+    public void ApplyPowerUpScoreToPlayer(int? powerUpScore)
     {
         Player.Power += powerUpScore ?? 0;
     }
