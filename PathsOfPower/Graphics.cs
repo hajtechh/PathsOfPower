@@ -119,5 +119,20 @@ public class Graphics
                 return "No data available" + NewLine;
         }
     }
+
+    public string GetEnemyForFightLog(Enemy enemy)
+    {
+        return $"Fight against {enemy.Name}!{NewLine}";
+    }
+    public string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
+    {
+        return $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.CurrentHealthPoints} healthpoints left.{NewLine}";
+    }
+
+    public string GetSurvivorForFightLog(ICharacter character)
+    {
+        return $"{character.Name} wins, with {character.CurrentHealthPoints} healthpoints remaining!{NewLine}" +
+            $"Press any key to continue.";
+    }
 }
 

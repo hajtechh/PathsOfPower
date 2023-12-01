@@ -87,7 +87,6 @@ public class Game
             {
                 if (quest.Enemy != null)
                 {
-                    _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
                 if (quest.PowerUpScore != null)
@@ -215,18 +214,26 @@ public class Game
 
     public bool FightEnemy(Enemy enemy, string questIndex)
     {
+        var fightLog = _graphics.GetEnemyForFightLog(enemy);
         while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
         {
             PerformAttack(Player, enemy);
+            fightLog += _graphics.GetActionForFightLog(Player, enemy);
             PerformAttack(enemy, Player);
+            fightLog += _graphics.GetActionForFightLog(enemy, Player);
         }
 
         if (Player.CurrentHealthPoints <= 0)
         {
+            fightLog += _graphics.GetSurvivorForFightLog(enemy);
+            _userInteraction.Print(fightLog);
             Player.CurrentHealthPoints = Player.MaxHealthPoints;
+            _userInteraction.GetChar();
             SaveGame(questIndex);
             QuitGame();
         }
+        fightLog += _graphics.GetSurvivorForFightLog(Player);
+        _userInteraction.Print(fightLog);
         return true;
     }
 
