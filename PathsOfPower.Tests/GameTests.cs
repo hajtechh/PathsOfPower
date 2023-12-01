@@ -1,4 +1,5 @@
-﻿using PathsOfPower.Interfaces;
+﻿using Moq;
+using PathsOfPower.Interfaces;
 
 namespace PathsOfPower.Tests;
 
@@ -47,7 +48,7 @@ public class GameTests
         var mockFileHelper = new Mock<IFileHelper>();
         var sut = new Game(mock.Object, mockFileHelper.Object)
         {
-            Character = new Character()
+            Player = new Player()
             {
                 Name = "Haj",
                 MoralitySpectrum = 0
@@ -75,8 +76,8 @@ public class GameTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.NotNull(actual.Character);
-        Assert.NotNull(actual.Character.Name);
+        Assert.NotNull(actual.Player);
+        Assert.NotNull(actual.Player.Name);
         Assert.NotNull(actual.QuestIndex);
     }
 
@@ -91,24 +92,49 @@ public class GameTests
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
         var sut = new Game(mock.Object, mockFileHelper.Object);
-        var mockCharacter = new Mock<Character>();
+        var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.MoralitySpectrum = 0;
-        sut.Character = mockCharacter.Object;
+        sut.Player = mockCharacter.Object;
 
         // Act
         sut.ApplyMoralityScore(expected);
-        var actual = sut.Character.MoralitySpectrum;
+        var actual = sut.Player.MoralitySpectrum;
 
         // Assert
-       Assert.Equal(expected, actual);
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(-10, 0)]
+    [InlineData(0, 10)]
+    [InlineData(10, 20)]
+    [InlineData(123, 133)]
+    public void ApplyPowerUpScoreToPlayerAppliesExpectedValueToPlayersPower(int powerUpScore, int expected)
+    {
+        // Arrange
+        var mock = new Mock<IUserInteraction>();
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mock.Object, mockFileHelper.Object);
+
+        var mockCharacter = new Mock<Player>();
+        mockCharacter.SetupAllProperties();
+        mockCharacter.Object.Power = 10;
+        sut.Player = mockCharacter.Object;
+
+        // Act
+        sut.ApplyPowerUpScoreToPlayer(powerUpScore);
+        var actual = sut.Player.Power;
+
+        // Assert
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
     public void AddInventoryItemShouldAddExpectedItemToInventory()
     {
         // Arrange
-        var mockCharacter = new Mock<Character>();
+        var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.InventoryItems = new List<InventoryItem>();
 
@@ -116,7 +142,7 @@ public class GameTests
         var mockFileHelper = new Mock<IFileHelper>();
         var sut = new Game(mock.Object, mockFileHelper.Object)
         {
-            Character = mockCharacter.Object
+            Player = mockCharacter.Object
         };
 
         var expected = new InventoryItem()
@@ -126,10 +152,39 @@ public class GameTests
 
         // Act
         sut.AddInventoryItem(expected);
-        var actual = sut.Character.InventoryItems.FirstOrDefault();
+        var actual = sut.Player.InventoryItems.FirstOrDefault();
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
+    {
+        //Arrange
+        var mockPlayer = new Mock<Player>();
+        mockPlayer.SetupAllProperties();
+        mockPlayer.Object.Power = 10;
+        mockPlayer.Object.CurrentHealthPoints = 10;
+
+        var mockQuest = new Mock<Quest>();
+        mockQuest.SetupAllProperties();
+        mockQuest.Object.Enemy = new Enemy()
+        {
+            CurrentHealthPoints = 10,
+            Power = 1
+        };
+
+        var mockUserInteraction = new Mock<IUserInteraction>();
+        var mockFileHelper = new Mock<IFileHelper>();
+        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+        sut.Player = mockPlayer.Object;
+
+        //Act 
+        var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
+
+        //Assert
+        Assert.True(actual);
     }
 
     #region AskDaniel

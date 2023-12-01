@@ -11,7 +11,7 @@ public class Game
     private readonly IFileHelper _fileHelper;
 
     public List<Quest> Quests { get; set; }
-    public Character Character { get; set; }
+    public Player Player { get; set; }
 
     public Game(IUserInteraction userInteraction, IFileHelper fileHelper)
     {
@@ -52,7 +52,7 @@ public class Game
         var keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
-            { ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
+            {ConsoleKey.S, () => SaveGame(quest.Index) }
         };
         while (isRunning)
         {
@@ -71,6 +71,16 @@ public class Game
 
             if (quest.Options is not null)
             {
+                if (quest.Enemy != null)
+                {
+                    _userInteraction.GetChar();
+                    FightEnemy(quest.Enemy, quest.Index);
+                }
+                if (quest.PowerUpScore != null)
+                {
+                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                }
+
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
                 {
@@ -97,10 +107,20 @@ public class Game
             }
             else if (_fileHelper.IsNextChapterExisting(chapter))
             {
+                if (quest.Enemy != null)
+                {
+                    _userInteraction.GetChar();
+                    FightEnemy(quest.Enemy, quest.Index);
+                }
+                if(quest.PowerUpScore != null)
+                {
+                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                }
+
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
-                if (quest.Item is not null)
+                if (quest != null && quest.Item is not null)
                 {
                     AddInventoryItem(quest.Item);
                 }
@@ -122,11 +142,6 @@ public class Game
         }
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
-    {
-        Character.MoralitySpectrum += moralityScore ?? 0;
-    }
-
     public void LoadGame()
     {
         PrintSavedGames();
@@ -143,8 +158,40 @@ public class Game
             return;
         }
         var chosenGame = DeserializeSavedGame(text);
-        Character = chosenGame.Character;
+        Player = chosenGame.Player;
         StartGame(chosenGame.QuestIndex);
+    }
+
+    public void ApplyPowerUpScoreToPlayer(int? powerUpScore)
+    {
+        Player.Power += powerUpScore ?? 0;
+    }
+
+    public bool FightEnemy(Enemy enemy, string questIndex)
+    {
+        while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
+        {
+            PerformAttack(Player, enemy);
+            PerformAttack(enemy, Player);
+        }
+
+        if (Player.CurrentHealthPoints <= 0)
+        {
+            Player.CurrentHealthPoints = Player.MaxHealthPoints;
+            SaveGame(questIndex);
+            QuitGame();
+        }
+        return true;
+    }
+
+    private void PerformAttack(ICharacter attacker, ICharacter target)
+    {
+        target.CurrentHealthPoints -= attacker.Power;
+    }
+
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        Player.MoralitySpectrum += moralityScore ?? 0;
     }
 
     private void QuitGame()
@@ -154,7 +201,7 @@ public class Game
 
     public void AddInventoryItem(InventoryItem item)
     {
-        Character.InventoryItems.Add(item);
+        Player.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -187,8 +234,8 @@ public class Game
         for (int i = 0; i < savedGames.Count; i++)
         {
             var text = $"[{i + 1}] ";
-            text += savedGames[i].Character != null ?
-                savedGames[i].Character.Name :
+            text += savedGames[i].Player != null ?
+                savedGames[i].Player.Name :
                 "Empty slot";
             _userInteraction.Print($"{text} \r\n -------");
         }
@@ -204,7 +251,7 @@ public class Game
         return JsonSerializer.Serialize(
             new SavedGame
             {
-                Character = Character,
+                Player = Player,
                 QuestIndex = questIndex
             });
     }
@@ -253,10 +300,10 @@ public class Game
 
     public void Setup()
     {
-        Character = CreateCharacter();
+        Player = CreateCharacter();
     }
 
-    public Character CreateCharacter()
+    public Player CreateCharacter()
     {
         _userInteraction.ClearConsole();
         var name = _userInteraction.GetInput("Choose the name of your character.");
@@ -266,7 +313,7 @@ public class Game
             name = _userInteraction.GetInput("Your character have to have a name.");
         }
 
-        return new Character()
+        return new Player()
         {
             Name = name,
             MoralitySpectrum = 0,
