@@ -1,5 +1,6 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
+using PathsOfPower.Interfaces;
 using System.Text.Json;
 
 namespace PathsOfPower;
@@ -78,8 +79,18 @@ public class Game
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
                 {
+                    var test2 = int.Parse(choice.KeyChar.ToString());
+                    var option = quest.Options.FirstOrDefault(x => x.Index == test2);
+                    if(option != null && option.MoralityScore != 0)
+                    {
+                        ApplyMoralityScore(option.MoralityScore);
+                    }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
+                    if (quest.Item is not null)
+                    {
+                        AddInventoryItem(quest.Item);
+                    }
                 }
                 else
                 {
@@ -94,6 +105,10 @@ public class Game
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                if (quest.Item is not null)
+                {
+                    AddInventoryItem(quest.Item);
+                }
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {
@@ -110,6 +125,11 @@ public class Game
                 _userInteraction.Print("The end");
             }
         }
+    }
+
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        Character.MoralitySpectrum += moralityScore ?? 0;
     }
 
     public void GameMenu(string questIndex)
@@ -167,6 +187,11 @@ public class Game
     private void QuitGame()
     {
         Environment.Exit(0);
+    }
+
+    public void AddInventoryItem(InventoryItem item)
+    {
+        Character.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -267,7 +292,9 @@ public class Game
 
         return new Character()
         {
-            Name = name
+            Name = name,
+            MoralitySpectrum = 0,
+            InventoryItems = new List<InventoryItem>()
         };
     }
 }

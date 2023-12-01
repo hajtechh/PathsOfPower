@@ -9,7 +9,8 @@
       },
       {
         "Index": 2,
-        "Name": "Sneak into the Potions classroom to steal some"
+        "Name": "Sneak into the Potions classroom to steal some",
+        "MoralityScore": -2
       }
     ]
   },
@@ -40,7 +41,7 @@
   },
   {
     "Index": "3.1.1.1",
-    "Description": "You hold the broken wand in front of you, feeling the same current in an irregular pattern. You want to figure out what to make of all this.",
+    "Description": "You hold the broken wand in front of you, feeling the same current continuing in an irregular pattern. You want to figure out what to make of all this.",
     "Options": [
       {
         "Index": 1,
@@ -50,7 +51,10 @@
   },
   {
     "Index": "3.1.1.1.1",
-    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
 
   {
@@ -63,7 +67,8 @@
       },
       {
         "Index": 2,
-        "Name": "Throw it"
+        "Name": "Throw it",
+        "MoralityScore": -1
       }
     ]
   },
@@ -79,7 +84,10 @@
   },
   {
     "Index": "3.1.2.1.1",
-    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office."
+    "Description": "You put the wand in your robe and walk through Hogwarts grounds, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
 
   {
@@ -104,7 +112,10 @@
   },
   {
     "Index": "3.1.2.2.1.1",
-    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through Hogwarts grounds, back to your office."
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through Hogwarts grounds, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
 
   {
@@ -127,7 +138,8 @@
       },
       {
         "Index": 2,
-        "Name": "Lie(not written past this)"
+        "Name": "Lie(not written past this)",
+        "MoralityScore": -2
       }
     ]
   },
@@ -147,17 +159,19 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell him you are not interested"
+        "Name": "Tell him you are not interested",
+        "MoralityScore": -1
       },
       {
         "Index": 2,
-        "Name": "Ask him what it is"
+        "Name": "Ask him what it is",
+        "MoralityScore": 1
       }
     ]
   },
   {
     "Index": "3.2.1.1.1.1",
-    "Description": "He pulls out a broken wand from his robe. He begs you to at least take it off his hands. He says you are better equipped to find out what it is, than he is, being the Defence aganst the Dark Arts teacher. He holds it out for you, and you can feel an electric current going through your hand, towards the wand.",
+    "Description": "He stops you and pulls out a broken wand from his robe. He begs you to at least take it off his hands. He says you are better equipped to find out what it is, than he is, being the Defence aganst the Dark Arts teacher. He holds it out for you, and you can feel an electric current going through your hand, towards the wand.",
     "Options": [
       {
         "Index": 1,
@@ -167,7 +181,10 @@
   },
   {
     "Index": "3.2.1.1.1.1.1",
-    "Description": "You reluctantly put the wand in your robe and walk through the school corridors, back to your office."
+    "Description": "You reluctantly put the wand in your robe and walk through the school corridors, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   },
   {
     "Index": "3.2.1.1.1.2",
@@ -181,6 +198,9 @@
   },
   {
     "Index": "3.2.1.1.1.2.1",
-    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through the schools corridors, back to your office."
+    "Description": "Curious to find out what to make of all of this, you put the wand in your robe and walk through the schools corridors, back to your office.",
+    "Item": {
+      "Name": "Broken wand"
+    }
   }
 ]

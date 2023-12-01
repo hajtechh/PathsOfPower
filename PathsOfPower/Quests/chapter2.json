@@ -5,11 +5,13 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Ask the student what's wrong"
+        "Name": "Ask the student what's wrong",
+        "MoralityScore": 2
       },
       {
         "Index": 2,
-        "Name": "Tell the student to leave the classroom"
+        "Name": "Tell the student to leave the classroom",
+        "MoralityScore": -2
       }
     ]
   },
@@ -23,7 +25,8 @@
       },
       {
         "Index": 2,
-        "Name": "Tell the student to leave, you do not have time for this"
+        "Name": "Tell the student to leave, you do not have time for this",
+        "MoralityScore": -2
       }
     ]
   },
@@ -33,7 +36,8 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell the student to contact the Ministry of Magic, and seek their help"
+        "Name": "Tell the student to contact the Ministry of Magic, and seek their help",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
@@ -41,7 +45,7 @@
       },
       {
         "Index": 3,
-        "Name": "Ask the student where their parents are hiding" 
+        "Name": "Ask the student where their parents are hiding"
       }
     ]
   },
@@ -74,11 +78,14 @@
   },
   {
     "Index": "2.1.2.1",
-    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory."
+    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory.",
+    "Item": {
+      "Name": "Wigenweld potion"
+    }
   },
   {
     "Index": "2.1.2.2",
-    "Description": "After a few practice-runs, you perfect a spellcast.(+power)" 
+    "Description": "After a few practice-runs, you perfect a spellcast.(+power)"
   },
 
   {
@@ -87,7 +94,8 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Brew a bottle of Draught of Living Death (sleeping-curse)"
+        "Name": "Brew a bottle of Draught of Living Death (sleeping-curse)",
+        "MoralityScore": -3
       },
       {
         "Index": 2,
@@ -101,14 +109,23 @@
   },
   {
     "Index": "2.2.1",
-    "Description": "A bottle of Draught of Living Death has been added to your inventory."
+    "Description": "A bottle of Draught of Living Death has been added to your inventory.",
+    "Item": {
+      "Name": "Draught of Living Death"
+    }
   },
   {
     "Index": "2.2.2",
-    "Description": "A bottle of Wiggenweld potion has been added to your inventory."
+    "Description": "A bottle of Wiggenweld potion has been added to your inventory.",
+    "Item": {
+      "Name": "Wiggenweld potion"
+    }
   },
   {
     "Index": "2.2.3",
-    "Description": "A bottle of Veritaserum has been added to your inventory."
+    "Description": "A bottle of Veritaserum has been added to your inventory.",
+    "Item": {
+      "Name": "Veritaserum"
+    }
   }
 ]
