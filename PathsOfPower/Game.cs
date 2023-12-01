@@ -52,7 +52,7 @@ public class Game
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
-            {ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
+            {ConsoleKey.S, () => SaveGame(quest.Index) }
         };
         while (isRunning)
         {
@@ -71,11 +71,14 @@ public class Game
 
             if (quest.Options is not null /* || quest.Options.Count() > 0*/)
             {
-                var enemyInQuest = CheckForEnemyInQuest(quest);
-                if (enemyInQuest)
+                if (quest.Enemy != null)
                 {
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
+                }
+                if (quest.PowerUpScore != null)
+                {
+                    ApplyPowerUpToPlayer(quest.PowerUpScore);
                 }
 
                 var choice = _userInteraction.GetChar();
@@ -104,17 +107,20 @@ public class Game
             }
             else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
             {
-                var enemyInQuest = CheckForEnemyInQuest(quest);
-                if (enemyInQuest)
+                if (quest.Enemy != null)
                 {
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
+                }
+                if(quest.PowerUpScore != null)
+                {
+                    ApplyPowerUpToPlayer(quest.PowerUpScore);
                 }
 
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
-                if (quest.Item is not null)
+                if (quest != null && quest.Item is not null)
                 {
                     AddInventoryItem(quest.Item);
                 }
@@ -135,7 +141,6 @@ public class Game
             }
         }
     }
-
 
     public void LoadGame()
     {
@@ -158,13 +163,9 @@ public class Game
         StartGame(chosenGame.QuestIndex);
     }
 
-    public bool CheckForEnemyInQuest(Quest quest)
+    public void ApplyPowerUpToPlayer(int? powerUpScore)
     {
-        if (quest.Enemy != null)
-        {
-            return true;
-        }
-        return false;
+        Player.Power += powerUpScore ?? 0;
     }
 
     public bool FightEnemy(Enemy enemy, string questIndex)

@@ -85,7 +85,8 @@
   },
   {
     "Index": "2.1.2.2",
-    "Description": "After a few practice-runs, you perfect a spellcast.(+power)"
+    "Description": "After a few practice-runs, you perfect a spellcast.",
+    "PowerUpScore": 15
   },
 
   {
