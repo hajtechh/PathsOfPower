@@ -72,6 +72,9 @@ public class Game
             var menuButton = _graphics.GetGameMenuButton();
             _userInteraction.Print(menuButton);
 
+            var statisticsText = _graphics.GetCharacterStatisticsString(Player);
+            _userInteraction.Print(statisticsText);
+
             var moralityText = _graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
             _userInteraction.Print(moralityText);
 
@@ -100,7 +103,7 @@ public class Game
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
-                    if (quest.Item is not null)
+                    if (quest != null && quest.Item is not null)
                     {
                         AddInventoryItem(quest.Item);
                     }
@@ -256,7 +259,7 @@ public class Game
         var savedGame = DeserializeSavedGame(jsonString);
         if (savedGame != null)
         {
-            var text = _graphics.GetConfirmationForSavedGame(savedGame);
+            var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
             _userInteraction.Print(text);
         }
         _userInteraction.GetChar();

@@ -1,4 +1,6 @@
-﻿using PathsOfPower.Models;
+﻿using PathsOfPower.Interfaces;
+using PathsOfPower.Models;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace PathsOfPower;
@@ -42,21 +44,26 @@ public class Graphics
             {
                 text += $"{BorderCharacter}{line.PadLeft(PadLeft + line.Length / 2).PadRight(PadRight)}{BorderCharacter}{NewLine}";
             }
-            if (quest.Options is not null)
-            {
-                foreach (var option in quest.Options)
-                {
-                    var optionDescription = $"[{option.Index}] - {option.Name}";
-                    text += $"{BorderCharacter}{optionDescription.PadLeft(PadLeft + optionDescription.Length / 2).PadRight(PadRight)}{BorderCharacter}{NewLine}";
-                }
-            }
         }
         else
         {
             text += $"{BorderCharacter}{quest.Description.PadLeft(PadLeft + quest.Description.Length / 2).PadRight(PadRight)}{BorderCharacter}{NewLine}";
         }
+        if (quest.Options is not null)
+        {
+            foreach (var option in quest.Options)
+            {
+                var optionDescription = $"[{option.Index}] - {option.Name}";
+                text += $"{BorderCharacter}{optionDescription.PadLeft(PadLeft + optionDescription.Length / 2).PadRight(PadRight)}{BorderCharacter}{NewLine}";
+            }
+        }
         text += $"{_rowDeliminator}";
         return text;
+    }
+
+    public string GetCharacterStatisticsString(ICharacter character)
+    {
+        return $"Health: {character.CurrentHealthPoints}/{character.MaxHealthPoints} | Power: {character.Power}{NewLine}";
     }
 
     public string GetSavedGamesString(List<SavedGame> savedGames)
@@ -75,7 +82,7 @@ public class Graphics
         return text;
     }
 
-    public string GetConfirmationForSavedGame(SavedGame savedGame)
+    public string GetConfirmationStringForSavedGame(SavedGame savedGame)
     {
         return $"Successfully saved game for {savedGame.Player.Name}.{NewLine}" +
             $"Press any button to continue.";
