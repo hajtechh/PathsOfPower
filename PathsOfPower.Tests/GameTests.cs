@@ -1,4 +1,4 @@
-﻿using PathsOfPower.Helpers;
+﻿using PathsOfPower.Interfaces;
 
 namespace PathsOfPower.Tests;
 

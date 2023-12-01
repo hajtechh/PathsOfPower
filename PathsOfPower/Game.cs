@@ -1,8 +1,7 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
-using PathsOfPower.Interfaces;
 using System.Text.Json;
-using PathsOfPower.Helpers;
+using PathsOfPower.Interfaces;
 
 namespace PathsOfPower;
 
@@ -10,9 +9,7 @@ public class Game
 {
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
-    const string _basePath = "../../../../PathsOfPower/";
-    private readonly string _baseQuestPath = _basePath + "Quests/chapter";
-    private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
+
     public List<Quest> Quests { get; set; }
     public Character Character { get; set; }
 
@@ -55,7 +52,7 @@ public class Game
         var keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
-            {ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
+            { ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
         };
         while (isRunning)
         {
@@ -72,7 +69,7 @@ public class Game
 
             PrintQuest(quest);
 
-            if (quest.Options is not null /* || quest.Options.Count() > 0*/)
+            if (quest.Options is not null)
             {
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
@@ -138,7 +135,7 @@ public class Game
         string? text;
         try
         {
-            text = _fileHelper.GetSavedGameTextFromFile(slotNumber);
+            text = _fileHelper.GetSavedGameFromFile(slotNumber);
         }
         catch (FileNotFoundException ex)
         {
@@ -172,12 +169,12 @@ public class Game
 
     public void PrintSavedGames()
     {
-        var savedGamesDirectory = _basePath + "SavedGameFiles/";
         var savedGames = new List<SavedGame>();
 
-        foreach (var filePath in Directory.GetFiles(savedGamesDirectory, "*.json"))
+        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        foreach (var filePath in files)
         {
-            var jsonContent = File.ReadAllText(filePath);
+            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
             var savedGame = new SavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
@@ -199,8 +196,7 @@ public class Game
 
     public void WriteToFile(char choice, string jsonString)
     {
-        var path = $"{_baseSavePath}{choice}.json";
-        File.WriteAllText(path, jsonString);
+        _fileHelper.WriteAllText(jsonString, choice);
     }
 
     public string SerializeSavedGame(string questIndex)
@@ -251,7 +247,7 @@ public class Game
 
     public List<Quest> GetQuests(int chapterNumber)
     {
-        var jsonText = File.ReadAllText($"{_baseQuestPath}{chapterNumber}.json");
+        var jsonText = _fileHelper.GetSavedGameFromFile(chapterNumber);
         return JsonSerializer.Deserialize<List<Quest>>(jsonText);
     }
 

@@ -15,7 +15,7 @@ public class FileHelperTests
         var sut = new FileHelper();
 
         // Act
-        var actual = sut.GetSavedGameTextFromFile(slotNumber);
+        var actual = sut.GetSavedGameFromFile(slotNumber);
 
         // Assert
         Assert.NotNull(actual);
@@ -33,6 +33,6 @@ public class FileHelperTests
 
         // Act
         // Assert
-        Assert.Throws<FileNotFoundException>(() => sut.GetSavedGameTextFromFile(slotNumber));
+        Assert.Throws<FileNotFoundException>(() => sut.GetSavedGameFromFile(slotNumber));
     }
 }

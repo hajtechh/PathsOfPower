@@ -1,6 +1,7 @@
 ﻿using PathsOfPower;
 using PathsOfPower.Cli;
 using PathsOfPower.Helpers;
+using PathsOfPower.Interfaces;
 
 IConsoleWrapper consoleWrapper  = new ConsoleWrapper();
 IUserInteraction userInteraction = new UserInteraction(consoleWrapper);
