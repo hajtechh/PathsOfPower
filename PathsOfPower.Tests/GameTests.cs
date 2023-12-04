@@ -49,11 +49,7 @@ public class GameTests
         var mockFileHelper = new Mock<IFileHelper>();
         var sut = new Game(mock.Object, mockFileHelper.Object)
         {
-            Player = new Player()
-            {
-                Name = "Haj",
-                MoralitySpectrum = 0
-            }
+            Player = new Player("Haj")
         };
 
         // Act
@@ -152,7 +148,7 @@ public class GameTests
         };
 
         // Act
-        sut.AddInventoryItem(expected);
+        sut.Player.AddInventoryItem(expected);
         var actual = sut.Player.InventoryItems.FirstOrDefault();
 
         // Assert

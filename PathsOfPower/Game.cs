@@ -97,7 +97,7 @@ public class Game
                     quest = GetQuestFromIndex(index, Quests);
                     if (quest.Item is not null)
                     {
-                        AddInventoryItem(quest.Item);
+                        Player.AddInventoryItem(quest.Item);
                     }
                 }
                 else
@@ -125,7 +125,7 @@ public class Game
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
                 if (quest != null && quest.Item is not null)
                 {
-                    AddInventoryItem(quest.Item);
+                    Player.AddInventoryItem(quest.Item);
                 }
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
@@ -200,11 +200,6 @@ public class Game
     private void QuitGame()
     {
         Environment.Exit(0);
-    }
-
-    public void AddInventoryItem(InventoryItem item)
-    {
-        Player.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -330,11 +325,6 @@ public class Game
             name = _userInteraction.GetInput("Your character have to have a name.");
         }
 
-        return new Player()
-        {
-            Name = name,
-            MoralitySpectrum = 0,
-            InventoryItems = new List<InventoryItem>()
-        };
+        return new Player(name);
     }
 }
