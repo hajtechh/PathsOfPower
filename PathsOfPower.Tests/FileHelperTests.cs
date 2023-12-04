@@ -1,4 +1,5 @@
 ﻿using PathsOfPower.Helpers;
+using PathsOfPower.Interfaces;
 
 namespace PathsOfPower.Tests;
 
@@ -78,5 +79,20 @@ public class FileHelperTests
         // Assert
         Assert.NotNull(actual);
         Assert.NotEmpty(actual);
+    }
+
+    [Fact]
+    public void WriteAllTextShouldRunAtleastOnce()
+    {
+        // Arrange
+        var sutMockFileHelper = new Mock<IFileHelper>();
+        var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
+        var slotNumber = '1';
+
+        // Act
+        sutMockFileHelper.Object.WriteAllText(jsonContent, slotNumber);
+
+        // Assert
+        sutMockFileHelper.Verify(x => x.WriteAllText(jsonContent, slotNumber), Times.Once);
     }
 }

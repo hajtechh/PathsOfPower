@@ -1,4 +1,5 @@
 ﻿using Moq;
+using PathsOfPower.Helpers;
 using PathsOfPower.Interfaces;
 
 namespace PathsOfPower.Tests;
@@ -184,6 +185,42 @@ public class GameTests
         var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
 
         //Assert
+        Assert.True(actual);
+    }
+
+    [Fact]
+    public void WriteToFileShouldThrowIndexOutOfBoundsException()
+    {
+        // Arrange
+        var mockUserInteraction = new Mock<IUserInteraction>();
+        var mockFileHelper = new Mock<IFileHelper>();
+        var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
+        var slotNumber = '9';
+        mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
+
+        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+
+        // Act
+        // Assert
+        Assert.Throws<SlotNumberOutOfBoundsException>(() => sut.WriteToFile(slotNumber, jsonContent));
+    }
+
+    [Fact]
+    public void WriteToFileShouldReturnTrue()
+    {
+        // Arrange
+        var mockUserInteraction = new Mock<IUserInteraction>();
+        var mockFileHelper = new Mock<IFileHelper>();
+        var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
+        var slotNumber = '1';
+        mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
+
+        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+
+        // Act
+        var actual = sut.WriteToFile(slotNumber, jsonContent);
+
+        // Assert
         Assert.True(actual);
     }
 

@@ -10,6 +10,9 @@ public class Game
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
 
+    private const int MinSlotNumber = 1;
+    private const int MaxSlotNumber = 3;
+
     public List<Quest> Quests { get; set; }
     public Player Player { get; set; }
 
@@ -112,7 +115,7 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if(quest.PowerUpScore != null)
+                if (quest.PowerUpScore != null)
                 {
                     ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
                 }
@@ -211,7 +214,8 @@ public class Game
 
         var jsonString = SerializeSavedGame(questIndex);
 
-        WriteToFile(choice, jsonString);
+        // Write tests?
+        var isSaved = WriteToFile(choice, jsonString);
     }
 
     public void PrintSavedGames()
@@ -241,9 +245,22 @@ public class Game
         }
     }
 
-    public void WriteToFile(char choice, string jsonString)
+    public bool WriteToFile(char choice, string jsonString)
     {
-        _fileHelper.WriteAllText(jsonString, choice);
+        try
+        {
+            if (choice >= MinSlotNumber || choice <= MaxSlotNumber)
+            {
+                _fileHelper.WriteAllText(jsonString, choice);
+                return true;
+            }
+            throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+        }
+        catch (SlotNumberOutOfBoundsException ex)
+        {
+            _userInteraction.Print(ex.Message);
+            throw ex;
+        }
     }
 
     public string SerializeSavedGame(string questIndex)
