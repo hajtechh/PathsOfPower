@@ -13,5 +13,10 @@ namespace PathsOfPower.Models
         public int MaxHealthPoints { get; set; } 
         public int CurrentHealthPoints { get; set; }
         public int Power { get; set; }
+
+        public void PerformAttack(ICharacter target)
+        {
+            target.CurrentHealthPoints -= Power;
+        }
     }
 }

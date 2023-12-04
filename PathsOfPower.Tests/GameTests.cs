@@ -33,7 +33,7 @@ public class GameTests
         var sut = new Game(mock.Object, mockFileHelper.Object);
 
         // Act
-        var actual = sut.CreateCharacter();
+        var actual = sut.CreatePlayer();
 
         // Assert
         Assert.NotNull(actual.Name);

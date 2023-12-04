@@ -169,8 +169,10 @@ public class Game
     {
         while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
         {
-            PerformAttack(Player, enemy);
-            PerformAttack(enemy, Player);
+            Player.PerformAttack(enemy);
+            enemy.PerformAttack(Player);
+            //PerformAttack(Player, enemy);
+            //PerformAttack(enemy, Player);
         }
 
         if (Player.CurrentHealthPoints <= 0)
@@ -182,10 +184,10 @@ public class Game
         return true;
     }
 
-    private void PerformAttack(ICharacter attacker, ICharacter target)
-    {
-        target.CurrentHealthPoints -= attacker.Power;
-    }
+    //private void PerformAttack(ICharacter attacker, ICharacter target)
+    //{
+    //    target.CurrentHealthPoints -= attacker.Power;
+    //}
 
     private void QuitGame()
     {
@@ -296,16 +298,16 @@ public class Game
 
     public List<Quest> GetQuests(int chapterNumber)
     {
-        var jsonText = _fileHelper.GetSavedGameFromFile(chapterNumber);
+        var jsonText = _fileHelper.GetQuestsFromFile(chapterNumber);
         return JsonSerializer.Deserialize<List<Quest>>(jsonText);
     }
 
     public void Setup()
     {
-        Player = CreateCharacter();
+        Player = CreatePlayer();
     }
 
-    public Player CreateCharacter()
+    public Player CreatePlayer()
     {
         _userInteraction.ClearConsole();
         var name = _userInteraction.GetInput("Choose the name of your character.");

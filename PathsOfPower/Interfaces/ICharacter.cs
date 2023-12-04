@@ -12,5 +12,8 @@ namespace PathsOfPower.Interfaces
         public int MaxHealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
         public int Power {  get; set; }
+
+        void PerformAttack(ICharacter target);
+        //void PerformAttack(ICharacter attacker, ICharacter target);
     }
 }

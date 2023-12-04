@@ -34,4 +34,9 @@ public class Player : ICharacter
     {
         Power += powerUpScore ?? 0;
     }
+
+    public void PerformAttack(ICharacter target)
+    {
+        target.CurrentHealthPoints -= Power;
+    }
 }
