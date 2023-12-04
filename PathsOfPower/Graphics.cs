@@ -12,8 +12,14 @@ public class Graphics
     private const int PadLeft = PadRight / 2;
     private const string NewLine = "\r\n";
     private const char BorderCharacter = '*';
+    private const char InventoryBorder = '+';
 
     private readonly string _rowDeliminator = "".PadRight(PadRight, BorderCharacter);
+    private readonly string _rowDeliminatorInventory = "".PadRight(PadRight, InventoryBorder);
+
+    private readonly string _continueText = $"Press any key to continue{NewLine}";
+    private readonly string _emptyinventory = " E M P T Y ";
+    private readonly string _inventory = "~ Inventory ~";
 
     private readonly string _menu = $"[1] Start new game{NewLine}" +
         $"[2] Load game{NewLine}" +
@@ -25,7 +31,6 @@ public class Graphics
         $"[4] Quit game";
 
     private readonly string _gameMenuButton = $"{NewLine}[M] Game Menu{NewLine}";
-
 
     public string GetMenu() => _menu;
 
@@ -63,11 +68,24 @@ public class Graphics
 
     public string GetPlayerInventoryAsString(Player player)
     {
-        var text = $"Inventory:{NewLine}";
-        foreach (var item in player.InventoryItems)
+        var text = $"{_rowDeliminatorInventory}{NewLine}";
+        if (player.InventoryItems.Count == 0)
         {
-            text += $"{item.Name}{NewLine}";
+            text += $"{InventoryBorder}";
+            text += $"{_inventory.PadLeft(PadLeft + _emptyinventory.Length / 2).PadRight(PadRight)}{InventoryBorder}{NewLine}";
+            text += $"{_emptyinventory.PadLeft(PadLeft + _emptyinventory.Length / 2).PadRight(PadRight)}{InventoryBorder}{NewLine}";
         }
+        else
+        {
+
+            text += $"{InventoryBorder}";
+            text += $"{_inventory.PadLeft(PadLeft + _emptyinventory.Length / 2).PadRight(PadRight)}{InventoryBorder}{NewLine}";
+            foreach (var item in player.InventoryItems)
+            {
+                text += $"{InventoryBorder}{item.Name.PadLeft(PadLeft + item.Name.Length / 2).PadRight(PadRight)}{InventoryBorder}{NewLine}";
+            }
+        }
+        text += $"{_rowDeliminatorInventory}";
         return text;
     }
 
@@ -94,8 +112,7 @@ public class Graphics
 
     public string GetConfirmationStringForSavedGame(SavedGame savedGame)
     {
-        return $"Successfully saved game for {savedGame.Player.Name}.{NewLine}" +
-            $"Press any button to continue.";
+        return $"Successfully saved game for {savedGame.Player.Name}.{NewLine}{_continueText}";
     }
 
     public string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
@@ -131,8 +148,7 @@ public class Graphics
 
     public string GetSurvivorForFightLog(ICharacter character)
     {
-        return $"{character.Name} wins, with {character.CurrentHealthPoints} healthpoints remaining!{NewLine}" +
-            $"Press any key to continue.";
+        return $"{character.Name} wins, with {character.CurrentHealthPoints} healthpoints remaining!{NewLine}{_continueText}";
     }
 }
 

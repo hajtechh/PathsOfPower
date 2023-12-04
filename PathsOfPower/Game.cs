@@ -244,11 +244,6 @@ public class Game
         target.CurrentHealthPoints -= attacker.Power;
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
-    {
-        Player.MoralitySpectrum += moralityScore ?? 0;
-    }
-
     private void QuitGame()
     {
         Environment.Exit(0);
@@ -357,7 +352,7 @@ public class Game
 
     public List<Quest> GetQuests(int chapterNumber)
     {
-        var jsonText = _fileHelper.GetSavedGameFromFile(chapterNumber);
+        var jsonText = _fileHelper.GetQuestsFromFile(chapterNumber);
         return JsonSerializer.Deserialize<List<Quest>>(jsonText);
     }
 
