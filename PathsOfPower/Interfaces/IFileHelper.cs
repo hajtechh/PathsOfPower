@@ -11,4 +11,5 @@ public interface IFileHelper
     void WriteAllText(string jsonContent, char slotNumber);
     string? GetSavedGameFromFile(int slotNumber);
     string? GetSavedGameFromFile(string fullPath);
+    string? GetQuestsFromFile(int chapterNumber);
 }
