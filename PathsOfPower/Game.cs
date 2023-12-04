@@ -81,7 +81,7 @@ public class Game
                 }
                 if (quest.PowerUpScore != null)
                 {
-                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                    Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
 
                 var choice = _userInteraction.GetChar();
@@ -117,7 +117,7 @@ public class Game
                 }
                 if (quest.PowerUpScore != null)
                 {
-                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                    Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
 
                 chapter++;
@@ -165,11 +165,6 @@ public class Game
         StartGame(chosenGame.QuestIndex);
     }
 
-    public void ApplyPowerUpScoreToPlayer(int? powerUpScore)
-    {
-        Player.Power += powerUpScore ?? 0;
-    }
-
     public bool FightEnemy(Enemy enemy, string questIndex)
     {
         while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
@@ -191,7 +186,6 @@ public class Game
     {
         target.CurrentHealthPoints -= attacker.Power;
     }
-
 
     private void QuitGame()
     {

@@ -95,7 +95,7 @@ public class GameTests
         sut.Player = mockCharacter.Object;
 
         // Act
-        sut.ApplyMoralityScore(expected);
+        sut.Player.ApplyMoralityScore(expected);
         var actual = sut.Player.MoralitySpectrum;
 
         // Assert
@@ -120,7 +120,7 @@ public class GameTests
         sut.Player = mockCharacter.Object;
 
         // Act
-        sut.ApplyPowerUpScoreToPlayer(powerUpScore);
+        sut.Player.ApplyPowerUpScore(powerUpScore);
         var actual = sut.Player.Power;
 
         // Assert

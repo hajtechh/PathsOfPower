@@ -29,4 +29,9 @@ public class Player : ICharacter
     {
         MoralitySpectrum += moralityScore ?? 0;
     }
+
+    public void ApplyPowerUpScore(int? powerUpScore)
+    {
+        Power += powerUpScore ?? 0;
+    }
 }
