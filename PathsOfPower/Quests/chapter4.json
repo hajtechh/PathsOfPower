@@ -63,25 +63,34 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Say please"
+        "Name": "Say please",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
-        "Name": "Threathen him(trigger a fight)"
+        "Name": "Threathen him(trigger a fight)",
+        "MoralityScore": -2,
+        "Enemy": {
+          "Name": "Peeves the Poltergeist",
+          "MaxHealthPoints": 80,
+          "CurrentHealthPoints": 80,
+          "Power": 10
+        }
       }
     ]
   },
   {
     "Index": "4.1.1.1.1.1.1",
-    "Description": "The poltergeist laughs, and tells you that you would not get the book back if you said please.",
+    "Description": "The poltergeist laughs mockingly, and tells you that he said you would 'not' get the book back if you said please.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Ask him about the wand"
+        "Name": "Forget the book, and ask him about the wand instead"
       },
       {
         "Index": 2,
-        "Name": "Steal the book back with accio"
+        "Name": "Steal the book back with accio",
+        "MoralityScore": -1
       }
     ]
   },
@@ -127,11 +136,19 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Intervene, tell the poltergeist off"
+        "Name": "Intervene, tell the poltergeist off",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
-        "Name": "Intervene, fight the poltergeist"
+        "Name": "Intervene, fight the poltergeist",
+        "MoralityScore": -1,
+        "Enemy": {
+          "Name": "Peeves the Poltergeist",
+          "MaxHealthPoints": 80,
+          "CurrentHealthPoints": 80,
+          "Power": 10
+        }
       }
     ]
   },
@@ -171,7 +188,8 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Show her the wand"
+        "Name": "Show her the wand",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
@@ -210,7 +228,8 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell her you found it"
+        "Name": "Tell her you found it",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
@@ -239,7 +258,7 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Ask her to borrow the book"
+        "Name": "Ask to borrow the book"
       },
       {
         "Index": 2,
