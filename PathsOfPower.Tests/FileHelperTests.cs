@@ -10,7 +10,7 @@ public class FileHelperTests
     [InlineData(1)]
     [InlineData(2)]
     [InlineData(3)]
-    public void ReadFromFileShouldReturnNotNull(int slotNumber)
+    public void GetSavedGameFromFileShouldReturnNotNull(int slotNumber)
     {
         // Arrange
         var sut = new FileHelper();
@@ -27,7 +27,7 @@ public class FileHelperTests
     [InlineData(-1)]
     [InlineData(0)]
     [InlineData(4)]
-    public void ReadFromFileShouldThrowFileNotFoundExceptionWhenSlotNumberIsOutOfBounds(int slotNumber)
+    public void GetSavedGameFromFileShouldThrowFileNotFoundExceptionWhenSlotNumberIsOutOfBounds(int slotNumber)
     {
         // Arrange
         var sut = new FileHelper();
@@ -35,6 +35,21 @@ public class FileHelperTests
         // Act
         // Assert
         Assert.Throws<FileNotFoundException>(() => sut.GetSavedGameFromFile(slotNumber));
+    }
+
+    [Fact]
+    public void GetSavedGameFromFileFullPathShouldRunOnce()
+    {
+        // Arrange
+        var sut = new FileHelper();
+        var path = "../../../../PathsOfPower/SavedGameFiles/slot1.json";
+
+        // Act
+        var actual = sut.GetSavedGameFromFile(path);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
     }
 
     [Theory]
