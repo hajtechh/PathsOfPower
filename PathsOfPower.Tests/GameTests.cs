@@ -12,7 +12,8 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object);
 
         // Act
         var actual = sut.GetQuests(1);
@@ -27,10 +28,11 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
+        var mockGraphics = new Mock<Graphics>();
         mock.SetupSequence(x => x.GetInput(It.IsAny<string>()))
             .Returns("")
             .Returns("Ron");
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object);
 
         // Act
         var actual = sut.CreateCharacter();
@@ -47,7 +49,8 @@ public class GameTests
         var expected = @"{""Character"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object)
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object)
         {
             Player = new Player()
             {
@@ -69,7 +72,8 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object);
         var jsonString = @"{""Character"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
 
         // Act
@@ -92,7 +96,8 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object);
         var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
         mockCharacter.Object.MoralitySpectrum = 0;
@@ -116,7 +121,8 @@ public class GameTests
         // Arrange
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object);
 
         var mockCharacter = new Mock<Player>();
         mockCharacter.SetupAllProperties();
@@ -141,7 +147,8 @@ public class GameTests
 
         var mock = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object)
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mock.Object, mockGraphics.Object, mockFileHelper.Object)
         {
             Player = mockCharacter.Object
         };
@@ -178,7 +185,8 @@ public class GameTests
 
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mockUserInteraction.Object, mockGraphics.Object, mockFileHelper.Object);
         sut.Player = mockPlayer.Object;
 
         //Act 
@@ -194,11 +202,12 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
+        var mockGraphics = new Mock<Graphics>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '9';
         mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
 
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+        var sut = new Game(mockUserInteraction.Object, mockGraphics.Object, mockFileHelper.Object);
 
         // Act
         // Assert
@@ -211,11 +220,12 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
+        var mockGraphics = new Mock<Graphics>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '1';
         mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
 
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+        var sut = new Game(mockUserInteraction.Object, mockGraphics.Object, mockFileHelper.Object);
 
         // Act
         var actual = sut.WriteToFile(slotNumber, jsonContent);
