@@ -171,8 +171,6 @@ public class Game
         {
             Player.PerformAttack(enemy);
             enemy.PerformAttack(Player);
-            //PerformAttack(Player, enemy);
-            //PerformAttack(enemy, Player);
         }
 
         if (Player.CurrentHealthPoints <= 0)
@@ -183,11 +181,6 @@ public class Game
         }
         return true;
     }
-
-    //private void PerformAttack(ICharacter attacker, ICharacter target)
-    //{
-    //    target.CurrentHealthPoints -= attacker.Power;
-    //}
 
     private void QuitGame()
     {
