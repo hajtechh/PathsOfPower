@@ -10,8 +10,8 @@ public class Game
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
 
-    private const int MinSlotNumber = 1;
-    private const int MaxSlotNumber = 3;
+    private const char MinSlotNumber = '1';
+    private const char MaxSlotNumber = '3';
 
     public List<Quest> Quests { get; set; }
     public Player Player { get; set; }
@@ -214,7 +214,7 @@ public class Game
 
         var jsonString = SerializeSavedGame(questIndex);
 
-        // Write tests?
+        // Write you have saved the game?
         var isSaved = WriteToFile(choice, jsonString);
     }
 
@@ -249,7 +249,7 @@ public class Game
     {
         try
         {
-            if (choice >= MinSlotNumber || choice <= MaxSlotNumber)
+            if (choice >= MinSlotNumber && choice <= MaxSlotNumber)
             {
                 _fileHelper.WriteAllText(jsonString, choice);
                 return true;
@@ -259,7 +259,7 @@ public class Game
         catch (SlotNumberOutOfBoundsException ex)
         {
             _userInteraction.Print(ex.Message);
-            throw ex;
+            throw;
         }
     }
 
