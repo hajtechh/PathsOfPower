@@ -1,31 +1,25 @@
 ﻿using PathsOfPower.Cli;
 using PathsOfPower.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using PathsOfPower.Interfaces;
 
 namespace PathsOfPower;
 
 public class Game
 {
     private readonly IUserInteraction _userInteraction;
-    const string _basePath = "../../../../PathsOfPower/";
-    private readonly string _baseQuestPath = _basePath + "Quests/chapter";
-    private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
-    public List<Quest> Quests { get; set; }
-    public Character Character { get; set; }
+    private readonly IFileHelper _fileHelper;
 
-    public Game(IUserInteraction userInteraction)
+    private const char MinSlotNumber = '1';
+    private const char MaxSlotNumber = '3';
+
+    public List<Quest> Quests { get; set; }
+    public Player Player { get; set; }
+
+    public Game(IUserInteraction userInteraction, IFileHelper fileHelper)
     {
         _userInteraction = userInteraction;
+        _fileHelper = fileHelper;
     }
     public void Run()
     {
@@ -58,16 +52,16 @@ public class Game
         var quest = GetQuestFromIndex(questIndex, Quests);
 
         var isRunning = true;
-        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        var keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
-            {ConsoleKey.S, () => SaveGame(quest.Index) } // funkar inte på slutquests
+            {ConsoleKey.S, () => SaveGame(quest.Index) }
         };
         while (isRunning)
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+                var key = Console.ReadKey(intercept: true);
 
                 if (keyActions.TryGetValue(key.Key, out Action action))
                 {
@@ -78,19 +72,33 @@ public class Game
 
             PrintQuest(quest);
 
-            if (quest.Options is not null /* || quest.Options.Count() > 0*/)
+            if (quest.Options is not null)
             {
+                if (quest.Enemy != null)
+                {
+                    _userInteraction.GetChar();
+                    FightEnemy(quest.Enemy, quest.Index);
+                }
+                if (quest.PowerUpScore != null)
+                {
+                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                }
+
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
                 {
                     var test2 = int.Parse(choice.KeyChar.ToString());
                     var option = quest.Options.FirstOrDefault(x => x.Index == test2);
-                    if(option != null && option.MoralityScore != 0)
+                    if (option != null && option.MoralityScore != 0)
                     {
                         ApplyMoralityScore(option.MoralityScore);
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
+                    if (quest.Item is not null)
+                    {
+                        AddInventoryItem(quest.Item);
+                    }
                 }
                 else
                 {
@@ -100,11 +108,25 @@ public class Game
                     }
                 }
             }
-            else if (File.Exists($"{_baseQuestPath}{chapter + 1}.json"))
+            else if (_fileHelper.IsNextChapterExisting(chapter))
             {
+                if (quest.Enemy != null)
+                {
+                    _userInteraction.GetChar();
+                    FightEnemy(quest.Enemy, quest.Index);
+                }
+                if (quest.PowerUpScore != null)
+                {
+                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                }
+
                 chapter++;
                 Quests = GetQuests(chapter);
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
+                if (quest != null && quest.Item is not null)
+                {
+                    AddInventoryItem(quest.Item);
+                }
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {
@@ -123,21 +145,15 @@ public class Game
         }
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
-    {
-        Character.MoralitySpectrum += moralityScore ?? 0;
-    }
-
     public void LoadGame()
     {
         PrintSavedGames();
 
         var slotNumber = _userInteraction.GetChar().KeyChar;
-        var path = $"{_baseSavePath}{slotNumber}.json";
         string? text;
         try
         {
-            text = ReadFromFile(path);
+            text = _fileHelper.GetSavedGameFromFile(slotNumber);
         }
         catch (FileNotFoundException ex)
         {
@@ -145,18 +161,50 @@ public class Game
             return;
         }
         var chosenGame = DeserializeSavedGame(text);
-        Character = chosenGame.Character;
+        Player = chosenGame.Player;
         StartGame(chosenGame.QuestIndex);
     }
 
-    public string? ReadFromFile(string path)
+    public void ApplyPowerUpScoreToPlayer(int? powerUpScore)
     {
-        return File.ReadAllText(path);
+        Player.Power += powerUpScore ?? 0;
+    }
+
+    public bool FightEnemy(Enemy enemy, string questIndex)
+    {
+        while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
+        {
+            PerformAttack(Player, enemy);
+            PerformAttack(enemy, Player);
+        }
+
+        if (Player.CurrentHealthPoints <= 0)
+        {
+            Player.CurrentHealthPoints = Player.MaxHealthPoints;
+            SaveGame(questIndex);
+            QuitGame();
+        }
+        return true;
+    }
+
+    private void PerformAttack(ICharacter attacker, ICharacter target)
+    {
+        target.CurrentHealthPoints -= attacker.Power;
+    }
+
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        Player.MoralitySpectrum += moralityScore ?? 0;
     }
 
     private void QuitGame()
     {
         Environment.Exit(0);
+    }
+
+    public void AddInventoryItem(InventoryItem item)
+    {
+        Player.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -166,17 +214,18 @@ public class Game
 
         var jsonString = SerializeSavedGame(questIndex);
 
-        WriteToFile(choice, jsonString);
+        // Write you have saved the game?
+        var isSaved = WriteToFile(choice, jsonString);
     }
 
     public void PrintSavedGames()
     {
-        var savedGamesDirectory = _basePath + "SavedGameFiles/";
         var savedGames = new List<SavedGame>();
 
-        foreach (var filePath in Directory.GetFiles(savedGamesDirectory, "*.json"))
+        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        foreach (var filePath in files)
         {
-            var jsonContent = File.ReadAllText(filePath);
+            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
             var savedGame = new SavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
@@ -189,17 +238,29 @@ public class Game
         for (int i = 0; i < savedGames.Count; i++)
         {
             var text = $"[{i + 1}] ";
-            text += savedGames[i].Character != null ?
-                savedGames[i].Character.Name :
+            text += savedGames[i].Player != null ?
+                savedGames[i].Player.Name :
                 "Empty slot";
             _userInteraction.Print($"{text} \r\n -------");
         }
     }
 
-    public void WriteToFile(char choice, string jsonString)
+    public bool WriteToFile(char choice, string jsonString)
     {
-        var path = $"{_baseSavePath}{choice}.json";
-        File.WriteAllText(path, jsonString);
+        try
+        {
+            if (choice >= MinSlotNumber && choice <= MaxSlotNumber)
+            {
+                _fileHelper.WriteAllText(jsonString, choice);
+                return true;
+            }
+            throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+        }
+        catch (SlotNumberOutOfBoundsException ex)
+        {
+            _userInteraction.Print(ex.Message);
+            throw;
+        }
     }
 
     public string SerializeSavedGame(string questIndex)
@@ -207,7 +268,7 @@ public class Game
         return JsonSerializer.Serialize(
             new SavedGame
             {
-                Character = Character,
+                Player = Player,
                 QuestIndex = questIndex
             });
     }
@@ -250,16 +311,16 @@ public class Game
 
     public List<Quest> GetQuests(int chapterNumber)
     {
-        var jsonText = File.ReadAllText($"{_baseQuestPath}{chapterNumber}.json");
+        var jsonText = _fileHelper.GetSavedGameFromFile(chapterNumber);
         return JsonSerializer.Deserialize<List<Quest>>(jsonText);
     }
 
     public void Setup()
     {
-        Character = CreateCharacter();
+        Player = CreateCharacter();
     }
 
-    public Character CreateCharacter()
+    public Player CreateCharacter()
     {
         _userInteraction.ClearConsole();
         var name = _userInteraction.GetInput("Choose the name of your character.");
@@ -269,10 +330,11 @@ public class Game
             name = _userInteraction.GetInput("Your character have to have a name.");
         }
 
-        return new Character()
+        return new Player()
         {
             Name = name,
-            MoralitySpectrum = 0
+            MoralitySpectrum = 0,
+            InventoryItems = new List<InventoryItem>()
         };
     }
 }

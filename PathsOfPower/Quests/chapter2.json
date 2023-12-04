@@ -78,11 +78,15 @@
   },
   {
     "Index": "2.1.2.1",
-    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory."
+    "Description": "You find a bottle of Wiggenweld potion in a corner. It has been added to your inventory.",
+    "Item": {
+      "Name": "Wigenweld potion"
+    }
   },
   {
     "Index": "2.1.2.2",
-    "Description": "After a few practice-runs, you perfect a spellcast.(+power)" 
+    "Description": "After a few practice-runs, you perfect a spellcast.",
+    "PowerUpScore": 15
   },
 
   {
@@ -106,14 +110,23 @@
   },
   {
     "Index": "2.2.1",
-    "Description": "A bottle of Draught of Living Death has been added to your inventory."
+    "Description": "A bottle of Draught of Living Death has been added to your inventory.",
+    "Item": {
+      "Name": "Draught of Living Death"
+    }
   },
   {
     "Index": "2.2.2",
-    "Description": "A bottle of Wiggenweld potion has been added to your inventory."
+    "Description": "A bottle of Wiggenweld potion has been added to your inventory.",
+    "Item": {
+      "Name": "Wiggenweld potion"
+    }
   },
   {
     "Index": "2.2.3",
-    "Description": "A bottle of Veritaserum has been added to your inventory."
+    "Description": "A bottle of Veritaserum has been added to your inventory.",
+    "Item": {
+      "Name": "Veritaserum"
+    }
   }
 ]
