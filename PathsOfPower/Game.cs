@@ -91,7 +91,7 @@ public class Game
                     var option = quest.Options.FirstOrDefault(x => x.Index == test2);
                     if (option != null && option.MoralityScore != 0)
                     {
-                        ApplyMoralityScore(option.MoralityScore);
+                        Player.ApplyMoralityScore(option.MoralityScore);
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
@@ -192,10 +192,6 @@ public class Game
         target.CurrentHealthPoints -= attacker.Power;
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
-    {
-        Player.MoralitySpectrum += moralityScore ?? 0;
-    }
 
     private void QuitGame()
     {

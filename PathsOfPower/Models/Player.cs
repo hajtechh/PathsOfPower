@@ -24,4 +24,9 @@ public class Player : ICharacter
         InventoryItems ??= new List<InventoryItem>();
         InventoryItems.Add(item);
     }
+
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        MoralitySpectrum += moralityScore ?? 0;
+    }
 }
