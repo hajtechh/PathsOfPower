@@ -1,7 +1,4 @@
-﻿using PathsOfPower.Helpers;
-using PathsOfPower.Interfaces;
-
-namespace PathsOfPower.Tests;
+﻿namespace PathsOfPower.Tests;
 
 public class FileHelperTests
 {
