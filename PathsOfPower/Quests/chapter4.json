@@ -11,11 +11,11 @@
   },
   {
     "Index": "4.1",
-    "Description": "The broken part is barely hanging on by a few black threads, or... pieces of hair. You trace the shape of the wand, over the small spheres that are disturbing the, otherwise ordinarily looking, wand-shape.",
+    "Description": "The broken part is barely hanging on by a few thing, black, threads. You trace the shape of the wand, over the small spheres that are disturbing the, otherwise ordinarily looking, straight wand-shape.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Look for more information in the library"
+        "Name": "Look for information in the library"
       },
       {
         "Index": 2,
@@ -33,17 +33,13 @@
       },
       {
         "Index": 2,
-        "Name": "History of Magic"
-      },
-      {
-        "Index": 3,
         "Name": "Herbology"
       }
     ]
   },
   {
     "Index": "4.1.1.1",
-    "Description": "You read several books in the Magical Creatures section without luck, until you come across a chapter about thestrals.",
+    "Description": "You read several books in the Magical Creatures section without luck, until you come across a chapter about thestrals. Something about their hair looks familiar.",
     "Options": [
       {
         "Index": 1,
@@ -58,7 +54,7 @@
 
   {
     "Index": "4.1.1.2",
-    "Description": "You read several books in the History of Magic section without luck, until you come across a chapter about the Battle of Hogwarts.",
+    "Description": "You read several books in the Herbology section without luck, until you come across a chapter about elderwood. You glance over a picture of it, and the hue looks familiar.",
     "Options": [
       {
         "Index": 1,
@@ -68,36 +64,74 @@
   },
   {
     "Index": "4.1.1.2.1",
-    "Description": "You read the story of the Battle of Hogwarts."
-  },
-
-  {
-    "Index": "4.1.1.3",
-    "Description": "You read several books in the Herbology section without luck, until you come across a chapter about elderwood.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Read the chapter"
-      }
-    ]
-  },
-  {
-    "Index": "4.1.1.3.1",
-    "Description": "You find out that elderwood is the rarest wand wood known, and that it is known to only choose a highly unusual person as their wielder."
+    "Description": "You find out that elderwood is the rarest wand wood, and that it is known to only choose a highly unusual person as their wielder."
   },
 
   {
     "Index": "4.1.2",
-    "Description": "You put the wand in your robe again and head towards Mrs Malfoys office.",
+    "Description": "You put the wand in your robe again and head towards Mrs Malfoys office. You knock on the door and she greets you when you enter the room.",
     "Options": [
       {
         "Index": 1,
-        "Name": ""
+        "Name": "Show her the wand"
       },
       {
         "Index": 2,
-        "Name": ""
+        "Name": "Ask about the wand, without revealiing you have it"
       }
     ]
+  },
+  {
+    "Index": "4.1.2.1",
+    "Description": "You carefully pull the wand out of your robe, and hold it out towards Mrs Malfoy. She gasps and stands up from her chair. She starts reaching for the wand, but right before she touches it, she takes a quick step back. She looks terrified.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask her what she knows"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.1.1",
+    "Description": "She hesitates, then gives you a shocked look. She asks you, if you don't know.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Know what?"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.1.1.1",
+    "Description": "She tells you that you should leave, and the wand that you have in your hand..."
+  },
+
+  {
+    "Index": "4.1.2.2",
+    "Description": "You tell her about a lost wand, and it being broken. You describe the shape and color, and the hair-like core. Mrs Malfoy gives you a suspicious look, and she wonders why you are asking about this wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell her you found it"
+      },
+      {
+        "Index": 2,
+        "Name": "Tell her you read about it somewhere"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.2.1",
+    "Description": "She laughs, and tells you that's impossible. That the wand you're describing, it belonged to some of the most powerful wizards to ever live, and that it had been broken and lost many years ago.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask her to tell you more"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.2.1.1",
+    "Description": "."
   }
 ]
