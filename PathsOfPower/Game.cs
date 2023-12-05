@@ -10,6 +10,7 @@ public class Game
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
 
+    private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
 
@@ -92,9 +93,9 @@ public class Game
                 {
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if (quest.PowerUpScore != null)
+                if (quest.PowerUpScore != 0)
                 {
-                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                    Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
 
                 var choice = _userInteraction.GetChar();
@@ -104,13 +105,13 @@ public class Game
                     var option = quest.Options.FirstOrDefault(x => x.Index == test2);
                     if (option != null && option.MoralityScore != 0)
                     {
-                        ApplyMoralityScore(option.MoralityScore);
+                        Player.ApplyMoralityScore(option.MoralityScore);
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
                     if (quest != null && quest.Item is not null)
                     {
-                        AddInventoryItem(quest.Item);
+                        Player.AddInventoryItem(quest.Item);
                     }
                 }
                 else
@@ -128,9 +129,9 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if (quest.PowerUpScore != null)
+                if (quest.PowerUpScore != 0)
                 {
-                    ApplyPowerUpScoreToPlayer(quest.PowerUpScore);
+                    Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
 
                 chapter++;
@@ -138,7 +139,7 @@ public class Game
                 quest = GetQuestFromIndex(chapter.ToString(), Quests);
                 if (quest != null && quest.Item is not null)
                 {
-                    AddInventoryItem(quest.Item);
+                    Player.AddInventoryItem(quest.Item);
                 }
                 var input = _userInteraction.GetChar();
                 if (keyActions.TryGetValue(input.Key, out Action action))
@@ -209,27 +210,22 @@ public class Game
         StartGame(chosenGame.QuestIndex);
     }
 
-    public void ApplyPowerUpScoreToPlayer(int? powerUpScore)
-    {
-        Player.Power += powerUpScore ?? 0;
-    }
-
     public bool FightEnemy(Enemy enemy, string questIndex)
     {
         var fightLog = _graphics.GetEnemyForFightLog(enemy);
-        while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
+        while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
-            PerformAttack(Player, enemy);
+            Player.PerformAttack(enemy);
             fightLog += _graphics.GetActionForFightLog(Player, enemy);
-            PerformAttack(enemy, Player);
+            enemy.PerformAttack(Player);
             fightLog += _graphics.GetActionForFightLog(enemy, Player);
         }
 
-        if (Player.CurrentHealthPoints <= 0)
+        if (Player.HealthPoints <= 0)
         {
             fightLog += _graphics.GetSurvivorForFightLog(enemy);
             _userInteraction.Print(fightLog);
-            Player.CurrentHealthPoints = Player.MaxHealthPoints;
+            Player.HealthPoints = MaxHealthPoints;
             _userInteraction.GetChar();
             SaveGame(questIndex);
             QuitGame();
@@ -239,19 +235,9 @@ public class Game
         return true;
     }
 
-    private void PerformAttack(ICharacter attacker, ICharacter target)
-    {
-        target.CurrentHealthPoints -= attacker.Power;
-    }
-
     private void QuitGame()
     {
         Environment.Exit(0);
-    }
-
-    public void AddInventoryItem(InventoryItem item)
-    {
-        Player.InventoryItems.Add(item);
     }
 
     public void SaveGame(string questIndex)
@@ -358,10 +344,10 @@ public class Game
 
     public void Setup()
     {
-        Player = CreateCharacter();
+        Player = CreatePlayer();
     }
 
-    public Player CreateCharacter()
+    public Player CreatePlayer()
     {
         _userInteraction.ClearConsole();
         var name = _userInteraction.GetInput("Choose the name of your character.");
@@ -371,11 +357,6 @@ public class Game
             name = _userInteraction.GetInput("Your character have to have a name.");
         }
 
-        return new Player()
-        {
-            Name = name,
-            MoralitySpectrum = 0,
-            InventoryItems = new List<InventoryItem>()
-        };
+        return new Player(name);
     }
 }
