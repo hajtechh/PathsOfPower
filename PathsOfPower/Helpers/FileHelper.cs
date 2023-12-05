@@ -25,4 +25,7 @@ public class FileHelper : IFileHelper
 
     public string? GetSavedGameFromFile(string fullPath) =>
         File.ReadAllText(fullPath);
+
+    public string? GetQuestsFromFile(int chapterNumber) =>
+        File.ReadAllText($"{_baseQuestPath}{chapterNumber}.json");
 }
