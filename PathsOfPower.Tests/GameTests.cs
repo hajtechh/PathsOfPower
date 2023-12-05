@@ -78,83 +78,6 @@ public class GameTests
         Assert.NotNull(actual.QuestIndex);
     }
 
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(13)]
-    public void ApplyMoralityScoreAppliesExpectedValueToCharactersMoralitySpectrum(int expected)
-    {
-        // Arrange
-        var mock = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
-        var mockCharacter = new Mock<Player>();
-        mockCharacter.SetupAllProperties();
-        mockCharacter.Object.MoralitySpectrum = 0;
-        sut.Player = mockCharacter.Object;
-
-        // Act
-        sut.Player.ApplyMoralityScore(expected);
-        var actual = sut.Player.MoralitySpectrum;
-
-        // Assert
-        Assert.Equal(expected, actual);
-    }
-
-    [Theory]
-    [InlineData(-10, 0)]
-    [InlineData(0, 10)]
-    [InlineData(10, 20)]
-    [InlineData(123, 133)]
-    public void ApplyPowerUpScoreToPlayerAppliesExpectedValueToPlayersPower(int powerUpScore, int expected)
-    {
-        // Arrange
-        var mock = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
-
-        var mockCharacter = new Mock<Player>();
-        mockCharacter.SetupAllProperties();
-        mockCharacter.Object.Power = 10;
-        sut.Player = mockCharacter.Object;
-
-        // Act
-        sut.Player.ApplyPowerUpScore(powerUpScore);
-        var actual = sut.Player.Power;
-
-        // Assert
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void AddInventoryItemShouldAddExpectedItemToInventory()
-    {
-        // Arrange
-        var mockCharacter = new Mock<Player>();
-        mockCharacter.SetupAllProperties();
-        mockCharacter.Object.InventoryItems = new List<InventoryItem>();
-
-        var mock = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object)
-        {
-            Player = mockCharacter.Object
-        };
-
-        var expected = new InventoryItem()
-        {
-            Name = "The Elder Wand"
-        };
-
-        // Act
-        sut.Player.AddInventoryItem(expected);
-        var actual = sut.Player.InventoryItems.FirstOrDefault();
-
-        // Assert
-        Assert.Equal(expected, actual);
-    }
-
     [Fact]
     public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
     {
@@ -162,20 +85,22 @@ public class GameTests
         var mockPlayer = new Mock<Player>();
         mockPlayer.SetupAllProperties();
         mockPlayer.Object.Power = 10;
-        mockPlayer.Object.CurrentHealthPoints = 10;
+        mockPlayer.Object.HealthPoints = 10;
 
         var mockQuest = new Mock<Quest>();
         mockQuest.SetupAllProperties();
-        mockQuest.Object.Enemy = new Enemy()
+        mockQuest.Object.Enemy = new Enemy("Haj")
         {
-            CurrentHealthPoints = 10,
+            HealthPoints = 10,
             Power = 1
         };
 
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
-        sut.Player = mockPlayer.Object;
+        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object)
+        {
+            Player = mockPlayer.Object
+        };
 
         //Act 
         var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());

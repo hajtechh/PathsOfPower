@@ -10,6 +10,7 @@ public class Game
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
 
+    private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
 
@@ -79,7 +80,7 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if (quest.PowerUpScore != null)
+                if (quest.PowerUpScore != 0)
                 {
                     Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
@@ -115,7 +116,7 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if (quest.PowerUpScore != null)
+                if (quest.PowerUpScore != 0)
                 {
                     Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
@@ -167,15 +168,15 @@ public class Game
 
     public bool FightEnemy(Enemy enemy, string questIndex)
     {
-        while (Player.CurrentHealthPoints > 0 && enemy.CurrentHealthPoints > 0)
+        while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
             enemy.PerformAttack(Player);
         }
 
-        if (Player.CurrentHealthPoints <= 0)
+        if (Player.HealthPoints <= 0)
         {
-            Player.CurrentHealthPoints = Player.MaxHealthPoints;
+            Player.HealthPoints = MaxHealthPoints;
             SaveGame(questIndex);
             QuitGame();
         }
