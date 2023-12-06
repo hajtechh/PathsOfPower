@@ -2,6 +2,7 @@
 
 public interface IJsonHelper
 {
+    T? Deserialize<T>(string jsonContent)
+        where T : class;
     string? Serialize<T>(T model);
-    string? Deserialize<T>(T model);
 }
