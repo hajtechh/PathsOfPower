@@ -35,7 +35,7 @@ public class FileHelperTests
     }
 
     [Fact]
-    public void GetSavedGameFromFileFullPathShouldRunOnce()
+    public void GetSavedGameFromFileFullPathShouldNotReturnNullOrEmpty()
     {
         // Arrange
         var sut = new FileHelper();
@@ -106,5 +106,21 @@ public class FileHelperTests
 
         // Assert
         sutMockFileHelper.Verify(x => x.WriteAllText(jsonContent, slotNumber), Times.Once);
+    }
+
+
+    [Fact]
+    public void GetQuestsFromFileShouldNotReturnNullOrEmpty()
+    {
+        // Arrange
+        var sut = new FileHelper();
+        var chapterNumber = 1;
+
+        // Act
+        var actual = sut.GetQuestsFromFile(chapterNumber);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
     }
 }
