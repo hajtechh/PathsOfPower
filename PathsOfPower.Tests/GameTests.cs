@@ -1,4 +1,6 @@
 ﻿using Moq;
+using PathsOfPower.Cli.Interfaces;
+using PathsOfPower.Exceptions;
 using PathsOfPower.Helpers;
 using PathsOfPower.Interfaces;
 

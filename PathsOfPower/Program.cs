@@ -1,5 +1,6 @@
 ﻿using PathsOfPower;
 using PathsOfPower.Cli;
+using PathsOfPower.Cli.Interfaces;
 using PathsOfPower.Helpers;
 using PathsOfPower.Interfaces;
 

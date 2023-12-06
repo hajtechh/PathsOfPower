@@ -1,7 +1,8 @@
-﻿using PathsOfPower.Cli;
-using PathsOfPower.Models;
+﻿using PathsOfPower.Models;
 using System.Text.Json;
 using PathsOfPower.Interfaces;
+using PathsOfPower.Exceptions;
+using PathsOfPower.Cli.Interfaces;
 
 namespace PathsOfPower;
 
@@ -14,8 +15,8 @@ public class Game
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
 
-    public List<Quest> Quests { get; set; }
-    public Player Player { get; set; }
+    public List<Quest>? Quests { get; set; }
+    public Player? Player { get; set; }
 
     public Game(IUserInteraction userInteraction, IFileHelper fileHelper)
     {
