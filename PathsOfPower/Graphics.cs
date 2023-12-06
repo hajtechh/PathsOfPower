@@ -1,6 +1,7 @@
 ﻿using PathsOfPower.Interfaces;
 using PathsOfPower.Models;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace PathsOfPower;
@@ -40,7 +41,9 @@ public class Graphics
 
     public string GetQuestWithOptions(Quest quest)
     {
-        var text = $"{_rowDeliminator}{NewLine}";
+        var text = GetCurrentChapterAsString(quest);
+        text += NewLine;
+        text += $"{_rowDeliminator}{NewLine}";
         if (quest.Description.Length > MaxLength)
         {
             var splitPattern = @"(?<=[.,?!])";
@@ -69,7 +72,7 @@ public class Graphics
     public string GetPlayerInventoryAsString(Player player)
     {
         var text = $"{_rowDeliminatorInventory}{NewLine}";
-        if (player.InventoryItems.Count == 0)
+        if (player.InventoryItems != null && player.InventoryItems.Count == 0)
         {
             text += $"{InventoryBorder}";
             text += $"{_inventory.PadLeft(PadLeft + _emptyinventory.Length / 2).PadRight(PadRight)}{InventoryBorder}{NewLine}";
@@ -91,7 +94,7 @@ public class Graphics
 
     public string GetCharacterStatisticsString(ICharacter character)
     {
-        return $"Health: {character.CurrentHealthPoints}/{character.MaxHealthPoints} | Power: {character.Power}{NewLine}";
+        return $"Current health: {character.HealthPoints} | Power: {character.Power}{NewLine}";
     }
 
     public string GetSavedGamesString(List<SavedGame> savedGames)
@@ -143,12 +146,20 @@ public class Graphics
     }
     public string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
     {
-        return $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.CurrentHealthPoints} healthpoints left.{NewLine}";
+        return $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.HealthPoints} healthpoints left.{NewLine}";
     }
 
     public string GetSurvivorForFightLog(ICharacter character)
     {
-        return $"{character.Name} wins, with {character.CurrentHealthPoints} healthpoints remaining!{NewLine}{_continueText}";
+        return $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NewLine}{_continueText}";
+    }
+
+    public string GetCurrentChapterAsString(Quest quest)
+    {
+        var questIndex = quest.Index.Split('.');
+        var currentChapter = questIndex.FirstOrDefault();
+        var text = $"Chapter {currentChapter}";
+        return text;
     }
 }
 

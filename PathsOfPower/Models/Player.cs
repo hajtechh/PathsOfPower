@@ -15,6 +15,7 @@ public class Player : ICharacter
         Name = name;
         HealthPoints = 100;
         Power = 10;
+        InventoryItems = new List<InventoryItem>();
     }
 
     public void AddInventoryItem(InventoryItem item)
