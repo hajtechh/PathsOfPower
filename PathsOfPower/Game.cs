@@ -2,6 +2,8 @@
 using PathsOfPower.Interfaces;
 using PathsOfPower.Exceptions;
 using PathsOfPower.Cli.Interfaces;
+using System.Text;
+using Microsoft.VisualBasic;
 
 namespace PathsOfPower;
 
@@ -16,21 +18,25 @@ public class Game
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
 
+    private readonly Graphics _graphics;
     public List<Quest>? Quests { get; set; }
     public Player? Player { get; set; }
 
     public Game(IUserInteraction userInteraction,
+        Graphics graphics,
         IFileHelper fileHelper,
         IQuestService questService,
         IJsonHelper jsonHelper)
     {
         _userInteraction = userInteraction;
+        _graphics = graphics;
         _fileHelper = fileHelper;
         _questService = questService;
         _jsonHelper = jsonHelper;
     }
     public void Run()
     {
+        _userInteraction.ClearConsole();
         PrintMenu();
 
         var menuChoice = _userInteraction.GetChar().KeyChar;
@@ -53,7 +59,7 @@ public class Game
 
     private void StartGame(string questIndex)
     {
-        var currentChapter = questIndex.Substring(0, 1);
+        var currentChapter = questIndex[..1];
         int chapter = int.Parse(currentChapter);
         Quests = GetQuests(chapter);
 
@@ -64,31 +70,47 @@ public class Game
         // Setup keyActions
         var keyActions = new Dictionary<ConsoleKey, Action>
         {
-            { ConsoleKey.Q, QuitGame },
-            { ConsoleKey.S, () => SaveGame(quest.Index) }
+            { ConsoleKey.M, () => GameMenu(quest.Index) },
         };
 
         var isRunning = true;
         while (isRunning)
         {
+            if (Player is null)
+                return;
+
             if (Console.KeyAvailable)
             {
                 var key = Console.ReadKey(intercept: true);
 
-                if (keyActions.TryGetValue(key.Key, out Action action))
+                if (keyActions.TryGetValue(key.Key, out var action))
                 {
                     action.Invoke();
                 }
             }
             _userInteraction.ClearConsole();
 
+            var menuButton = _graphics.GetGameMenuButton();
+            _userInteraction.Print(menuButton);
+
+            var statisticsText = Graphics.GetCharacterStatisticsString(Player);
+            _userInteraction.Print(statisticsText);
+
+            var moralityText = Graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+            _userInteraction.Print(moralityText);
+
+            if (quest is null)
+                return;
+
             PrintQuest(quest);
+
+            var inventory = _graphics.GetPlayerInventoryAsString(Player);
+            _userInteraction.Print(inventory);
 
             if (quest.Options is not null)
             {
                 if (quest.Enemy != null)
                 {
-                    _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
                 if (Player is not null && quest.PowerUpScore != 0)
@@ -106,15 +128,18 @@ public class Game
                         Player.ApplyMoralityScore(option.MoralityScore);
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
-                    quest = GetQuestFromIndex(index, Quests);
-                    if (Player is not null && quest.Item is not null)
+
+                    if (Quests is not null)
+                        quest = GetQuestFromIndex(index, Quests);
+
+                    if (Player is not null && quest is not null && quest.Item is not null)
                     {
                         Player.AddInventoryItem(quest.Item);
                     }
                 }
                 else
                 {
-                    if (keyActions.TryGetValue(choice.Key, out Action action))
+                    if (keyActions.TryGetValue(choice.Key, out var action))
                     {
                         action.Invoke();
                     }
@@ -124,7 +149,6 @@ public class Game
             {
                 if (quest.Enemy != null)
                 {
-                    _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
                 if (Player is not null && quest.PowerUpScore != 0)
@@ -141,8 +165,12 @@ public class Game
                 {
                     Player.AddInventoryItem(quest.Item);
                 }
+
+                var continueText = _graphics.GetContinueText();
+                _userInteraction.Print(continueText);
                 var input = _userInteraction.GetChar();
-                if (keyActions.TryGetValue(input.Key, out Action action))
+
+                if (keyActions.TryGetValue(input.Key, out var action))
                 {
                     action.Invoke();
                 }
@@ -159,16 +187,47 @@ public class Game
         }
     }
 
+    public void ApplyMoralityScore(int? moralityScore)
+    {
+        Player.MoralitySpectrum += moralityScore ?? 0;
+    }
+
+    public void GameMenu(string questIndex)
+    {
+        _userInteraction.ClearConsole();
+        var text = _graphics.GetGameMenuString();
+        _userInteraction.Print(text);
+
+        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        {
+          { ConsoleKey.D1, () => StartGame(questIndex) },
+          { ConsoleKey.D2, () => SaveGame(questIndex) },
+          { ConsoleKey.D3, Run },
+          { ConsoleKey.D4, QuitGame },
+        };
+
+        var choice = _userInteraction.GetChar();
+
+        if (keyActions.TryGetValue(choice.Key, out var action))
+        {
+            action.Invoke();
+        }
+        else
+        {
+            GameMenu(questIndex);
+        }
+    }
+
     public void LoadGame()
     {
         PrintSavedGames();
 
         var input = _userInteraction.GetChar().KeyChar;
         var slotNumber = (int)char.GetNumericValue(input);
-        string? text;
+        var text = string.Empty;
         try
         {
-            text = _fileHelper.GetSavedGameFromFile(slotNumber);
+            text += _fileHelper.GetSavedGameFromFile(slotNumber);
         }
         catch (FileNotFoundException ex)
         {
@@ -176,6 +235,8 @@ public class Game
             return;
         }
         var chosenGame = DeserializeSavedGame(text);
+        if (chosenGame is null)
+            return;
         Player = chosenGame.Player;
         StartGame(chosenGame.QuestIndex);
     }
@@ -185,17 +246,37 @@ public class Game
         if (Player is null)
             return;
 
+        var strings = new List<string>
+        {
+            Graphics.GetEnemyForFightLog(enemy)
+        };
+
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
+            strings.Add(Graphics.GetActionForFightLog(Player, enemy));
+
             enemy.PerformAttack(Player);
+            strings.Add(Graphics.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
+            strings.Add(_graphics.GetSurvivorForFightLog(enemy));
+            var fightLog = Graphics.BuildString(strings);
+            _userInteraction.Print(fightLog);
+
             Player.HealthPoints = MaxHealthPoints;
+            _userInteraction.GetChar();
             SaveGame(questIndex);
             QuitGame();
+        }
+        else
+        {
+
+            strings.Add(_graphics.GetSurvivorForFightLog(Player));
+            var fightLog = Graphics.BuildString(strings);
+            _userInteraction.Print(fightLog);
         }
     }
 
@@ -211,8 +292,22 @@ public class Game
 
         var jsonString = SerializeSavedGame(questIndex);
 
-        // Write you have saved the game?
-        var isSaved = WriteToFile(choice, jsonString);
+        if (jsonString is not null)
+        {
+            var isSaved = WriteToFile(choice, jsonString);
+
+            if (isSaved)
+            {
+                var savedGame = DeserializeSavedGame(jsonString);
+                if (savedGame is not null)
+                {
+                    var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
+                    _userInteraction.Print(text);
+                }
+            }
+        }
+        _userInteraction.GetChar();
+        GameMenu(questIndex);
     }
 
     public void PrintSavedGames()
@@ -220,6 +315,8 @@ public class Game
         var savedGames = new List<SavedGame>();
 
         var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        if (files is null)
+            return;
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
@@ -231,15 +328,8 @@ public class Game
             savedGames.Add(savedGame ?? new SavedGame());
         }
 
-        _userInteraction.Print("Choose slot\r\n");
-        for (int i = 0; i < savedGames.Count; i++)
-        {
-            var text = $"[{i + 1}] ";
-            text += savedGames[i].Player != null ?
-                savedGames[i].Player.Name :
-                "Empty slot";
-            _userInteraction.Print($"{text} \r\n -------");
-        }
+        var text = _graphics.GetSavedGamesString(savedGames);
+        _userInteraction.Print(text);
     }
 
     public bool WriteToFile(char choice, string jsonString)
@@ -265,11 +355,7 @@ public class Game
         if (Player is null)
             return null;
 
-        var savedGame = new SavedGame
-        {
-            Player = Player,
-            QuestIndex = questIndex
-        };
+        var savedGame = new SavedGame(Player, questIndex);
         return _jsonHelper.Serialize(savedGame);
     }
 
@@ -280,9 +366,8 @@ public class Game
 
     private void PrintMenu()
     {
-        _userInteraction.Print($"[1] Start new game \r\n" +
-            $"[2] Load game \r\n" +
-            $"[3] Quit game");
+        var menu = _graphics.GetMenu();
+        _userInteraction.Print(menu);
     }
 
     private string CreateQuestIndex(string parentQuestIndex, char choice)
@@ -292,21 +377,13 @@ public class Game
 
     private void PrintQuest(Quest quest)
     {
-        _userInteraction.Print(quest.Description);
-        _userInteraction.Print("---------------------");
-
-        if (quest.Options is null)
-            return;
-
-        foreach (var option in quest.Options)
-        {
-            _userInteraction.Print($"[{option.Index}] - {option.Name}");
-        }
+        var text = _graphics.GetQuestWithOptions(quest);
+        _userInteraction.Print(text);
     }
 
-    private Quest? GetQuestFromIndex(string index, List<Quest> quests)
+    private Quest GetQuestFromIndex(string index, List<Quest> quests)
     {
-        return quests.FirstOrDefault(x => x.Index == index);
+        return quests.First(x => x.Index == index);
     }
 
     public List<Quest>? GetQuests(int chapterNumber)
