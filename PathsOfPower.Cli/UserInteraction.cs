@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using PathsOfPower.Cli.Interfaces;
 
 namespace PathsOfPower.Cli
 {
