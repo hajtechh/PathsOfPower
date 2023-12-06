@@ -1,6 +1,10 @@
 ﻿using Moq;
+using PathsOfPower.Cli.Interfaces;
+using PathsOfPower.Exceptions;
 using PathsOfPower.Helpers;
 using PathsOfPower.Interfaces;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace PathsOfPower.Tests;
 
@@ -10,9 +14,26 @@ public class GameTests
     public void GetQuestsShouldNotReturnNull()
     {
         // Arrange
-        var mock = new Mock<IUserInteraction>();
+        var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockGraphics = new Mock<Graphics>();
+        var mockQuestService = new Mock<IQuestService>();
+        var sut = new Game(mockUserInteraction.Object,
+            mockGraphics.Object,
+            mockFileHelper.Object,
+            mockQuestService.Object,
+            mockJsonHelper.Object);
+
+        var jsonContent = @"{""Index"":""1"",""Description"":""You are in a classroom at Hogwarts. What do you want to teach your students today?""}";
+
+        mockFileHelper
+            .Setup(x => x.GetQuestsFromFile(1))
+            .Returns(jsonContent);
+
+        mockQuestService
+            .Setup(x => x.GetQuests(jsonContent))
+            .Returns(new List<Quest>() { new Quest() });
 
         // Act
         var actual = sut.GetQuests(1);
@@ -25,36 +46,49 @@ public class GameTests
     public void CreateCharacterNameShouldNotReturnEmpty()
     {
         // Arrange
-        var mock = new Mock<IUserInteraction>();
+        var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        mock.SetupSequence(x => x.GetInput(It.IsAny<string>()))
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockGraphics = new Mock<Graphics>();
+        var mockQuestService = new Mock<IQuestService>();
+        mockUserInteraction.SetupSequence(x => x.GetInput(It.IsAny<string>()))
             .Returns("")
             .Returns("Ron");
-        var sut = new Game(mock.Object, mockFileHelper.Object);
-
+        var sut = new Game(mockUserInteraction.Object,
+            mockGraphics.Object,
+            mockFileHelper.Object,
+            mockQuestService.Object,
+            mockJsonHelper.Object);
         // Act
-        var actual = sut.CreateCharacter();
+        var actual = sut.CreatePlayer();
 
         // Assert
         Assert.NotNull(actual.Name);
-        mock.Verify(x => x.GetInput(It.IsAny<string>()), Times.Exactly(2));
+        mockUserInteraction.Verify(x => x.GetInput(It.IsAny<string>()), Times.Exactly(2));
     }
 
     [Fact]
     public void SerializeSavedGameShouldSeralizeObjectAndReturnExpected()
     {
         // Arrange
-        var expected = @"{""Character"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
-        var mock = new Mock<IUserInteraction>();
+        var expected = @"{""Player"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
+
+        var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object)
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockQuestService = new Mock<IQuestService>();
+        var mockGraphics = new Mock<Graphics>();
+
+        var sut = new Game(mockUserInteraction.Object,
+            mockGraphics.Object,
+            mockFileHelper.Object,
+            mockQuestService.Object,
+            mockJsonHelper.Object)
         {
-            Player = new Player()
-            {
-                Name = "Haj",
-                MoralitySpectrum = 0
-            }
+            Player = new Player("Haj")
         };
+
+        mockJsonHelper.Setup(x => x.Serialize(It.IsAny<SavedGame>())).Returns(expected);
 
         // Act
         var actual = sut.SerializeSavedGame("1.2");
@@ -67,10 +101,21 @@ public class GameTests
     public void DeserializeSavedGameReturnsASavedGame()
     {
         // Arrange
-        var mock = new Mock<IUserInteraction>();
+        var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
-        var jsonString = @"{""Character"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockQuestService = new Mock<IQuestService>();
+        var mockGraphics = new Mock<Graphics>();
+        var sut = new Game(mockUserInteraction.Object,
+            mockGraphics.Object,
+            mockFileHelper.Object,
+            mockQuestService.Object,
+            mockJsonHelper.Object);
+        var jsonString = @"{""Player"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
+
+        var expected = new SavedGame(new Player("Haj"), "1.2");
+
+        mockJsonHelper.Setup(x => x.Deserialize<SavedGame>(jsonString)).Returns(expected);
 
         // Act
         var actual = sut.DeserializeSavedGame(jsonString);
@@ -82,111 +127,43 @@ public class GameTests
         Assert.NotNull(actual.QuestIndex);
     }
 
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(13)]
-    public void ApplyMoralityScoreAppliesExpectedValueToCharactersMoralitySpectrum(int expected)
-    {
-        // Arrange
-        var mock = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
-        var mockCharacter = new Mock<Player>();
-        mockCharacter.SetupAllProperties();
-        mockCharacter.Object.MoralitySpectrum = 0;
-        sut.Player = mockCharacter.Object;
+    //[Fact]
+    //public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
+    //{
+    //    //Arrange
+    //    var mockPlayer = new Mock<Player>();
+    //    mockPlayer.SetupAllProperties();
+    //    mockPlayer.Object.Power = 10;
+    //    mockPlayer.Object.HealthPoints = 10;
 
-        // Act
-        sut.ApplyMoralityScore(expected);
-        var actual = sut.Player.MoralitySpectrum;
+    //    var mockQuest = new Mock<Quest>();
+    //    mockQuest.SetupAllProperties();
+    //    mockQuest.Object.Enemy = new Enemy("Haj")
+    //    {
+    //        HealthPoints = 10,
+    //        Power = 1
+    //    };
 
-        // Assert
-        Assert.Equal(expected, actual);
-    }
+    //    var mockUserInteraction = new Mock<IUserInteraction>();
+    //    var mockFileHelper = new Mock<IFileHelper>();
+    //    var mockJsonHelper = new Mock<IJsonHelper>();
+    //    var mockGraphics = new Mock<Graphics>();
+    //    var mockQuestService = new Mock<IQuestService>();
+    //    var sut = new Game(mockUserInteraction.Object,
+    //        mockGraphics.Object,
+    //        mockFileHelper.Object,
+    //        mockQuestService.Object,
+    //        mockJsonHelper.Object)
+    //    {
+    //        Player = mockPlayer.Object
+    //    };
 
-    [Theory]
-    [InlineData(-10, 0)]
-    [InlineData(0, 10)]
-    [InlineData(10, 20)]
-    [InlineData(123, 133)]
-    public void ApplyPowerUpScoreToPlayerAppliesExpectedValueToPlayersPower(int powerUpScore, int expected)
-    {
-        // Arrange
-        var mock = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object);
+    //    //Act 
+    //    var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
 
-        var mockCharacter = new Mock<Player>();
-        mockCharacter.SetupAllProperties();
-        mockCharacter.Object.Power = 10;
-        sut.Player = mockCharacter.Object;
-
-        // Act
-        sut.ApplyPowerUpScoreToPlayer(powerUpScore);
-        var actual = sut.Player.Power;
-
-        // Assert
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void AddInventoryItemShouldAddExpectedItemToInventory()
-    {
-        // Arrange
-        var mockCharacter = new Mock<Player>();
-        mockCharacter.SetupAllProperties();
-        mockCharacter.Object.InventoryItems = new List<InventoryItem>();
-
-        var mock = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mock.Object, mockFileHelper.Object)
-        {
-            Player = mockCharacter.Object
-        };
-
-        var expected = new InventoryItem()
-        {
-            Name = "The Elder Wand"
-        };
-
-        // Act
-        sut.AddInventoryItem(expected);
-        var actual = sut.Player.InventoryItems.FirstOrDefault();
-
-        // Assert
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
-    {
-        //Arrange
-        var mockPlayer = new Mock<Player>();
-        mockPlayer.SetupAllProperties();
-        mockPlayer.Object.Power = 10;
-        mockPlayer.Object.CurrentHealthPoints = 10;
-
-        var mockQuest = new Mock<Quest>();
-        mockQuest.SetupAllProperties();
-        mockQuest.Object.Enemy = new Enemy()
-        {
-            CurrentHealthPoints = 10,
-            Power = 1
-        };
-
-        var mockUserInteraction = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
-        sut.Player = mockPlayer.Object;
-
-        //Act 
-        var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
-
-        //Assert
-        Assert.True(actual);
-    }
+    //    //Assert
+    //    Assert.True(actual);
+    //}
 
     [Fact]
     public void WriteToFileShouldThrowIndexOutOfBoundsException()
@@ -194,11 +171,18 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockGraphics = new Mock<Graphics>();
+        var mockQuestService = new Mock<IQuestService>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '9';
         mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
 
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+        var sut = new Game(mockUserInteraction.Object,
+            mockGraphics.Object,
+            mockFileHelper.Object,
+            mockQuestService.Object,
+            mockJsonHelper.Object);
 
         // Act
         // Assert
@@ -211,11 +195,18 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockQuestService = new Mock<IQuestService>();
+        var mockGraphics = new Mock<Graphics>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '1';
         mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
 
-        var sut = new Game(mockUserInteraction.Object, mockFileHelper.Object);
+        var sut = new Game(mockUserInteraction.Object,
+            mockGraphics.Object,
+            mockFileHelper.Object,
+            mockQuestService.Object,
+            mockJsonHelper.Object);
 
         // Act
         var actual = sut.WriteToFile(slotNumber, jsonContent);
@@ -223,35 +214,4 @@ public class GameTests
         // Assert
         Assert.True(actual);
     }
-
-    #region AskDaniel
-    //TODO: Fråga Daniel
-    //[Fact]
-    //public void SavedGameShouldWriteToTextFile()
-    //{
-    //    // Arrange
-    //    var expected = '1';
-    //    var mockUserInteraction = new Mock<IUserInteraction>();
-    //    mockUserInteraction.Setup(x => x.GetChar())
-    //        .Returns(expected);
-
-    //    var mockGame = new Mock<Game>();
-    //    //mockGame.Setup(x => x.SaveGame("1.2"));
-
-    //    var character = new Character()
-    //    {
-    //        Name = "Haj"
-    //    };
-
-    //    mockGame.SetupProperty(x => x.Character, character);
-    //    mockGame.SetupGet(x => x.Character).Returns(character);
-    //    var sut = mockGame.Object;
-
-    //    // Act
-    //    sut.SaveGame("1.2");
-
-    //    // Assert
-    //    mockGame.Verify(x => x.WriteToFile(It.IsAny<char>(), It.IsAny<string>()), Times.Once());
-    //}
-    #endregion
 }

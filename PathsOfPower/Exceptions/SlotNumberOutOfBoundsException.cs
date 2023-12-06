@@ -1,4 +1,4 @@
-﻿namespace PathsOfPower;
+﻿namespace PathsOfPower.Exceptions;
 
 public class SlotNumberOutOfBoundsException : Exception
 {

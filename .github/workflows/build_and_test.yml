@@ -25,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: code/test_results
+          path: /home/runner/work/PathsOfPower/PathsOfPower/test_results/
 
         
         

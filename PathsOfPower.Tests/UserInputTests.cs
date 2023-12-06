@@ -1,3 +1,4 @@
+using PathsOfPower.Cli.Interfaces;
 using Xunit;
 
 namespace PathsOfPower.Tests;
