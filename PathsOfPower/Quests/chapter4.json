@@ -1,7 +1,7 @@
 [
   {
     "Index": "4",
-    "Description": "You enter your office, and sit down by your desk. You place the wand in front of you, looking wide-eyed at it. You have never felt the precence of such a powerful object before.",
+    "Description": "You enter your office, and sit down by your desk. You place the wand in front of you, looking wide-eyed at it. You have never felt the presence of such a powerful object before.",
     "Options": [
       {
         "Index": 1,
@@ -25,7 +25,7 @@
   },
   {
     "Index": "4.1.1",
-    "Description": "You hide the wand in your office and head towards the library. Witch section should you go to for answers?",
+    "Description": "You hide the wand in your office and head towards the library. Which section should you go to for answers?",
     "Options": [
       {
         "Index": 1,
