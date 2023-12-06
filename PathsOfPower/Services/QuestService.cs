@@ -6,7 +6,7 @@ namespace PathsOfPower.Services;
 public class QuestService : IQuestService
 {
     public Quest GetQuest()
-    {
+{
         throw new NotImplementedException();
     }
 

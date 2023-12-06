@@ -10,6 +10,7 @@ public class Game
 {
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
+    private readonly IJsonHelper _jsonHelper;
 
     private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
@@ -18,10 +19,13 @@ public class Game
     public List<Quest>? Quests { get; set; }
     public Player? Player { get; set; }
 
-    public Game(IUserInteraction userInteraction, IFileHelper fileHelper)
+    public Game(IUserInteraction userInteraction,
+        IFileHelper fileHelper,
+        IJsonHelper jsonHelper)
     {
         _userInteraction = userInteraction;
         _fileHelper = fileHelper;
+        _jsonHelper = jsonHelper;
     }
     public void Run()
     {
@@ -151,7 +155,8 @@ public class Game
     {
         PrintSavedGames();
 
-        var slotNumber = _userInteraction.GetChar().KeyChar;
+        var input = _userInteraction.GetChar().KeyChar;
+        var slotNumber = (int)char.GetNumericValue(input);
         string? text;
         try
         {
@@ -211,7 +216,7 @@ public class Game
             var savedGame = new SavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
-                savedGame = JsonSerializer.Deserialize<SavedGame>(jsonContent);
+                savedGame = _jsonHelper.Deserialize<SavedGame>(jsonContent);
             }
             savedGames.Add(savedGame ?? new SavedGame());
         }
@@ -247,17 +252,17 @@ public class Game
 
     public string SerializeSavedGame(string questIndex)
     {
-        return JsonSerializer.Serialize(
-            new SavedGame
-            {
-                Player = Player,
-                QuestIndex = questIndex
-            });
+        var savedGame = new SavedGame
+        {
+            Player = Player,
+            QuestIndex = questIndex
+        };
+        return _jsonHelper.Serialize(savedGame);
     }
 
     public SavedGame? DeserializeSavedGame(string jsonString)
     {
-        return JsonSerializer.Deserialize<SavedGame>(jsonString);
+        return _jsonHelper.Deserialize<SavedGame>(jsonString);
     }
 
     private void PrintMenu()
@@ -294,7 +299,7 @@ public class Game
     public List<Quest> GetQuests(int chapterNumber)
     {
         var jsonText = _fileHelper.GetQuestsFromFile(chapterNumber);
-        return JsonSerializer.Deserialize<List<Quest>>(jsonText);
+        return _jsonHelper.Deserialize<List<Quest>>(jsonText);
     }
 
     public void Setup()
