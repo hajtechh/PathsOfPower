@@ -131,7 +131,6 @@ public class Game
             {
                 if (quest.Enemy != null)
                 {
-                    _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
                 if (quest.PowerUpScore != 0)
@@ -146,7 +145,11 @@ public class Game
                 {
                     Player.AddInventoryItem(quest.Item);
                 }
+
+                var continueText = _graphics.GetContinueText();
+                _userInteraction.Print(continueText);
                 var input = _userInteraction.GetChar();
+
                 if (keyActions.TryGetValue(input.Key, out Action action))
                 {
                     action.Invoke();

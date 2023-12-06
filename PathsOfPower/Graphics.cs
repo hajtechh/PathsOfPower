@@ -19,6 +19,7 @@ public class Graphics
     private readonly string _rowDeliminatorInventory = "".PadRight(PadRight, InventoryBorder);
 
     private readonly string _continueText = $"Press any key to continue{NewLine}";
+
     private readonly string _emptyinventory = " E M P T Y ";
     private readonly string _inventory = "~ Inventory ~";
 
@@ -38,6 +39,8 @@ public class Graphics
     public string GetGameMenuString() => _gameMenu;
 
     public string GetGameMenuButton() => _gameMenuButton;
+
+    public string GetContinueText() => _continueText;
 
     public string GetQuestWithOptions(Quest quest)
     {
