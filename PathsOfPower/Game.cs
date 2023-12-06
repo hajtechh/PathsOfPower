@@ -57,14 +57,18 @@ public class Game
         int chapter = int.Parse(currentChapter);
         Quests = GetQuests(chapter);
 
-        var quest = GetQuestFromIndex(questIndex, Quests);
+        var quest = new Quest();
+        if (Quests is not null)
+            quest = GetQuestFromIndex(questIndex, Quests);
 
-        var isRunning = true;
+        // Setup keyActions
         var keyActions = new Dictionary<ConsoleKey, Action>
         {
             { ConsoleKey.Q, QuitGame },
-            {ConsoleKey.S, () => SaveGame(quest.Index) }
+            { ConsoleKey.S, () => SaveGame(quest.Index) }
         };
+
+        var isRunning = true;
         while (isRunning)
         {
             if (Console.KeyAvailable)
@@ -87,7 +91,7 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if (quest.PowerUpScore != 0)
+                if (Player is not null && quest.PowerUpScore != 0)
                 {
                     Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
@@ -97,13 +101,13 @@ public class Game
                 {
                     var test2 = int.Parse(choice.KeyChar.ToString());
                     var option = quest.Options.FirstOrDefault(x => x.Index == test2);
-                    if (option != null && option.MoralityScore != 0)
+                    if (Player is not null && option != null && option.MoralityScore != 0)
                     {
                         Player.ApplyMoralityScore(option.MoralityScore);
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
                     quest = GetQuestFromIndex(index, Quests);
-                    if (quest.Item is not null)
+                    if (Player is not null && quest.Item is not null)
                     {
                         Player.AddInventoryItem(quest.Item);
                     }
@@ -123,15 +127,17 @@ public class Game
                     _userInteraction.GetChar();
                     FightEnemy(quest.Enemy, quest.Index);
                 }
-                if (quest.PowerUpScore != 0)
+                if (Player is not null && quest.PowerUpScore != 0)
                 {
                     Player.ApplyPowerUpScore(quest.PowerUpScore);
                 }
 
                 chapter++;
                 Quests = GetQuests(chapter);
-                quest = GetQuestFromIndex(chapter.ToString(), Quests);
-                if (quest != null && quest.Item is not null)
+                if (Quests is not null)
+                    quest = GetQuestFromIndex(chapter.ToString(), Quests);
+
+                if (Player is not null && quest != null && quest.Item is not null)
                 {
                     Player.AddInventoryItem(quest.Item);
                 }
@@ -174,8 +180,11 @@ public class Game
         StartGame(chosenGame.QuestIndex);
     }
 
-    public bool FightEnemy(Enemy enemy, string questIndex)
+    public void FightEnemy(Enemy enemy, string questIndex)
     {
+        if (Player is null)
+            return;
+
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
@@ -188,7 +197,6 @@ public class Game
             SaveGame(questIndex);
             QuitGame();
         }
-        return true;
     }
 
     private void QuitGame()
@@ -252,8 +260,11 @@ public class Game
         }
     }
 
-    public string SerializeSavedGame(string questIndex)
+    public string? SerializeSavedGame(string questIndex)
     {
+        if (Player is null)
+            return null;
+
         var savedGame = new SavedGame
         {
             Player = Player,

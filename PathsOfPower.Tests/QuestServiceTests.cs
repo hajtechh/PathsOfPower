@@ -9,11 +9,13 @@ public class QuestServiceTests
     public void GetQuestsShoulNotReturnNullOrEmpty()
     {
         // Arrange
-        var mockJson = new Mock<IJsonHelper>();
         var file = new FileHelper();
-        var jsonContent = file.GetQuestsFromFile(1);
+        var jsonContent = file.GetQuestsFromFile(1) ?? string.Empty;
         var expected = JsonSerializer.Deserialize<List<Quest>>(jsonContent);
+
+        var mockJson = new Mock<IJsonHelper>();
         mockJson.Setup(x => x.Deserialize<List<Quest>>(jsonContent)).Returns(expected);
+
         var sut = new QuestService(mockJson.Object);
 
         // Act

@@ -22,12 +22,11 @@ public class JsonHelperTests
     {
         // Arrange
         var sut = new JsonHelper();
-        //var quest = @"[{""Index"":""1"",""Description"":""Hej""}, {""Index"":""1"",""Description"":""Hej""}]";
         var fileHelper = new FileHelper();
         var quests = fileHelper.GetQuestsFromFile(1);
 
         // Act
-        var actual = sut.Deserialize<List<Quest>>(quests);
+        var actual = sut.Deserialize<List<Quest>>(quests ?? string.Empty);
 
         // Assert
         Assert.NotNull(actual);
