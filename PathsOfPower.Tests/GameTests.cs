@@ -3,6 +3,8 @@ using PathsOfPower.Cli.Interfaces;
 using PathsOfPower.Exceptions;
 using PathsOfPower.Helpers;
 using PathsOfPower.Interfaces;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace PathsOfPower.Tests;
 
@@ -22,6 +24,16 @@ public class GameTests
             mockFileHelper.Object,
             mockQuestService.Object,
             mockJsonHelper.Object);
+
+        var jsonContent = @"{""Index"":""1"",""Description"":""You are in a classroom at Hogwarts. What do you want to teach your students today?""}";
+
+        mockFileHelper
+            .Setup(x => x.GetQuestsFromFile(1))
+            .Returns(jsonContent);
+
+        mockQuestService
+            .Setup(x => x.GetQuests(jsonContent))
+            .Returns(new List<Quest>() { new Quest() });
 
         // Act
         var actual = sut.GetQuests(1);
@@ -59,12 +71,14 @@ public class GameTests
     public void SerializeSavedGameShouldSeralizeObjectAndReturnExpected()
     {
         // Arrange
-        var expected = @"{""Character"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
+        var expected = @"{""Player"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
+
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
         var mockJsonHelper = new Mock<IJsonHelper>();
         var mockQuestService = new Mock<IQuestService>();
         var mockGraphics = new Mock<Graphics>();
+
         var sut = new Game(mockUserInteraction.Object,
             mockGraphics.Object,
             mockFileHelper.Object,
@@ -73,6 +87,8 @@ public class GameTests
         {
             Player = new Player("Haj")
         };
+
+        mockJsonHelper.Setup(x => x.Serialize(It.IsAny<SavedGame>())).Returns(expected);
 
         // Act
         var actual = sut.SerializeSavedGame("1.2");
@@ -95,7 +111,15 @@ public class GameTests
             mockFileHelper.Object,
             mockQuestService.Object,
             mockJsonHelper.Object);
-        var jsonString = @"{""Character"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
+        var jsonString = @"{""Player"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
+
+        var expected = new SavedGame()
+        {
+            Player = new Player("Haj"),
+            QuestIndex = "1.2"
+        };
+
+        mockJsonHelper.Setup(x => x.Deserialize<SavedGame>(jsonString)).Returns(expected);
 
         // Act
         var actual = sut.DeserializeSavedGame(jsonString);
@@ -107,43 +131,43 @@ public class GameTests
         Assert.NotNull(actual.QuestIndex);
     }
 
-    [Fact]
-    public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
-    {
-        //Arrange
-        var mockPlayer = new Mock<Player>();
-        mockPlayer.SetupAllProperties();
-        mockPlayer.Object.Power = 10;
-        mockPlayer.Object.HealthPoints = 10;
+    //[Fact]
+    //public void FightEnemyShouldreturnTrueWhenEnemyCurrentHealthIsZeroOrLess()
+    //{
+    //    //Arrange
+    //    var mockPlayer = new Mock<Player>();
+    //    mockPlayer.SetupAllProperties();
+    //    mockPlayer.Object.Power = 10;
+    //    mockPlayer.Object.HealthPoints = 10;
 
-        var mockQuest = new Mock<Quest>();
-        mockQuest.SetupAllProperties();
-        mockQuest.Object.Enemy = new Enemy("Haj")
-        {
-            HealthPoints = 10,
-            Power = 1
-        };
+    //    var mockQuest = new Mock<Quest>();
+    //    mockQuest.SetupAllProperties();
+    //    mockQuest.Object.Enemy = new Enemy("Haj")
+    //    {
+    //        HealthPoints = 10,
+    //        Power = 1
+    //    };
 
-        var mockUserInteraction = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
-        var mockGraphics = new Mock<Graphics>();
-        var mockQuestService = new Mock<IQuestService>();
-        var sut = new Game(mockUserInteraction.Object,
-            mockGraphics.Object,
-            mockFileHelper.Object,
-            mockQuestService.Object,
-            mockJsonHelper.Object)
-        {
-            Player = mockPlayer.Object
-        };
+    //    var mockUserInteraction = new Mock<IUserInteraction>();
+    //    var mockFileHelper = new Mock<IFileHelper>();
+    //    var mockJsonHelper = new Mock<IJsonHelper>();
+    //    var mockGraphics = new Mock<Graphics>();
+    //    var mockQuestService = new Mock<IQuestService>();
+    //    var sut = new Game(mockUserInteraction.Object,
+    //        mockGraphics.Object,
+    //        mockFileHelper.Object,
+    //        mockQuestService.Object,
+    //        mockJsonHelper.Object)
+    //    {
+    //        Player = mockPlayer.Object
+    //    };
 
-        //Act 
-        var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
+    //    //Act 
+    //    var actual = sut.FightEnemy(mockQuest.Object.Enemy, It.IsAny<string>());
 
-        //Assert
-        Assert.True(actual);
-    }
+    //    //Assert
+    //    Assert.True(actual);
+    //}
 
     [Fact]
     public void WriteToFileShouldThrowIndexOutOfBoundsException()

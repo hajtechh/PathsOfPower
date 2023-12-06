@@ -2,6 +2,8 @@
 using PathsOfPower.Interfaces;
 using PathsOfPower.Exceptions;
 using PathsOfPower.Cli.Interfaces;
+using System.Text;
+using Microsoft.VisualBasic;
 
 namespace PathsOfPower;
 
@@ -57,7 +59,7 @@ public class Game
 
     private void StartGame(string questIndex)
     {
-        var currentChapter = questIndex.Substring(0, 1);
+        var currentChapter = questIndex[..1];
         int chapter = int.Parse(currentChapter);
         Quests = GetQuests(chapter);
 
@@ -88,10 +90,10 @@ public class Game
             var menuButton = _graphics.GetGameMenuButton();
             _userInteraction.Print(menuButton);
 
-            var statisticsText = _graphics.GetCharacterStatisticsString(Player);
+            var statisticsText = Graphics.GetCharacterStatisticsString(Player);
             _userInteraction.Print(statisticsText);
 
-            var moralityText = _graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+            var moralityText = Graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
             _userInteraction.Print(moralityText);
 
             PrintQuest(quest);
@@ -197,7 +199,7 @@ public class Game
 
         var choice = _userInteraction.GetChar();
 
-        if (keyActions.TryGetValue(choice.Key, out Action action))
+        if (keyActions.TryGetValue(choice.Key, out var action))
         {
             action.Invoke();
         }
@@ -233,26 +235,38 @@ public class Game
         if (Player is null)
             return;
 
-        var fightLog = _graphics.GetEnemyForFightLog(enemy);
+        var strings = new List<string>
+        {
+            Graphics.GetEnemyForFightLog(enemy)
+        };
+
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
-            fightLog += _graphics.GetActionForFightLog(Player, enemy);
+            strings.Add(Graphics.GetActionForFightLog(Player, enemy));
+
             enemy.PerformAttack(Player);
-            fightLog += _graphics.GetActionForFightLog(enemy, Player);
+            strings.Add(Graphics.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
-            fightLog += _graphics.GetSurvivorForFightLog(enemy);
+            strings.Add(_graphics.GetSurvivorForFightLog(enemy));
+            var fightLog = Graphics.BuildString(strings);
             _userInteraction.Print(fightLog);
+
             Player.HealthPoints = MaxHealthPoints;
             _userInteraction.GetChar();
             SaveGame(questIndex);
             QuitGame();
         }
-        fightLog += _graphics.GetSurvivorForFightLog(Player);
-        _userInteraction.Print(fightLog);
+        else
+        {
+
+            strings.Add(_graphics.GetSurvivorForFightLog(Player));
+            var fightLog = Graphics.BuildString(strings);
+            _userInteraction.Print(fightLog);
+        }
     }
 
     private void QuitGame()
@@ -272,8 +286,11 @@ public class Game
         if (isSaved)
         {
             var savedGame = DeserializeSavedGame(jsonString);
-            var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
-            _userInteraction.Print(text);
+            if (savedGame is not null)
+            {
+                var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
+                _userInteraction.Print(text);
+            }
         }
         _userInteraction.GetChar();
         GameMenu(questIndex);
@@ -352,9 +369,9 @@ public class Game
         _userInteraction.Print(text);
     }
 
-    private Quest? GetQuestFromIndex(string index, List<Quest> quests)
+    private Quest GetQuestFromIndex(string index, List<Quest> quests)
     {
-        return quests.FirstOrDefault(x => x.Index == index);
+        return quests.First(x => x.Index == index);
     }
 
     public List<Quest>? GetQuests(int chapterNumber)
