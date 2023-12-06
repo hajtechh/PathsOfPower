@@ -76,11 +76,14 @@ public class Game
         var isRunning = true;
         while (isRunning)
         {
+            if (Player is null)
+                return;
+
             if (Console.KeyAvailable)
             {
                 var key = Console.ReadKey(intercept: true);
 
-                if (keyActions.TryGetValue(key.Key, out Action action))
+                if (keyActions.TryGetValue(key.Key, out var action))
                 {
                     action.Invoke();
                 }
@@ -95,6 +98,9 @@ public class Game
 
             var moralityText = Graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
             _userInteraction.Print(moralityText);
+
+            if (quest is null)
+                return;
 
             PrintQuest(quest);
 
@@ -122,7 +128,10 @@ public class Game
                         Player.ApplyMoralityScore(option.MoralityScore);
                     }
                     var index = CreateQuestIndex(quest.Index, choice.KeyChar);
-                    quest = GetQuestFromIndex(index, Quests);
+
+                    if (Quests is not null)
+                        quest = GetQuestFromIndex(index, Quests);
+
                     if (Player is not null && quest is not null && quest.Item is not null)
                     {
                         Player.AddInventoryItem(quest.Item);
@@ -130,7 +139,7 @@ public class Game
                 }
                 else
                 {
-                    if (keyActions.TryGetValue(choice.Key, out Action action))
+                    if (keyActions.TryGetValue(choice.Key, out var action))
                     {
                         action.Invoke();
                     }
@@ -161,7 +170,7 @@ public class Game
                 _userInteraction.Print(continueText);
                 var input = _userInteraction.GetChar();
 
-                if (keyActions.TryGetValue(input.Key, out Action action))
+                if (keyActions.TryGetValue(input.Key, out var action))
                 {
                     action.Invoke();
                 }
@@ -215,10 +224,10 @@ public class Game
 
         var input = _userInteraction.GetChar().KeyChar;
         var slotNumber = (int)char.GetNumericValue(input);
-        string? text;
+        var text = string.Empty;
         try
         {
-            text = _fileHelper.GetSavedGameFromFile(slotNumber);
+            text += _fileHelper.GetSavedGameFromFile(slotNumber);
         }
         catch (FileNotFoundException ex)
         {
@@ -226,6 +235,8 @@ public class Game
             return;
         }
         var chosenGame = DeserializeSavedGame(text);
+        if (chosenGame is null)
+            return;
         Player = chosenGame.Player;
         StartGame(chosenGame.QuestIndex);
     }
@@ -281,15 +292,18 @@ public class Game
 
         var jsonString = SerializeSavedGame(questIndex);
 
-        var isSaved = WriteToFile(choice, jsonString);
-
-        if (isSaved)
+        if (jsonString is not null)
         {
-            var savedGame = DeserializeSavedGame(jsonString);
-            if (savedGame is not null)
+            var isSaved = WriteToFile(choice, jsonString);
+
+            if (isSaved)
             {
-                var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
-                _userInteraction.Print(text);
+                var savedGame = DeserializeSavedGame(jsonString);
+                if (savedGame is not null)
+                {
+                    var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
+                    _userInteraction.Print(text);
+                }
             }
         }
         _userInteraction.GetChar();
@@ -301,6 +315,8 @@ public class Game
         var savedGames = new List<SavedGame>();
 
         var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        if (files is null)
+            return;
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
@@ -339,11 +355,7 @@ public class Game
         if (Player is null)
             return null;
 
-        var savedGame = new SavedGame
-        {
-            Player = Player,
-            QuestIndex = questIndex
-        };
+        var savedGame = new SavedGame(Player, questIndex);
         return _jsonHelper.Serialize(savedGame);
     }
 

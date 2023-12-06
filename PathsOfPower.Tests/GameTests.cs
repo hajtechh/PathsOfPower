@@ -113,11 +113,7 @@ public class GameTests
             mockJsonHelper.Object);
         var jsonString = @"{""Player"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
 
-        var expected = new SavedGame()
-        {
-            Player = new Player("Haj"),
-            QuestIndex = "1.2"
-        };
+        var expected = new SavedGame(new Player("Haj"), "1.2");
 
         mockJsonHelper.Setup(x => x.Deserialize<SavedGame>(jsonString)).Returns(expected);
 
