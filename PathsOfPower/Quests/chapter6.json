@@ -1,0 +1,170 @@
+[
+  {
+    "Index": "6",
+    "Description": "You pace back and forth, putting together the information you know about the Elder Wand. You know it´s said to have been created by Death itself, as a gift for a man defying his destined death. You know its made with elderwood and has a core of thestral tail hairs. The key to repairing it must be...",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "...to find the materials its made from, and use alchemy to repair it"
+      },
+      {
+        "Index": 2,
+        "Name": "...to make a deal with Death, to request it to repair the wand it once created" // make a big sacrifice, change someone elses destined death or take part of your own life
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1",
+    "Description": "You need to find elderwood and thestral tail hairs. Then you need to find a talented enough alchemist to repair it.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "First, you need to acquire elderwood"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1",
+    "Description": "Eldertrees are very rare, and because of their magical properties, well hidden. You decide it´s more likely to find an object made from elderwood. You immediately think an old friend that collects all kinds of magical objects and materials.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to visit them"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1",
+    "Description": "You wait until the weekend, and you take the train to the village where your friend lives; Ottery St. Catchpole. You walk through the village, to an open field a few minutes away. Suddenly you see a familiar house, and a familiar person sitting outside on the porch. They stand up and greet you, with a surprised and excited look.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Greet them back"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1",
+    "Description": "Terra Lovegood smiles wide, and asks you what you are doing here.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell her about the Elder Wand"
+      },
+      {
+        "Index": 2,
+        "Name": "Tell her you need the material for your class"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1.1.1",
+    "Description": "She nods through your whole story, and at the end, you´re convinced she doesn´t believe you. She laughs and dissapears into the house.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Wait for her to come back"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Thank her, and go back to Hogwarts"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1",
+    "Description": "On the train back you read about thestrals. You have never seen one before, but you know there are some on Hogwarts grounds. After reading for a while you heart sinks. You can only see a thestral if you´ve seen someone die.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to St:Mungos hospital and look for a dying person"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1",
+    "Description": "You get off the train near St:Mungos, and enter the hospital. You walk through the corridors, looking at the sick people. Suddenly, you see an ald man, gasping for air.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Get him help, and save him"
+      },
+      {
+        "Index": 2,
+        "Name": "Do nothing, and let him die"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1",
+    "Description": "You call for help, but no one comes. You run to the old man and grab him, trying to save him. You ask him what´s wrong but he can´t make a sound. Suddenly, his face turns blue and his body gets limp. The man is dead.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Leave, and go back to Hogwarts"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.2",
+    "Description": "You step into the room and close the door. The old man gives you a terrified look, before his face turns blue and he stops moving. The man is dead.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Leave, and go back to Hogwarts"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1.1.2",
+    "Description": "She nods through your explanation, and at the end, you´re convinced she doesn´t believe your lie. She laughs and dissapears into the house.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Wait for her to come back"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Thank her, and go back to Hogwarts"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1.1.2.1.1",
+    "Description": "On the train back you read about thestrals. You have never seen one before, but you know there are some on Hogwarts grounds. After reading for a while your eyes stick to a certain sentence. You can only see a thestral if you´ve seen someone die.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Kill someone"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1.1",
+    "Description": "You look around the train car. There is only one other person here. You pull out your wand and walk towards them. You look them in the eyes as the words Avada Kedavra leaves your mouth, and they sink into their seat without a sound. You killed them.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Leave the train car, and go back to Hogwarts"
+      }
+    ]
+  }
+]
