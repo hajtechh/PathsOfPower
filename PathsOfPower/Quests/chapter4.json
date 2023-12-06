@@ -11,11 +11,11 @@
   },
   {
     "Index": "4.1",
-    "Description": "The broken part is barely hanging on by a few black threads, or... pieces of hair. You trace the shape of the wand, over the small spheres that are disturbing the, otherwise ordinarily looking, wand-shape.",
+    "Description": "The broken part is barely hanging on by a few thing, black, threads. You trace the shape of the wand, over the small spheres that are disturbing the, otherwise ordinarily looking, straight wand-shape.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Look for more information in the library"
+        "Name": "Look for information in the library"
       },
       {
         "Index": 2,
@@ -33,17 +33,13 @@
       },
       {
         "Index": 2,
-        "Name": "History of Magic"
-      },
-      {
-        "Index": 3,
         "Name": "Herbology"
       }
     ]
   },
   {
     "Index": "4.1.1.1",
-    "Description": "You read several books in the Magical Creatures section without luck, until you come across a chapter about thestrals.",
+    "Description": "You read several books in the Magical Creatures section without luck, until you come across a chapter about thestrals. Something about their hair looks familiar.",
     "Options": [
       {
         "Index": 1,
@@ -53,12 +49,70 @@
   },
   {
     "Index": "4.1.1.1.1",
-    "Description": "You find out that thestral tail hairs have been, though rarely, used as cores in wandmaking. Although, a wand with such core would only be mastered by a wielder capable of accepting death."
+    "Description": "You find out that thestral tail hairs have been, though rarely, used as cores in wandmaking. Although, a wand with such core would only be mastered by a wielder capable of accepting death.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to the restricted section to read about rare wands"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.1.1.1.1",
+    "Description": "As you´re about to pick up a book, someone snatches it from your hands. You turn around to see a poltergeist holding your book. He says you wont get the book back if say please.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Say please",
+        "MoralityScore": 1
+      },
+      {
+        "Index": 2,
+        "Name": "Threathen him(trigger a fight)",
+        "MoralityScore": -2,
+        "Enemy": {
+          "Name": "Peeves the Poltergeist",
+          "MaxHealthPoints": 80,
+          "CurrentHealthPoints": 80,
+          "Power": 10
+        }
+      }
+    ]
+  },
+  {
+    "Index": "4.1.1.1.1.1.1",
+    "Description": "The poltergeist laughs mockingly, and tells you that he said you would 'not' get the book back if you said please.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Forget the book, and ask him about the wand instead"
+      },
+      {
+        "Index": 2,
+        "Name": "Steal the book back with accio",
+        "MoralityScore": -1
+      }
+    ]
+  },
+  {
+    "Index": "4.1.1.1.1.1.1.1",
+    "Description": "he tells you about the wand(placeholder)."
   },
 
   {
+    "Index": "4.1.1.1.1.1.1.2",
+    "Description": "you steal and read the book(placeholder)."
+  },
+
+  {
+    "Index": "4.1.1.1.1.1.2",
+    "Description": "Peeves throws the book in your face, then runs away. You browse through the book and find a page about a wand that looks exactly like the one you found. The wand you found..."
+  },
+
+
+  {
     "Index": "4.1.1.2",
-    "Description": "You read several books in the History of Magic section without luck, until you come across a chapter about the Battle of Hogwarts.",
+    "Description": "You read several books in the Herbology section without luck, until you come across a chapter about elderwood. You glance over a picture of it, and the hue looks familiar.",
     "Options": [
       {
         "Index": 1,
@@ -68,36 +122,157 @@
   },
   {
     "Index": "4.1.1.2.1",
-    "Description": "You read the story of the Battle of Hogwarts."
-  },
-
-  {
-    "Index": "4.1.1.3",
-    "Description": "You read several books in the Herbology section without luck, until you come across a chapter about elderwood.",
+    "Description": "You find out that elderwood is the rarest wand wood, and that it is known to only choose a highly unusual person as their wielder.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Read the chapter"
+        "Name": "Go to the restricted section to read about rare wands"
       }
     ]
   },
   {
-    "Index": "4.1.1.3.1",
-    "Description": "You find out that elderwood is the rarest wand wood known, and that it is known to only choose a highly unusual person as their wielder."
+    "Index": "4.1.1.2.1.1",
+    "Description": "You browse through the wand-section, but unsuccessfully. Suddenly you hear a cry for help. A poltergeist is harrassing another teacher.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Intervene, tell the poltergeist off",
+        "MoralityScore": 1
+      },
+      {
+        "Index": 2,
+        "Name": "Intervene, fight the poltergeist",
+        "MoralityScore": -1,
+        "Enemy": {
+          "Name": "Peeves the Poltergeist",
+          "MaxHealthPoints": 80,
+          "CurrentHealthPoints": 80,
+          "Power": 10
+        }
+      }
+    ]
+  },
+  {
+    "Index": "4.1.1.2.1.1.1",
+    "Description": "You tell the poltergeist to leave your colleague alone. He says you are no fun and leaves. Your colleague thanks you, and ask what you are looking for in the restricted section.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell them what you´re looking for"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.1.2.1.1.1.1",
+    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand...."
+  },
+
+  {
+    "Index": "4.1.1.2.1.1.2",
+    "Description": "Peeves runs away. Your colleague thanks you, and ask what you are looking for in the restricted section.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell them what you´re looking for"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.1.2.1.1.2.1",
+    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand...."
   },
 
   {
     "Index": "4.1.2",
-    "Description": "You put the wand in your robe again and head towards Mrs Malfoys office.",
+    "Description": "You put the wand in your robe again and head towards Mrs Malfoys office. You knock on the door and she greets you when you enter the room.",
     "Options": [
       {
         "Index": 1,
-        "Name": ""
+        "Name": "Show her the wand",
+        "MoralityScore": 1
       },
       {
         "Index": 2,
-        "Name": ""
+        "Name": "Ask about the wand, without revealiing you have it"
       }
     ]
+  },
+  {
+    "Index": "4.1.2.1",
+    "Description": "You carefully pull the wand out of your robe, and hold it out towards Mrs Malfoy. She gasps and stands up from her chair. She starts reaching for the wand, but right before she touches it, she takes a quick step back. She looks terrified.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask her what she knows"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.1.1",
+    "Description": "She hesitates, then gives you a shocked look. She asks you, if you don't know.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Know what?"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.1.1.1",
+    "Description": "She tells you that you should leave, and the wand that you have in your hand..."
+  },
+
+  {
+    "Index": "4.1.2.2",
+    "Description": "You tell her about a lost wand, and it being broken. You describe the shape and color, and the hair-like core. Mrs Malfoy gives you a suspicious look, and she wonders why you are asking about this wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell her you found it",
+        "MoralityScore": 1
+      },
+      {
+        "Index": 2,
+        "Name": "Tell her you read about it somewhere, but you can´t remember where."
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.2.1",
+    "Description": "She laughs, and tells you that's impossible. That the wand you´re describing, it belonged to some of the most powerful wizards to ever live, and that it had been broken and lost many years ago.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask her to tell you more"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.2.1.1",
+    "Description": "She tells you that the wand you´re describing, it´s..."
+  },
+
+  {
+    "Index": "4.1.2.2.2",
+    "Description": "She says the wand you´re talking about, is most likely the same one mentioned in the Tales of Beedle the Bard.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask to borrow the book"
+      },
+      {
+        "Index": 2,
+        "Name": "Ask her to tell you the story"
+      }
+    ]
+  },
+  {
+    "Index": "4.1.2.2.2.1",
+    "Description": "She gives you the book, and you return to your office to read it. After browsing through the stories, your eyes fixate on a picture of a wand, the same wand you found. Under the picture, you read the name of the wand. Your eyes widen, the wand you found..."
+  },
+
+  {
+    "Index": "4.1.2.2.2.2",
+    "Description": "She tells you the story of the three brothers who cheated death, and each got a gift in return. The first brother asked for the most powerful wand ever created. Mrs Malfoy continues, and explains that the wand you´re describing..."
   }
 ]
