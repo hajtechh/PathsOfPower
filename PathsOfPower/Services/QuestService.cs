@@ -14,4 +14,5 @@ public class QuestService : IQuestService
 
     public List<Quest>? GetQuests(string jsonContent) =>
         _jsonHelper.Deserialize<List<Quest>>(jsonContent);
+
 }

@@ -3,7 +3,7 @@
 public class JsonHelperTests
 {
     [Fact]
-    public void DeSerializeObjectShouldReturnNotNull()
+    public void DeserializeObjectShouldReturnNotNull()
     {
         // Arrange
         var sut = new JsonHelper();
@@ -15,6 +15,23 @@ public class JsonHelperTests
         // Assert
         Assert.NotNull(actual);
         Assert.NotNull(actual.Description);
+    }
+    
+    [Fact]
+    public void DeserializeListOfObjectsShouldReturnNotNull()
+    {
+        // Arrange
+        var sut = new JsonHelper();
+        //var quest = @"[{""Index"":""1"",""Description"":""Hej""}, {""Index"":""1"",""Description"":""Hej""}]";
+        var fileHelper = new FileHelper();
+        var quests = fileHelper.GetQuestsFromFile(1);
+
+        // Act
+        var actual = sut.Deserialize<List<Quest>>(quests);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
     }
 
     [Fact]
