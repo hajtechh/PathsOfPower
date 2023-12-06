@@ -41,7 +41,7 @@ public class Graphics
 
     public string GetQuestWithOptions(Quest quest)
     {
-        var text = GetCurrentChapterAsString(quest);
+        var text = GetCurrentChapterAsString(quest.Index);
         text += NewLine;
         text += $"{_rowDeliminator}{NewLine}";
         if (quest.Description.Length > MaxLength)
@@ -104,7 +104,7 @@ public class Graphics
         {
             text += $"[{i + 1}] ";
             text += savedGames[i].Player != null ?
-                savedGames[i].Player.Name :
+                $"{savedGames[i].Player.Name} | {GetCurrentChapterAsString(savedGames[i].QuestIndex)}":
                 "Empty slot";
             text += NewLine;
             text += "---------";
@@ -154,9 +154,9 @@ public class Graphics
         return $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NewLine}{_continueText}";
     }
 
-    public string GetCurrentChapterAsString(Quest quest)
+    public string GetCurrentChapterAsString(string index)
     {
-        var questIndex = quest.Index.Split('.');
+        var questIndex = index.Split('.');
         var currentChapter = questIndex.FirstOrDefault();
         var text = $"Chapter {currentChapter}";
         return text;

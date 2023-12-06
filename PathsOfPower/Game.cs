@@ -253,13 +253,11 @@ public class Game
 
         var jsonString = SerializeSavedGame(questIndex);
 
-        
-
         var isSaved = WriteToFile(choice, jsonString);
-        
+
         if (isSaved)
         {
-        var savedGame = DeserializeSavedGame(jsonString);
+            var savedGame = DeserializeSavedGame(jsonString);
             var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
             _userInteraction.Print(text);
         }
