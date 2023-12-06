@@ -5,13 +5,13 @@ namespace PathsOfPower.Services;
 
 public class QuestService : IQuestService
 {
-    public Quest GetQuest()
-{
-        throw new NotImplementedException();
+    private readonly IJsonHelper _jsonHelper;
+
+    public QuestService(IJsonHelper jsonHelper)
+    {
+        _jsonHelper = jsonHelper;
     }
 
-    public List<Quest> GetQuests()
-    {
-        throw new NotImplementedException();
-    }
+    public List<Quest>? GetQuests(string jsonContent) =>
+        _jsonHelper.Deserialize<List<Quest>>(jsonContent);
 }

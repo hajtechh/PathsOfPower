@@ -4,6 +4,5 @@ namespace PathsOfPower.Interfaces;
 
 public interface IQuestService
 {
-    List<Quest> GetQuests();
-    Quest GetQuest();
+    List<Quest>? GetQuests(string jsonContent);
 }

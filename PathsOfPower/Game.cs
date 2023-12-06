@@ -1,5 +1,4 @@
 ﻿using PathsOfPower.Models;
-using System.Text.Json;
 using PathsOfPower.Interfaces;
 using PathsOfPower.Exceptions;
 using PathsOfPower.Cli.Interfaces;
@@ -11,6 +10,7 @@ public class Game
     private readonly IUserInteraction _userInteraction;
     private readonly IFileHelper _fileHelper;
     private readonly IJsonHelper _jsonHelper;
+    private readonly IQuestService _questService;
 
     private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
@@ -21,10 +21,12 @@ public class Game
 
     public Game(IUserInteraction userInteraction,
         IFileHelper fileHelper,
+        IQuestService questService,
         IJsonHelper jsonHelper)
     {
         _userInteraction = userInteraction;
         _fileHelper = fileHelper;
+        _questService = questService;
         _jsonHelper = jsonHelper;
     }
     public void Run()
@@ -296,10 +298,12 @@ public class Game
         return quests.FirstOrDefault(x => x.Index == index);
     }
 
-    public List<Quest> GetQuests(int chapterNumber)
+    public List<Quest>? GetQuests(int chapterNumber)
     {
-        var jsonText = _fileHelper.GetQuestsFromFile(chapterNumber);
-        return _jsonHelper.Deserialize<List<Quest>>(jsonText);
+        var jsonContent = _fileHelper.GetQuestsFromFile(chapterNumber);
+        if (jsonContent is null)
+            return null;
+        return _questService.GetQuests(jsonContent);
     }
 
     public void Setup()
