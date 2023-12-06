@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathsOfPower.Cli
+namespace PathsOfPower.Cli.Interfaces
 {
     public interface IUserInteraction
     {
