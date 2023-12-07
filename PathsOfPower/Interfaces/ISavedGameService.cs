@@ -4,6 +4,6 @@ namespace PathsOfPower.Interfaces;
 
 public interface ISavedGameService
 {
-    List<SavedGame> GetSavedGames();
-    SavedGame GetSavedGame(int slotNumber);
+    List<SavedGame>? GetSavedGames(string jsonContent);
+    SavedGame? GetSavedGame(string jsonContent);
 }

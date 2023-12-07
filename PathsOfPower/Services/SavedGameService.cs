@@ -5,13 +5,16 @@ namespace PathsOfPower.Services;
 
 public class SavedGameService : ISavedGameService
 {
-    public SavedGame GetSavedGame(int slotNumber)
+    private readonly IJsonHelper _jsonHelper;
+
+    public SavedGameService(IJsonHelper jsonHelper)
     {
-        throw new NotImplementedException();
+        _jsonHelper = jsonHelper;
     }
 
-    public List<SavedGame> GetSavedGames()
-    {
-        throw new NotImplementedException();
-    }
+    public List<SavedGame>? GetSavedGames(string jsonContent) =>
+        _jsonHelper.Deserialize<List<SavedGame>>(jsonContent);
+
+    public SavedGame? GetSavedGame(string jsonContent) =>
+        _jsonHelper.Deserialize<SavedGame>(jsonContent);
 }
