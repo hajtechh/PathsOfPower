@@ -1,11 +1,8 @@
-﻿using PathsOfPower.Models;
-using PathsOfPower.Interfaces;
-using PathsOfPower.Exceptions;
-using PathsOfPower.Cli.Interfaces;
-using System.Text;
-using Microsoft.VisualBasic;
+﻿using PathsOfPower.Core.Exceptions;
+using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
 
-namespace PathsOfPower;
+namespace PathsOfPower.Core;
 
 public class Game
 {

@@ -1,7 +1,6 @@
-﻿using PathsOfPower.Interfaces;
-using System.Text.Json;
+﻿using PathsOfPower.Core.Interfaces;
 
-namespace PathsOfPower.Helpers;
+namespace PathsOfPower.Core.Helpers;
 
 public class JsonHelper : IJsonHelper
 {

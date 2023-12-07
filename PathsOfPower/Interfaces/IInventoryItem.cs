@@ -1,4 +1,4 @@
-﻿namespace PathsOfPower.Interfaces;
+﻿namespace PathsOfPower.Core.Interfaces;
 
 public interface IInventoryItem
 {
