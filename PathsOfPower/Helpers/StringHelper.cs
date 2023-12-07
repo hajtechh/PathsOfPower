@@ -22,6 +22,8 @@ public class StringHelper : IStringHelper
     private readonly string _emptyinventory = " E M P T Y ";
     private readonly string _inventory = "~ Inventory ~";
 
+    private readonly string _gameMenuButton = $"{NewLine}[M] Game Menu{NewLine}";
+
     private readonly string _menu = $"[1] Start new game{NewLine}" +
         $"[2] Load game{NewLine}" +
         $"[3] Quit game";
@@ -31,7 +33,10 @@ public class StringHelper : IStringHelper
         $"[3] Main Menu{NewLine}" +
         $"[4] Quit game";
 
-    private readonly string _gameMenuButton = $"{NewLine}[M] Game Menu{NewLine}";
+    private readonly string _inputNameMessage = "Choose the name of your character.";
+
+    private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
+
 
     public string GetMenu() => _menu;
 
@@ -40,6 +45,10 @@ public class StringHelper : IStringHelper
     public string GetGameMenuButton() => _gameMenuButton;
 
     public string GetContinueText() => _continueText;
+
+    public string GetPlayerNameMessage() => _inputNameMessage;
+
+    public string GetNoNameInputMessage() => _haveToHaveNameMessage;
 
     public string GetQuestWithOptions(Quest quest)
     {
@@ -175,6 +184,11 @@ public class StringHelper : IStringHelper
             stringBuilder.Append(strings[i]);
         }
         return stringBuilder.ToString();
+    }
+
+    public string GetQuestIndexString(string parentQuestIndex, char choice)
+    {
+        return $"{parentQuestIndex}.{choice}";
     }
 }
 
