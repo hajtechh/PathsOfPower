@@ -68,8 +68,8 @@ public class FileHelperTests
     }
 
     [Theory]
-    [InlineData(4)]
-    [InlineData(5)]
+    [InlineData(10)]
+    [InlineData(66)]
     [InlineData(-1)]
     public void CheckIfNextChapterExistsShouldReturnFalse(int currentChapter)
     {
