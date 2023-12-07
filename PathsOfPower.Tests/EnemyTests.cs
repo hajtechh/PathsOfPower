@@ -1,4 +1,7 @@
-﻿namespace PathsOfPower.Tests;
+﻿
+using PathsOfPower.Core.Interfaces;
+
+namespace PathsOfPower.Tests;
 
 public class EnemyTests
 {    // A target (ICharacter) starts with 100 in HealthPoints

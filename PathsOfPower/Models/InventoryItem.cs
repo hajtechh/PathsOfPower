@@ -1,8 +1,12 @@
-﻿using PathsOfPower.Interfaces;
+﻿using PathsOfPower.Core.Interfaces;
 
-namespace PathsOfPower.Models;
+namespace PathsOfPower.Core.Models;
 
 public class InventoryItem : IInventoryItem
 {
     public string Name { get; set; }
+    public InventoryItem()
+    {
+        Name = string.Empty;
+    }
 }

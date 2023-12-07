@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Interfaces;
-
-namespace PathsOfPower.Models;
+﻿namespace PathsOfPower.Core.Models;
 public class Quest
 {
     public string Index { get; set; }
@@ -9,4 +7,10 @@ public class Quest
     public InventoryItem? Item { get; set; }
     public Enemy? Enemy { get; set; }
     public IEnumerable<Option>? Options { get; set; }
+
+    public Quest()
+    {
+        Index = string.Empty;
+        Description = string.Empty;
+    }
 }

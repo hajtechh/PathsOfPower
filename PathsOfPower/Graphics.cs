@@ -1,9 +1,7 @@
-﻿using PathsOfPower.Interfaces;
-using PathsOfPower.Models;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
 
-namespace PathsOfPower;
+namespace PathsOfPower.Core;
 
 public class Graphics
 {
@@ -110,7 +108,7 @@ public class Graphics
 
     public string GetSavedGamesString(List<SavedGame> savedGames)
     {
-        var strings = new List<String>()
+        var strings = new List<string>()
         {
             $"Choose slot{NewLine}"
         };
