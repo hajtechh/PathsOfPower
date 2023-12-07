@@ -18,12 +18,12 @@ public class Game
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
 
-    private readonly Graphics _graphics;
+    private readonly StringHelper _graphics;
     public List<Quest>? Quests { get; set; }
     public Player? Player { get; set; }
 
     public Game(IUserInteraction userInteraction,
-        Graphics graphics,
+        StringHelper graphics,
         IFileHelper fileHelper,
         IQuestService questService,
         IJsonHelper jsonHelper)
@@ -93,10 +93,10 @@ public class Game
             var menuButton = _graphics.GetGameMenuButton();
             _userInteraction.Print(menuButton);
 
-            var statisticsText = Graphics.GetCharacterStatisticsString(Player);
+            var statisticsText = StringHelper.GetCharacterStatisticsString(Player);
             _userInteraction.Print(statisticsText);
 
-            var moralityText = Graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+            var moralityText = StringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
             _userInteraction.Print(moralityText);
 
             if (quest is null)
@@ -248,22 +248,22 @@ public class Game
 
         var strings = new List<string>
         {
-            Graphics.GetEnemyForFightLog(enemy)
+            StringHelper.GetEnemyForFightLog(enemy)
         };
 
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
-            strings.Add(Graphics.GetActionForFightLog(Player, enemy));
+            strings.Add(StringHelper.GetActionForFightLog(Player, enemy));
 
             enemy.PerformAttack(Player);
-            strings.Add(Graphics.GetActionForFightLog(enemy, Player));
+            strings.Add(StringHelper.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
             strings.Add(_graphics.GetSurvivorForFightLog(enemy));
-            var fightLog = Graphics.BuildString(strings);
+            var fightLog = StringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
 
             Player.HealthPoints = MaxHealthPoints;
@@ -275,7 +275,7 @@ public class Game
         {
 
             strings.Add(_graphics.GetSurvivorForFightLog(Player));
-            var fightLog = Graphics.BuildString(strings);
+            var fightLog = StringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
         }
     }

@@ -7,7 +7,7 @@ using PathsOfPower.Services;
 
 IConsoleWrapper consoleWrapper  = new ConsoleWrapper();
 IUserInteraction userInteraction = new UserInteraction(consoleWrapper);
-var graphics = new Graphics();
+var graphics = new StringHelper();
 IFileHelper fileHelper = new FileHelper();
 IJsonHelper jsonHelper = new JsonHelper();
 IQuestService questService = new QuestService(jsonHelper);

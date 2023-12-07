@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace PathsOfPower;
 
-public class Graphics
+public class StringHelper : IStringHelper
 {
     private const int PadRight = 80;
     private const int MaxLength = PadRight - 10;
