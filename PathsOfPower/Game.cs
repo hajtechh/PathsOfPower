@@ -69,32 +69,36 @@ public class Game
         {
             { ConsoleKey.M, () => GameMenu(quest.Index) },
         };
+        GameLoop(ref chapter, ref quest, keyActions);
+    }
 
+    private void GameLoop(ref int chapter, ref Quest? quest, Dictionary<ConsoleKey, Action> keyActions)
+    {
+        /*  Clear Console
+        *   Print
+        *   Options ?
+        *      If
+        *           Get input
+        *               HandleEvent
+        *           Get next quest
+        *           
+        *      else
+        *           Check for next chapter
+        *               if
+        *                   Get next chapter
+        *               else
+        *                   The end
+        *
+        */
         var isRunning = true;
         while (isRunning)
         {
             if (Player is null)
                 return;
 
-            if (Console.KeyAvailable)
-            {
-                var key = Console.ReadKey(intercept: true);
-
-                if (keyActions.TryGetValue(key.Key, out var action))
-                {
-                    action.Invoke();
-                }
-            }
             _userInteraction.ClearConsole();
 
-            var menuButton = _stringHelper.GetGameMenuButton();
-            _userInteraction.Print(menuButton);
-
-            var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
-            _userInteraction.Print(statisticsText);
-
-            var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
-            _userInteraction.Print(moralityText);
+            PrintOverlay();
 
             if (quest is null)
                 return;
@@ -104,35 +108,18 @@ public class Game
             var inventory = _stringHelper.GetPlayerInventoryAsString(Player);
             _userInteraction.Print(inventory);
 
+            HandleQuestEvents(quest);
+
             if (quest.Options is not null)
             {
-                if (quest.Enemy != null)
-                {
-                    FightEnemy(quest.Enemy, quest.Index);
-                }
-                if (Player is not null && quest.PowerUpScore != 0)
-                {
-                    Player.ApplyPowerUpScore(quest.PowerUpScore);
-                }
-
                 var choice = _userInteraction.GetChar();
                 if (char.IsDigit(choice.KeyChar))
                 {
-                    var test2 = int.Parse(choice.KeyChar.ToString());
-                    var option = quest.Options.FirstOrDefault(x => x.Index == test2);
-                    if (Player is not null && option != null && option.MoralityScore != 0)
-                    {
-                        Player.ApplyMoralityScore(option.MoralityScore);
-                    }
                     var index = _stringHelper.GetQuestIndexString(quest.Index, choice.KeyChar);
-
                     if (Quests is not null)
                         quest = GetQuestFromIndex(index, Quests);
 
-                    if (Player is not null && quest is not null && quest.Item is not null)
-                    {
-                        Player.AddInventoryItem(quest.Item);
-                    }
+                    HandleOptionEvents(quest, choice);
                 }
                 else
                 {
@@ -144,21 +131,13 @@ public class Game
             }
             else if (_fileHelper.IsNextChapterExisting(chapter))
             {
-                if (quest.Enemy != null)
-                {
-                    FightEnemy(quest.Enemy, quest.Index);
-                }
-                if (Player is not null && quest.PowerUpScore != 0)
-                {
-                    Player.ApplyPowerUpScore(quest.PowerUpScore);
-                }
 
                 chapter++;
                 Quests = GetQuests(chapter);
                 if (Quests is not null)
                     quest = GetQuestFromIndex(chapter.ToString(), Quests);
 
-                if (Player is not null && quest != null && quest.Item is not null)
+                if (Player is not null && quest is not null && quest.Item is not null)
                 {
                     Player.AddInventoryItem(quest.Item);
                 }
@@ -184,10 +163,44 @@ public class Game
         }
     }
 
-    public void ApplyMoralityScore(int? moralityScore)
+    private void PrintOverlay()
     {
-        Player.MoralitySpectrum += moralityScore ?? 0;
+        var menuButton = _stringHelper.GetGameMenuButton();
+        _userInteraction.Print(menuButton);
+
+        var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
+        _userInteraction.Print(statisticsText);
+
+        var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+        _userInteraction.Print(moralityText);
     }
+
+    private void HandleOptionEvents(Quest quest, ConsoleKeyInfo choice)
+    {
+        var index = int.Parse(choice.KeyChar.ToString());
+        var option = quest.Options?.FirstOrDefault(x => x.Index == index);
+        if (Player is not null && option is not null && option.MoralityScore is not 0)
+        {
+            Player.ApplyMoralityScore(option.MoralityScore);
+        }
+    }
+
+    private void HandleQuestEvents(Quest quest)
+    {
+        if (quest.Enemy is not null)
+        {
+            FightEnemy(quest.Enemy, quest.Index);
+        }
+        if (Player is not null && quest.PowerUpScore is not 0)
+        {
+            Player.ApplyPowerUpScore(quest.PowerUpScore);
+        }
+        if (Player is not null && quest is not null && quest.Item is not null)
+        {
+            Player.AddInventoryItem(quest.Item);
+        }
+    }
+
 
     public void GameMenu(string questIndex)
     {
@@ -195,15 +208,15 @@ public class Game
         var text = _stringHelper.GetGameMenuString();
         _userInteraction.Print(text);
 
-        Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
+        var keyActions = new Dictionary<ConsoleKey, Action>
         {
           { ConsoleKey.D1, () => StartGame(questIndex) },
-          { ConsoleKey.NumPad1, () => StartGame(questIndex) },
           { ConsoleKey.D2, () => SaveGame(questIndex) },
-          { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
           { ConsoleKey.D3, Run },
-          { ConsoleKey.NumPad3, Run },
           { ConsoleKey.D4, QuitGame },
+          { ConsoleKey.NumPad1, () => StartGame(questIndex) },
+          { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
+          { ConsoleKey.NumPad3, Run },
           { ConsoleKey.NumPad4, QuitGame },
         };
 

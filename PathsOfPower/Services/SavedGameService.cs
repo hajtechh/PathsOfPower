@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Models;
-
-namespace PathsOfPower.Core.Services;
+﻿namespace PathsOfPower.Core.Services;
 
 public class SavedGameService : ISavedGameService
 {
