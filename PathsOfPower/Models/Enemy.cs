@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Interfaces;
-
-namespace PathsOfPower.Models;
+﻿namespace PathsOfPower.Models;
 
 public class Enemy : ICharacter
 {

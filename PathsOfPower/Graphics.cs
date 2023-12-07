@@ -1,9 +1,4 @@
-﻿using PathsOfPower.Interfaces;
-using PathsOfPower.Models;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace PathsOfPower;
+﻿namespace PathsOfPower;
 
 public class Graphics
 {

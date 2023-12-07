@@ -1,5 +1,3 @@
-using PathsOfPower.Cli.Interfaces;
-using Xunit;
 
 namespace PathsOfPower.Tests;
 
@@ -53,5 +51,4 @@ public class UserInputTests
         //Assert
         mock.Verify(x => x.Clear(), Times.Once());
     }
-
 }

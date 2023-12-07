@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace PathsOfPower.Models;
+﻿namespace PathsOfPower.Models;
 
 public class SavedGame
 {

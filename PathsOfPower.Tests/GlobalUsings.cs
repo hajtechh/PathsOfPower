@@ -1,6 +1,10 @@
 global using Xunit;
 global using Moq;
+global using System.Text.Json;
 global using PathsOfPower.Cli;
 global using PathsOfPower.Models;
 global using PathsOfPower.Helpers;
+global using PathsOfPower.Services;
 global using PathsOfPower.Interfaces;
+global using PathsOfPower.Cli.Interfaces;
+global using PathsOfPower.Exceptions;   

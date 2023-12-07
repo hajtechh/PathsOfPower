@@ -1,4 +1,5 @@
-﻿namespace PathsOfPower.Tests;
+﻿
+namespace PathsOfPower.Tests;
 
 public class FileHelperTests
 {

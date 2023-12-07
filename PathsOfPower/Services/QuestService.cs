@@ -1,7 +1,4 @@
-﻿using PathsOfPower.Interfaces;
-using PathsOfPower.Models;
-
-namespace PathsOfPower.Services;
+﻿namespace PathsOfPower.Services;
 
 public class QuestService : IQuestService
 {

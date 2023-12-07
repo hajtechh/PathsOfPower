@@ -1,12 +1,1 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PathsOfPower.Cli
-{
-    internal class GlobalUsings
-    {
-    }
-}
+﻿global using PathsOfPower.Cli.Interfaces;
