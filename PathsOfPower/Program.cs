@@ -1,4 +1,5 @@
-﻿internal class Program
+﻿namespace PathsOfPower;
+internal class Program
 {
     private static void Main(string[] args)
     {
