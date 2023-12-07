@@ -6,12 +6,6 @@ namespace PathsOfPower.Core;
 
 public class Game
 {
-    private readonly IUserInteraction _userInteraction;
-    private readonly IFileHelper _fileHelper;
-    private readonly IQuestService _questService;
-    private readonly ISavedGameService _savedGameService;
-    private readonly Graphics _graphics;
-
     private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
@@ -19,14 +13,20 @@ public class Game
     public List<Quest>? Quests { get; set; }
     public Player? Player { get; set; }
 
+    private readonly IUserInteraction _userInteraction;
+    private readonly IStringHelper _stringHelper;
+    private readonly IFileHelper _fileHelper;
+    private readonly IJsonHelper _jsonHelper;
+    private readonly IQuestService _questService;
+
     public Game(IUserInteraction userInteraction,
-        Graphics graphics,
+        IStringHelper stringHelper,
         IFileHelper fileHelper,
         IQuestService questService,
         ISavedGameService savedGameService)
     {
         _userInteraction = userInteraction;
-        _graphics = graphics;
+        _stringHelper = stringHelper;
         _fileHelper = fileHelper;
         _questService = questService;
         _savedGameService = savedGameService;
@@ -87,13 +87,13 @@ public class Game
             }
             _userInteraction.ClearConsole();
 
-            var menuButton = _graphics.GetGameMenuButton();
+            var menuButton = _stringHelper.GetGameMenuButton();
             _userInteraction.Print(menuButton);
 
-            var statisticsText = Graphics.GetCharacterStatisticsString(Player);
+            var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
             _userInteraction.Print(statisticsText);
 
-            var moralityText = Graphics.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+            var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
             _userInteraction.Print(moralityText);
 
             if (quest is null)
@@ -101,7 +101,7 @@ public class Game
 
             PrintQuest(quest);
 
-            var inventory = _graphics.GetPlayerInventoryAsString(Player);
+            var inventory = _stringHelper.GetPlayerInventoryAsString(Player);
             _userInteraction.Print(inventory);
 
             if (quest.Options is not null)
@@ -124,7 +124,7 @@ public class Game
                     {
                         Player.ApplyMoralityScore(option.MoralityScore);
                     }
-                    var index = CreateQuestIndex(quest.Index, choice.KeyChar);
+                    var index = _stringHelper.GetQuestIndexString(quest.Index, choice.KeyChar);
 
                     if (Quests is not null)
                         quest = GetQuestFromIndex(index, Quests);
@@ -163,7 +163,7 @@ public class Game
                     Player.AddInventoryItem(quest.Item);
                 }
 
-                var continueText = _graphics.GetContinueText();
+                var continueText = _stringHelper.GetContinueText();
                 _userInteraction.Print(continueText);
                 var input = _userInteraction.GetChar();
 
@@ -192,7 +192,7 @@ public class Game
     public void GameMenu(string questIndex)
     {
         _userInteraction.ClearConsole();
-        var text = _graphics.GetGameMenuString();
+        var text = _stringHelper.GetGameMenuString();
         _userInteraction.Print(text);
 
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
@@ -249,22 +249,22 @@ public class Game
 
         var strings = new List<string>
         {
-            Graphics.GetEnemyForFightLog(enemy)
+            _stringHelper.GetEnemyForFightLog(enemy)
         };
 
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
-            strings.Add(Graphics.GetActionForFightLog(Player, enemy));
+            strings.Add(_stringHelper.GetActionForFightLog(Player, enemy));
 
             enemy.PerformAttack(Player);
-            strings.Add(Graphics.GetActionForFightLog(enemy, Player));
+            strings.Add(_stringHelper.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
-            strings.Add(_graphics.GetSurvivorForFightLog(enemy));
-            var fightLog = Graphics.BuildString(strings);
+            strings.Add(_stringHelper.GetSurvivorForFightLog(enemy));
+            var fightLog = _stringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
 
             Player.HealthPoints = MaxHealthPoints;
@@ -275,8 +275,8 @@ public class Game
         else
         {
 
-            strings.Add(_graphics.GetSurvivorForFightLog(Player));
-            var fightLog = Graphics.BuildString(strings);
+            strings.Add(_stringHelper.GetSurvivorForFightLog(Player));
+            var fightLog = _stringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
         }
     }
@@ -302,7 +302,7 @@ public class Game
                 var savedGame = DeserializeSavedGame(jsonString);
                 if (savedGame is not null)
                 {
-                    var text = _graphics.GetConfirmationStringForSavedGame(savedGame);
+                    var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
                     _userInteraction.Print(text);
                 }
             }
@@ -329,7 +329,7 @@ public class Game
             savedGames.Add(savedGame ?? new SavedGame());
         }
 
-        var text = _graphics.GetSavedGamesString(savedGames);
+        var text = _stringHelper.GetSavedGamesString(savedGames);
         _userInteraction.Print(text);
     }
 
@@ -365,18 +365,13 @@ public class Game
 
     private void PrintMenu()
     {
-        var menu = _graphics.GetMenu();
+        var menu = _stringHelper.GetMenu();
         _userInteraction.Print(menu);
-    }
-
-    private string CreateQuestIndex(string parentQuestIndex, char choice)
-    {
-        return $"{parentQuestIndex}.{choice}";
     }
 
     private void PrintQuest(Quest quest)
     {
-        var text = _graphics.GetQuestWithOptions(quest);
+        var text = _stringHelper.GetQuestWithOptions(quest);
         _userInteraction.Print(text);
     }
 
@@ -401,11 +396,13 @@ public class Game
     public Player CreatePlayer()
     {
         _userInteraction.ClearConsole();
-        var name = _userInteraction.GetInput("Choose the name of your character.");
+        var nameMessage = _stringHelper.GetPlayerNameMessage();
+        var name = _userInteraction.GetInput(nameMessage);
         while (string.IsNullOrEmpty(name))
         {
             _userInteraction.ClearConsole();
-            name = _userInteraction.GetInput("Your character have to have a name.");
+            var noInputMessage = _stringHelper.GetNoNameInputMessage();
+            name = _userInteraction.GetInput(noInputMessage);
         }
 
         return new Player(name);

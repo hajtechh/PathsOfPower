@@ -14,7 +14,8 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockGraphics = new Mock<Graphics>();
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockGraphics = new Mock<StringHelper>();
         var mockQuestService = new Mock<IQuestService>();
         var mockSavedGameService = new Mock<ISavedGameService>();
         var sut = new Game(mockUserInteraction.Object,
@@ -46,7 +47,8 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockGraphics = new Mock<Graphics>();
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockGraphics = new Mock<StringHelper>();
         var mockQuestService = new Mock<IQuestService>();
         var mockSavedGameService = new Mock<ISavedGameService>();
         mockUserInteraction.SetupSequence(x => x.GetInput(It.IsAny<string>()))
@@ -74,8 +76,8 @@ public class GameTests
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockGraphics = new Mock<StringHelper>();
         var mockSavedGameService = new Mock<ISavedGameService>();
-        var mockGraphics = new Mock<Graphics>();
 
         var sut = new Game(mockUserInteraction.Object,
             mockGraphics.Object,
@@ -102,8 +104,8 @@ public class GameTests
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockGraphics = new Mock<StringHelper>();
         var mockSavedGameService = new Mock<ISavedGameService>();
-        var mockGraphics = new Mock<Graphics>();
         var sut = new Game(mockUserInteraction.Object,
             mockGraphics.Object,
             mockFileHelper.Object,
@@ -169,7 +171,8 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockGraphics = new Mock<Graphics>();
+        var mockJsonHelper = new Mock<IJsonHelper>();
+        var mockGraphics = new Mock<StringHelper>();
         var mockQuestService = new Mock<IQuestService>();
         var mockSavedGameService = new Mock<ISavedGameService>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
@@ -194,7 +197,7 @@ public class GameTests
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
         var mockQuestService = new Mock<IQuestService>();
-        var mockGraphics = new Mock<Graphics>();
+        var mockGraphics = new Mock<StringHelper>();
         var mockSavedGameService = new Mock<ISavedGameService>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '1';

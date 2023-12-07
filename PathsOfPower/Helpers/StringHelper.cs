@@ -3,7 +3,7 @@ using PathsOfPower.Core.Models;
 
 namespace PathsOfPower.Core;
 
-public class Graphics
+public class StringHelper : IStringHelper
 {
     private const int PadRight = 80;
     private const int MaxLength = PadRight - 10;
@@ -20,6 +20,8 @@ public class Graphics
     private readonly string _emptyinventory = " E M P T Y ";
     private readonly string _inventory = "~ Inventory ~";
 
+    private readonly string _gameMenuButton = $"{NewLine}[M] Game Menu{NewLine}";
+
     private readonly string _menu = $"[1] Start new game{NewLine}" +
         $"[2] Load game{NewLine}" +
         $"[3] Quit game";
@@ -29,7 +31,10 @@ public class Graphics
         $"[3] Main Menu{NewLine}" +
         $"[4] Quit game";
 
-    private readonly string _gameMenuButton = $"{NewLine}[M] Game Menu{NewLine}";
+    private readonly string _inputNameMessage = "Choose the name of your character.";
+
+    private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
+
 
     public string GetMenu() => _menu;
 
@@ -38,6 +43,10 @@ public class Graphics
     public string GetGameMenuButton() => _gameMenuButton;
 
     public string GetContinueText() => _continueText;
+
+    public string GetPlayerNameMessage() => _inputNameMessage;
+
+    public string GetNoNameInputMessage() => _haveToHaveNameMessage;
 
     public string GetQuestWithOptions(Quest quest)
     {
@@ -103,7 +112,7 @@ public class Graphics
         return text;
     }
 
-    public static string GetCharacterStatisticsString(ICharacter character) =>
+    public string GetCharacterStatisticsString(ICharacter character) =>
         $"Current health: {character.HealthPoints} | Power: {character.Power}{NewLine}";
 
     public string GetSavedGamesString(List<SavedGame> savedGames)
@@ -127,7 +136,7 @@ public class Graphics
         return $"Successfully saved game for {savedGame.Player.Name}.{NewLine}{_continueText}";
     }
 
-    public static string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
+    public string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
     {
         var text = "You are:";
         return moralitySpectrum switch
@@ -142,12 +151,12 @@ public class Graphics
         };
     }
 
-    public static string GetEnemyForFightLog(Enemy enemy)
+    public string GetEnemyForFightLog(Enemy enemy)
     {
         return $"Fight against {enemy.Name}!{NewLine}";
     }
 
-    public static string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
+    public string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
     {
         return $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.HealthPoints} healthpoints left.{NewLine}";
     }
@@ -157,7 +166,7 @@ public class Graphics
         return $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NewLine}{_continueText}";
     }
 
-    public static string GetCurrentChapterAsString(string index)
+    public string GetCurrentChapterAsString(string index)
     {
         var questIndex = index.Split('.');
         var currentChapter = questIndex.FirstOrDefault();
@@ -165,7 +174,7 @@ public class Graphics
         return text;
     }
 
-    public static string BuildString(List<string> strings)
+    public string BuildString(List<string> strings)
     {
         var stringBuilder = new StringBuilder();
         for (int i = 0; i < strings.Count; ++i)
@@ -173,6 +182,11 @@ public class Graphics
             stringBuilder.Append(strings[i]);
         }
         return stringBuilder.ToString();
+    }
+
+    public string GetQuestIndexString(string parentQuestIndex, char choice)
+    {
+        return $"{parentQuestIndex}.{choice}";
     }
 }
 
