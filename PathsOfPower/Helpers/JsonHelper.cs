@@ -1,4 +1,6 @@
-﻿namespace PathsOfPower.Helpers;
+﻿using PathsOfPower.Core.Interfaces;
+
+namespace PathsOfPower.Core.Helpers;
 
 public class JsonHelper : IJsonHelper
 {

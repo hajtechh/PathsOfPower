@@ -1,1 +1,1 @@
-﻿global using PathsOfPower.Cli.Interfaces;
+﻿global using PathsOfPower.Core.Interfaces;

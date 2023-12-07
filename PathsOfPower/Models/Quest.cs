@@ -1,4 +1,4 @@
-﻿namespace PathsOfPower.Models;
+﻿namespace PathsOfPower.Core.Models;
 public class Quest
 {
     public string Index { get; set; }
@@ -10,7 +10,7 @@ public class Quest
 
     public Quest()
     {
-        Index = String.Empty;
-        Description = String.Empty;
+        Index = string.Empty;
+        Description = string.Empty;
     }
 }

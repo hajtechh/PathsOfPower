@@ -1,4 +1,8 @@
-﻿namespace PathsOfPower;
+﻿using PathsOfPower.Core.Exceptions;
+using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
+
+namespace PathsOfPower.Core;
 
 public class Game
 {

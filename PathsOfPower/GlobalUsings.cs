@@ -1,11 +1,8 @@
-﻿global using PathsOfPower.Interfaces;
+﻿global using PathsOfPower.Core.Interfaces;
 global using System.Text.Json;
-global using PathsOfPower.Models;
-global using PathsOfPower.Exceptions;
-global using PathsOfPower.Cli.Interfaces;
 global using System.Text;
 global using System.Text.RegularExpressions;
-global using PathsOfPower;
-global using PathsOfPower.Cli;
-global using PathsOfPower.Helpers;
-global using PathsOfPower.Services;
+global using PathsOfPower.Core.Models;
+global using PathsOfPower.Core.Exceptions;
+global using PathsOfPower.Core.Helpers;
+global using PathsOfPower.Core.Services;

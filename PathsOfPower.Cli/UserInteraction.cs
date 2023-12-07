@@ -1,4 +1,6 @@
-﻿namespace PathsOfPower.Cli;
+﻿using PathsOfPower.Core.Interfaces;
+
+namespace PathsOfPower.Cli;
 
 public class UserInteraction : IUserInteraction
 {

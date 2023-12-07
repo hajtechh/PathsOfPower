@@ -1,4 +1,9 @@
 ﻿
+using PathsOfPower.Core;
+using PathsOfPower.Core.Exceptions;
+using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
+
 namespace PathsOfPower.Tests;
 
 public class GameTests

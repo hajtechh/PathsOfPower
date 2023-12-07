@@ -1,4 +1,4 @@
-﻿namespace PathsOfPower.Models;
+﻿namespace PathsOfPower.Core.Models;
 
 public class Option
 {
@@ -10,5 +10,5 @@ public class Option
     {
         Name = string.Empty;
     }
-  
+
 }
