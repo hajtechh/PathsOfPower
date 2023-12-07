@@ -20,7 +20,7 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "First, you need to acquire elderwood"
+        "Name": "Acquire elderwood"
       }
     ]
   },
@@ -47,7 +47,7 @@
   },
   {
     "Index": "6.1.1.1.1",
-    "Description": "Terra Lovegood smiles wide, and asks you what you are doing here.",
+    "Description": "Terra Lovegood smiles wide, and asks you what you´re doing here.",
     "Options": [
       {
         "Index": 1,
@@ -62,7 +62,7 @@
 
   {
     "Index": "6.1.1.1.1.1",
-    "Description": "She nods through your whole story, and at the end, you´re convinced she doesn´t believe you. She laughs and dissapears into the house.",
+    "Description": "She nods and smiles through your whole story, and at the end, you´re convinced she doesn´t believe you. She laughs and dissapears into the house.",
     "Options": [
       {
         "Index": 1,
@@ -106,6 +106,16 @@
   },
   {
     "Index": "6.1.1.1.1.1.1.1.1.1",
+    "Description": "You call for help, but no one comes. You run to the old man and grab him, trying to save him. You ask him what´s wrong but he can´t make a sound. Suddenly, his face turns blue and his body gets limp. The man is dead.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Leave, and go back to Hogwarts"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1",
     "Description": "You call for help, but no one comes. You run to the old man and grab him, trying to save him. You ask him what´s wrong but he can´t make a sound. Suddenly, his face turns blue and his body gets limp. The man is dead.",
     "Options": [
       {
