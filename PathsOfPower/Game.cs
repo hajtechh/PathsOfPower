@@ -202,9 +202,13 @@ public class Game
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
         {
           { ConsoleKey.D1, () => StartGame(questIndex) },
+          { ConsoleKey.NumPad1, () => StartGame(questIndex) },
           { ConsoleKey.D2, () => SaveGame(questIndex) },
+          { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
           { ConsoleKey.D3, Run },
+          { ConsoleKey.NumPad3, Run },
           { ConsoleKey.D4, QuitGame },
+          { ConsoleKey.NumPad4, QuitGame },
         };
 
         var choice = _userInteraction.GetChar();
@@ -357,14 +361,11 @@ public class Game
             return null;
 
         var savedGame = new SavedGame(Player, questIndex);
-        return _savedGameService.S(savedGame);
-        //return _jsonHelper.Serialize(savedGame);
+        return _savedGameService.CreateSavedGame(savedGame);
     }
 
-    public SavedGame? DeserializeSavedGame(string jsonString)
-    {
-        return _jsonHelper.Deserialize<SavedGame>(jsonString);
-    }
+    public SavedGame? DeserializeSavedGame(string jsonString) =>
+        _savedGameService.GetSavedGame(jsonString);
 
     private void PrintMenu()
     {
