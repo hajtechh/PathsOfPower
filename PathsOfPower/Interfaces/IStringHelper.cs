@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathsOfPower.Interfaces
+namespace PathsOfPower.Core.Interfaces
 {
     public interface IStringHelper
     {

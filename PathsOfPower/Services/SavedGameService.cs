@@ -1,7 +1,6 @@
-﻿using PathsOfPower.Interfaces;
-using PathsOfPower.Models;
+﻿using PathsOfPower.Models;
 
-namespace PathsOfPower.Services;
+namespace PathsOfPower.Core.Services;
 
 public class SavedGameService : ISavedGameService
 {
@@ -19,5 +18,5 @@ public class SavedGameService : ISavedGameService
         _jsonHelper.Deserialize<SavedGame>(jsonContent);
 
     public string? CreateSavedGame(SavedGame savedGame) =>
-        _jsonHelper.Serialize<SavedGame>(savedGame);
+        _jsonHelper.Serialize(savedGame);
 }
