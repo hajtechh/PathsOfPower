@@ -7,9 +7,16 @@ using PathsOfPower.Services;
 
 IConsoleWrapper consoleWrapper  = new ConsoleWrapper();
 IUserInteraction userInteraction = new UserInteraction(consoleWrapper);
+
 var graphics = new Graphics();
+
+// Helpers
 IFileHelper fileHelper = new FileHelper();
 IJsonHelper jsonHelper = new JsonHelper();
+
+// Services
+ISavedGameService savedGameService = new SavedGameService(jsonHelper);
 IQuestService questService = new QuestService(jsonHelper);
-var game = new Game(userInteraction, graphics, fileHelper, questService, jsonHelper);
+
+var game = new Game(userInteraction, graphics, fileHelper, questService, savedGameService);
 game.Run();
