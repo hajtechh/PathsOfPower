@@ -7,4 +7,10 @@ public class Quest
     public InventoryItem? Item { get; set; }
     public Enemy? Enemy { get; set; }
     public IEnumerable<Option>? Options { get; set; }
+
+    public Quest()
+    {
+        Index = String.Empty;
+        Description = String.Empty;
+    }
 }
