@@ -1,6 +1,6 @@
-﻿using PathsOfPower.Interfaces;
+﻿using PathsOfPower.Core.Interfaces;
 
-namespace PathsOfPower.Helpers;
+namespace PathsOfPower.Core.Helpers;
 
 public class FileHelper : IFileHelper
 {

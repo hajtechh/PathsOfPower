@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PathsOfPower\PathsOfPower.Core.csproj" />
+  </ItemGroup>
+
 </Project>

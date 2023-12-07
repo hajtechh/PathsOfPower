@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathsOfPower", "PathsOfPower\PathsOfPower.csproj", "{49AACF97-8553-46C5-A93E-6B07B3F4EEBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathsOfPower.Core", "PathsOfPower\PathsOfPower.Core.csproj", "{49AACF97-8553-46C5-A93E-6B07B3F4EEBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathsOfPower.Tests", "PathsOfPower.Tests\PathsOfPower.Tests.csproj", "{D8357B4B-E4AD-4528-AAE8-ED0B2A75CC91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathsOfPower.Tests", "PathsOfPower.Tests\PathsOfPower.Tests.csproj", "{D8357B4B-E4AD-4528-AAE8-ED0B2A75CC91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathsOfPower.Cli", "PathsOfPower.Cli\PathsOfPower.Cli.csproj", "{75A23C2F-3E07-449F-B2B6-93215206A7E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathsOfPower.Cli", "PathsOfPower.Cli\PathsOfPower.Cli.csproj", "{75A23C2F-3E07-449F-B2B6-93215206A7E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

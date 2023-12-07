@@ -1,7 +1,7 @@
 [
   {
     "Index": "4",
-    "Description": "You enter your office, and sit down by your desk. You place the wand in front of you, looking wide-eyed at it. You have never felt the precence of such a powerful object before.",
+    "Description": "You enter your office, and sit down by your desk. You place the wand in front of you, looking wide-eyed at it. You have never felt the presence of such a powerful object before.",
     "Options": [
       {
         "Index": 1,
@@ -25,7 +25,7 @@
   },
   {
     "Index": "4.1.1",
-    "Description": "You hide the wand in your office and head towards the library. Witch section should you go to for answers?",
+    "Description": "You hide the wand in your office and head towards the library. Which section should you go to for answers?",
     "Options": [
       {
         "Index": 1,
@@ -59,7 +59,7 @@
   },
   {
     "Index": "4.1.1.1.1.1",
-    "Description": "As you´re about to pick up a book, someone snatches it from your hands. You turn around to see a poltergeist holding your book. He says you wont get the book back if say please.",
+    "Description": "As you´re about to pick up a book, someone snatches it from your hands. You turn around to see a poltergeist holding your book. He says you won't get the book back if say please.",
     "Options": [
       {
         "Index": 1,
@@ -132,7 +132,7 @@
   },
   {
     "Index": "4.1.1.2.1.1",
-    "Description": "You browse through the wand-section, but unsuccessfully. Suddenly you hear a cry for help. A poltergeist is harrassing another teacher.",
+    "Description": "You browse through the wand-section, but unsuccessfully. Suddenly you hear a cry for help. A poltergeist is harassing another teacher.",
     "Options": [
       {
         "Index": 1,
@@ -164,7 +164,7 @@
   },
   {
     "Index": "4.1.1.2.1.1.1.1",
-    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand...."
+    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand you´re asking about..."
   },
 
   {
@@ -179,7 +179,7 @@
   },
   {
     "Index": "4.1.1.2.1.1.2.1",
-    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand...."
+    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand you´re asking about..."
   },
 
   {
@@ -273,6 +273,6 @@
 
   {
     "Index": "4.1.2.2.2.2",
-    "Description": "She tells you the story of the three brothers who cheated death, and each got a gift in return. The first brother asked for the most powerful wand ever created. Mrs Malfoy continues, and explains that the wand you´re describing..."
+    "Description": "She tells you the story of the three brothers who cheated death, and each got a gift from it in return. The first brother asked for the most powerful wand ever created, called the Elder Wand. Mrs Malfoy continues, and explains that the wand you´re describing..."
   }
 ]

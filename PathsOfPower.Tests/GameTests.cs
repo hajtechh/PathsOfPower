@@ -1,10 +1,8 @@
-﻿using Moq;
-using PathsOfPower.Cli.Interfaces;
-using PathsOfPower.Exceptions;
-using PathsOfPower.Helpers;
-using PathsOfPower.Interfaces;
-using System.Net.Http.Json;
-using System.Text.Json;
+﻿
+using PathsOfPower.Core;
+using PathsOfPower.Core.Exceptions;
+using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
 
 namespace PathsOfPower.Tests;
 

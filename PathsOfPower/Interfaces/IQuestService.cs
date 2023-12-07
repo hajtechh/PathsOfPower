@@ -1,6 +1,6 @@
-﻿using PathsOfPower.Models;
+﻿using PathsOfPower.Core.Models;
 
-namespace PathsOfPower.Interfaces;
+namespace PathsOfPower.Core.Interfaces;
 
 public interface IQuestService
 {

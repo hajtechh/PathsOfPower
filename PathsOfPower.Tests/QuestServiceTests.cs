@@ -1,5 +1,6 @@
-﻿using PathsOfPower.Services;
-using System.Text.Json;
+﻿
+using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
 
 namespace PathsOfPower.Tests;
 

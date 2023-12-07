@@ -1,0 +1,85 @@
+[
+  {
+    "Index": "5",
+    "Description": "...it´s the Elder Wand.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go outside for some air"
+      }
+    ]
+  },
+  {
+    "Index": "5.1",
+    "Description": "You take a stroll through Hogwarts grounds, and your mind is racing.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Why did you find this?"
+      }
+    ]
+  },
+  {
+    "Index": "5.1.1",
+    "Description": "Was it just an accident? Should you really have it?",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go back to the lake and throw it in the water, you are better off without it"
+      },
+      {
+        "Index": 2,
+        "Name": "Keep the wand, you were meant to find it"
+      }
+    ]
+  },
+
+  {
+    "Index": "5.1.1.1",
+    "Description": "You turn towards the lake and pick up your pace. You stand at the shoreline, and pull the wand from your robe. You get ready to throw it, but suddenly you body won´t move.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Fight it"
+      },
+      {
+        "Index": 2,
+        "Name": "Keep the wand, it´s a sign"
+      }
+    ]
+  },
+  {
+    "Index": "5.1.1.1.1",
+    "Description": "You struggle with all your might, but something much stronger than you is paralyzing your body. An electrical current, similar to the one you felt when touching the wand, now flows through your entire body.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "It´s no use, keep the wand"
+      }
+    ]
+  },
+  {
+    "Index": "5.1.1.1.1.1",
+    "Description": "The second you decide to hold on to the wand, you regain control of your body. You fall back into the sand, shocked by the power you just felt. You look at the broken wand in your hands. You decide you won´t get any answers until the wand is repaired."
+  },
+
+  {
+    "Index": "5.1.1.1.2",
+    "Description": "You sit down in the sand an look at the broken Elder Wand in your hands. It clearly wants... something. You decide the only way to find out what, is to repair the wand."
+  },
+
+  {
+    "Index": "5.1.1.2",
+    "Description": "You place you hand over the pocket in your robe, where the broken Elder Wand rests. The same electrical current flows through your hand, more intensive than before.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "It has to mean something, but what?"
+      }
+    ]
+  },
+  {
+    "Index": "5.1.1.2.1",
+    "Description": "You decide you won´t get any answers until the Elder Wand is repaired."
+  }
+]
