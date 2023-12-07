@@ -1,10 +1,5 @@
-﻿using Moq;
-using PathsOfPower.Cli.Interfaces;
+﻿using PathsOfPower.Cli.Interfaces;
 using PathsOfPower.Exceptions;
-using PathsOfPower.Helpers;
-using PathsOfPower.Interfaces;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace PathsOfPower.Tests;
 
@@ -16,14 +11,14 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
         var mockGraphics = new Mock<Graphics>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockSavedGameService = new Mock<ISavedGameService>();
         var sut = new Game(mockUserInteraction.Object,
             mockGraphics.Object,
             mockFileHelper.Object,
             mockQuestService.Object,
-            mockJsonHelper.Object);
+            mockSavedGameService.Object);
 
         var jsonContent = @"{""Index"":""1"",""Description"":""You are in a classroom at Hogwarts. What do you want to teach your students today?""}";
 
@@ -48,9 +43,9 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
         var mockGraphics = new Mock<Graphics>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockSavedGameService = new Mock<ISavedGameService>();
         mockUserInteraction.SetupSequence(x => x.GetInput(It.IsAny<string>()))
             .Returns("")
             .Returns("Ron");
@@ -58,7 +53,7 @@ public class GameTests
             mockGraphics.Object,
             mockFileHelper.Object,
             mockQuestService.Object,
-            mockJsonHelper.Object);
+            mockSavedGameService.Object);
         // Act
         var actual = sut.CreatePlayer();
 
@@ -75,20 +70,20 @@ public class GameTests
 
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockSavedGameService = new Mock<ISavedGameService>();
         var mockGraphics = new Mock<Graphics>();
 
         var sut = new Game(mockUserInteraction.Object,
             mockGraphics.Object,
             mockFileHelper.Object,
             mockQuestService.Object,
-            mockJsonHelper.Object)
+            mockSavedGameService.Object)
         {
             Player = new Player("Haj")
         };
 
-        mockJsonHelper.Setup(x => x.Serialize(It.IsAny<SavedGame>())).Returns(expected);
+        mockSavedGameService.Setup(x => x.CreateSavedGame(It.IsAny<SavedGame>())).Returns(expected);
 
         // Act
         var actual = sut.SerializeSavedGame("1.2");
@@ -103,19 +98,19 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockSavedGameService = new Mock<ISavedGameService>();
         var mockGraphics = new Mock<Graphics>();
         var sut = new Game(mockUserInteraction.Object,
             mockGraphics.Object,
             mockFileHelper.Object,
             mockQuestService.Object,
-            mockJsonHelper.Object);
+            mockSavedGameService.Object);
         var jsonString = @"{""Player"":{""Name"":""Haj""},""QuestIndex"":""1.2""}";
 
         var expected = new SavedGame(new Player("Haj"), "1.2");
 
-        mockJsonHelper.Setup(x => x.Deserialize<SavedGame>(jsonString)).Returns(expected);
+        mockSavedGameService.Setup(x => x.GetSavedGame(jsonString)).Returns(expected);
 
         // Act
         var actual = sut.DeserializeSavedGame(jsonString);
@@ -171,9 +166,9 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
         var mockGraphics = new Mock<Graphics>();
         var mockQuestService = new Mock<IQuestService>();
+        var mockSavedGameService = new Mock<ISavedGameService>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '9';
         mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
@@ -182,7 +177,7 @@ public class GameTests
             mockGraphics.Object,
             mockFileHelper.Object,
             mockQuestService.Object,
-            mockJsonHelper.Object);
+            mockSavedGameService.Object);
 
         // Act
         // Assert
@@ -195,9 +190,9 @@ public class GameTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockJsonHelper = new Mock<IJsonHelper>();
         var mockQuestService = new Mock<IQuestService>();
         var mockGraphics = new Mock<Graphics>();
+        var mockSavedGameService = new Mock<ISavedGameService>();
         var jsonContent = @"{""Player"":{""Name"":""Test Save"",""MoralitySpectrum"":-4,""MaxHealthPoints"":100,""CurrentHealthPoints"":100,""Power"":20,""InventoryItems"":[]},""QuestIndex"":""2""}";
         var slotNumber = '1';
         mockFileHelper.Setup(x => x.WriteAllText(jsonContent, slotNumber));
@@ -206,7 +201,7 @@ public class GameTests
             mockGraphics.Object,
             mockFileHelper.Object,
             mockQuestService.Object,
-            mockJsonHelper.Object);
+            mockSavedGameService.Object);
 
         // Act
         var actual = sut.WriteToFile(slotNumber, jsonContent);
