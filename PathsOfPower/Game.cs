@@ -23,13 +23,13 @@ public class Game
         IStringHelper stringHelper,
         IFileHelper fileHelper,
         IQuestService questService,
-        IJsonHelper jsonHelper)
+        ISavedGameService savedGameService)
     {
         _userInteraction = userInteraction;
         _stringHelper = stringHelper;
         _fileHelper = fileHelper;
         _questService = questService;
-        _jsonHelper = jsonHelper;
+        _savedGameService = savedGameService;
     }
     public void Run()
     {
@@ -198,9 +198,13 @@ public class Game
         Dictionary<ConsoleKey, Action> keyActions = new Dictionary<ConsoleKey, Action>
         {
           { ConsoleKey.D1, () => StartGame(questIndex) },
+          { ConsoleKey.NumPad1, () => StartGame(questIndex) },
           { ConsoleKey.D2, () => SaveGame(questIndex) },
+          { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
           { ConsoleKey.D3, Run },
+          { ConsoleKey.NumPad3, Run },
           { ConsoleKey.D4, QuitGame },
+          { ConsoleKey.NumPad4, QuitGame },
         };
 
         var choice = _userInteraction.GetChar();
@@ -320,7 +324,7 @@ public class Game
             var savedGame = new SavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
-                savedGame = _jsonHelper.Deserialize<SavedGame>(jsonContent);
+                savedGame = _savedGameService.GetSavedGame(jsonContent);
             }
             savedGames.Add(savedGame ?? new SavedGame());
         }
@@ -353,13 +357,11 @@ public class Game
             return null;
 
         var savedGame = new SavedGame(Player, questIndex);
-        return _jsonHelper.Serialize(savedGame);
+        return _savedGameService.CreateSavedGame(savedGame);
     }
 
-    public SavedGame? DeserializeSavedGame(string jsonString)
-    {
-        return _jsonHelper.Deserialize<SavedGame>(jsonString);
-    }
+    public SavedGame? DeserializeSavedGame(string jsonString) =>
+        _savedGameService.GetSavedGame(jsonString);
 
     private void PrintMenu()
     {

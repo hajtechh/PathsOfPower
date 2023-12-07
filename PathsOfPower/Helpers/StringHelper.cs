@@ -144,7 +144,7 @@ public class StringHelper : IStringHelper
             int n when n < -10 => $"{text} Super evil{NewLine}",
             int n when n >= -10 && n < -5 => $"{text} Evil{NewLine}",
             int n when n >= -5 && n <= 0 => $"{text} Neutral{NewLine}",
-            int n when n > 0 && n < 5 => $"{text} Super evil{NewLine}",
+            int n when n > 0 && n < 5 => $"{text} Decent{NewLine}",
             int n when n >= 5 && n < 10 => $"{text} Good{NewLine}",
             int n when n >= 10 && n < 15 => $"{text} Saint{NewLine}",
             _ => $"No data available{NewLine}",
