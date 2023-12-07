@@ -357,7 +357,8 @@ public class Game
             return null;
 
         var savedGame = new SavedGame(Player, questIndex);
-        return _jsonHelper.Serialize(savedGame);
+        return _savedGameService.S(savedGame);
+        //return _jsonHelper.Serialize(savedGame);
     }
 
     public SavedGame? DeserializeSavedGame(string jsonString)
