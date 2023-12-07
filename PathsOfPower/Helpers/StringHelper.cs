@@ -114,7 +114,7 @@ public class StringHelper : IStringHelper
         return text;
     }
 
-    public static string GetCharacterStatisticsString(ICharacter character) =>
+    public string GetCharacterStatisticsString(ICharacter character) =>
         $"Current health: {character.HealthPoints} | Power: {character.Power}{NewLine}";
 
     public string GetSavedGamesString(List<SavedGame> savedGames)
@@ -138,7 +138,7 @@ public class StringHelper : IStringHelper
         return $"Successfully saved game for {savedGame.Player.Name}.{NewLine}{_continueText}";
     }
 
-    public static string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
+    public string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
     {
         var text = "You are:";
         return moralitySpectrum switch
@@ -153,12 +153,12 @@ public class StringHelper : IStringHelper
         };
     }
 
-    public static string GetEnemyForFightLog(Enemy enemy)
+    public string GetEnemyForFightLog(Enemy enemy)
     {
         return $"Fight against {enemy.Name}!{NewLine}";
     }
 
-    public static string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
+    public string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
     {
         return $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.HealthPoints} healthpoints left.{NewLine}";
     }
@@ -168,7 +168,7 @@ public class StringHelper : IStringHelper
         return $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NewLine}{_continueText}";
     }
 
-    public static string GetCurrentChapterAsString(string index)
+    public string GetCurrentChapterAsString(string index)
     {
         var questIndex = index.Split('.');
         var currentChapter = questIndex.FirstOrDefault();
@@ -176,7 +176,7 @@ public class StringHelper : IStringHelper
         return text;
     }
 
-    public static string BuildString(List<string> strings)
+    public string BuildString(List<string> strings)
     {
         var stringBuilder = new StringBuilder();
         for (int i = 0; i < strings.Count; ++i)

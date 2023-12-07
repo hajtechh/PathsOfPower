@@ -9,18 +9,18 @@ namespace PathsOfPower;
 
 public class Game
 {
-    private readonly IUserInteraction _userInteraction;
-    private readonly IStringHelper _stringHelper;
-    private readonly IFileHelper _fileHelper;
-    private readonly IJsonHelper _jsonHelper;
-    private readonly IQuestService _questService;
-
     private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
 
     public List<Quest>? Quests { get; set; }
     public Player? Player { get; set; }
+
+    private readonly IUserInteraction _userInteraction;
+    private readonly IStringHelper _stringHelper;
+    private readonly IFileHelper _fileHelper;
+    private readonly IJsonHelper _jsonHelper;
+    private readonly IQuestService _questService;
 
     public Game(IUserInteraction userInteraction,
         IStringHelper stringHelper,
@@ -93,10 +93,10 @@ public class Game
             var menuButton = _stringHelper.GetGameMenuButton();
             _userInteraction.Print(menuButton);
 
-            var statisticsText = StringHelper.GetCharacterStatisticsString(Player);
+            var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
             _userInteraction.Print(statisticsText);
 
-            var moralityText = StringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+            var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
             _userInteraction.Print(moralityText);
 
             if (quest is null)
@@ -248,22 +248,22 @@ public class Game
 
         var strings = new List<string>
         {
-            StringHelper.GetEnemyForFightLog(enemy)
+            _stringHelper.GetEnemyForFightLog(enemy)
         };
 
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
-            strings.Add(StringHelper.GetActionForFightLog(Player, enemy));
+            strings.Add(_stringHelper.GetActionForFightLog(Player, enemy));
 
             enemy.PerformAttack(Player);
-            strings.Add(StringHelper.GetActionForFightLog(enemy, Player));
+            strings.Add(_stringHelper.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
             strings.Add(_stringHelper.GetSurvivorForFightLog(enemy));
-            var fightLog = StringHelper.BuildString(strings);
+            var fightLog = _stringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
 
             Player.HealthPoints = MaxHealthPoints;
@@ -275,7 +275,7 @@ public class Game
         {
 
             strings.Add(_stringHelper.GetSurvivorForFightLog(Player));
-            var fightLog = StringHelper.BuildString(strings);
+            var fightLog = _stringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
         }
     }
