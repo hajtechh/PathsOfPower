@@ -1,10 +1,4 @@
-﻿
-using PathsOfPower.Core;
-using PathsOfPower.Core.Exceptions;
-using PathsOfPower.Core.Interfaces;
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Tests;
+﻿namespace PathsOfPower.Tests;
 
 public class GameTests
 {
@@ -215,4 +209,6 @@ public class GameTests
         // Assert
         Assert.True(actual);
     }
+
+    
 }

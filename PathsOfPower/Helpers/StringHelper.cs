@@ -1,7 +1,4 @@
-﻿using PathsOfPower.Core.Interfaces;
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core.Helpers;
+﻿namespace PathsOfPower.Core.Helpers;
 
 public class StringHelper : IStringHelper
 {
@@ -187,6 +184,13 @@ public class StringHelper : IStringHelper
     public string GetQuestIndexString(string parentQuestIndex, char choice)
     {
         return $"{parentQuestIndex}.{choice}";
+    }
+
+    public string TrimInputString(string message)
+    {
+        char[] charsToTrim = { '_', '.', ' ', '!', '*' };
+        message = message.Trim(charsToTrim);
+        return message;
     }
 }
 

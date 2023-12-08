@@ -1,8 +1,4 @@
-﻿using PathsOfPower.Core.Exceptions;
-using PathsOfPower.Core.Interfaces;
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core;
+﻿namespace PathsOfPower.Core;
 
 public class Game
 {
@@ -411,13 +407,16 @@ public class Game
         _userInteraction.ClearConsole();
         var nameMessage = _stringHelper.GetPlayerNameMessage();
         var name = _userInteraction.GetInput(nameMessage);
+        name = _stringHelper.TrimInputString(name);
         while (string.IsNullOrEmpty(name))
         {
             _userInteraction.ClearConsole();
             var noInputMessage = _stringHelper.GetNoNameInputMessage();
             name = _userInteraction.GetInput(noInputMessage);
+            name = _stringHelper.TrimInputString(name);
         }
 
         return new Player(name);
     }
+
 }

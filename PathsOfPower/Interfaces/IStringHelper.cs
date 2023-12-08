@@ -20,4 +20,5 @@ public interface IStringHelper
     string GetSurvivorForFightLog(ICharacter character);
     string GetCurrentChapterAsString(string index);
     string GetQuestIndexString(string parentQuestIndex, char choice);
+    string TrimInputString(string name);
 }

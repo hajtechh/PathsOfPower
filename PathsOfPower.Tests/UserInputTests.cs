@@ -1,6 +1,3 @@
-
-using PathsOfPower.Core.Interfaces;
-
 namespace PathsOfPower.Tests;
 
 public class UserInputTests

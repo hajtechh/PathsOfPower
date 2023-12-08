@@ -1,7 +1,4 @@
-﻿
-using PathsOfPower.Core.Interfaces;
-
-namespace PathsOfPower.Tests;
+﻿namespace PathsOfPower.Tests;
 
 public class PlayerTests
 {
