@@ -68,36 +68,6 @@ public class GameTests
     }
 
     [Fact]
-    public void SerializeSavedGameShouldSeralizeObjectAndReturnExpected()
-    {
-        // Arrange
-        var expected = @"{""Player"":{""Name"":""Haj"",""MoralitySpectrum"":0,""InventoryItems"":null},""QuestIndex"":""1.2""}";
-
-        var mockUserInteraction = new Mock<IUserInteraction>();
-        var mockFileHelper = new Mock<IFileHelper>();
-        var mockQuestService = new Mock<IQuestService>();
-        var mockGraphics = new Mock<StringHelper>();
-        var mockSavedGameService = new Mock<ISavedGameService>();
-
-        var sut = new Game(mockUserInteraction.Object,
-            mockGraphics.Object,
-            mockFileHelper.Object,
-            mockQuestService.Object,
-            mockSavedGameService.Object)
-        {
-            Player = new Player("Haj")
-        };
-
-        mockSavedGameService.Setup(x => x.CreateSavedGame(It.IsAny<SavedGame>())).Returns(expected);
-
-        // Act
-        var actual = sut.SerializeSavedGame("1.2");
-
-        // Assert
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
     public void DeserializeSavedGameReturnsASavedGame()
     {
         // Arrange

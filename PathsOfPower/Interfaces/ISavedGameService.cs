@@ -4,5 +4,5 @@ public interface ISavedGameService
 {
     List<SavedGame>? GetSavedGames(string jsonContent);
     SavedGame? GetSavedGame(string jsonContent);
-    string? CreateSavedGame(SavedGame savedGame);
+    (bool isSaved, string message) SaveGame(Player player, char input, string questIndex);
 }

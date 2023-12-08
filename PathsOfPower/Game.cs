@@ -3,9 +3,9 @@
 public class Game
 {
     #region PrivateVariables
-    private const int MaxHealthPoints = 100;
-    private const char MinSlotNumber = '1';
-    private const char MaxSlotNumber = '3';
+    private const int MAX_HEALTH_POINTS = 100;
+    private const char MIN_SLOT_NUMBER = '1';
+    private const char MAX_SLOT_NUMBER = '3';
 
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
@@ -289,7 +289,7 @@ public class Game
             var fightLog = _stringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
 
-            Player.HealthPoints = MaxHealthPoints;
+            Player.HealthPoints = MAX_HEALTH_POINTS;
             _userInteraction.GetChar();
             SaveGame(questIndex);
             QuitGame();
@@ -311,53 +311,27 @@ public class Game
     public void SaveGame(string questIndex)
     {
         PrintSavedGames();
+
         var choice = _userInteraction.GetChar().KeyChar;
 
-        var jsonString = SerializeSavedGame(questIndex);
+        var (isSaved, message) = _savedGameService.SaveGame(Player, choice, questIndex);
 
-        if (jsonString is not null)
-        {
-            var isSaved = WriteToFile(choice, jsonString);
+        if (isSaved)
+            _userInteraction.Print(message);
 
-            if (isSaved)
-            {
-                var savedGame = DeserializeSavedGame(jsonString);
-                if (savedGame is not null)
-                {
-                    var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
-                    _userInteraction.Print(text);
-                }
-            }
-        }
         _userInteraction.GetChar();
         GameMenu(questIndex);
     }
 
+
     public bool WriteToFile(char choice, string jsonString)
     {
-        try
+        if (choice >= MIN_SLOT_NUMBER && choice <= MAX_SLOT_NUMBER)
         {
-            if (choice >= MinSlotNumber && choice <= MaxSlotNumber)
-            {
-                _fileHelper.WriteAllText(jsonString, choice);
-                return true;
-            }
-            throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+            _fileHelper.WriteAllText(jsonString, choice);
+            return true;
         }
-        catch (SlotNumberOutOfBoundsException ex)
-        {
-            _userInteraction.Print(ex.Message);
-            throw;
-        }
-    }
-
-    public string? SerializeSavedGame(string questIndex)
-    {
-        if (Player is null)
-            return null;
-
-        var savedGame = new SavedGame(Player, questIndex);
-        return _savedGameService.CreateSavedGame(savedGame);
+        throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
     }
 
     public SavedGame? DeserializeSavedGame(string jsonString) =>

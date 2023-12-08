@@ -16,7 +16,7 @@ public class Program
         IJsonHelper jsonHelper = new JsonHelper();
 
         IQuestService questService = new QuestService(jsonHelper);
-        ISavedGameService savedGameService = new SavedGameService(jsonHelper);
+        ISavedGameService savedGameService = new SavedGameService(jsonHelper, fileHelper);
 
         var game = new Game(userInteraction, stringHelper, fileHelper, questService, savedGameService);
         game.Run();
