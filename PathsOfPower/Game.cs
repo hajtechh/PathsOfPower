@@ -56,21 +56,33 @@ public class Game
     private void StartGame(string questIndex)
     {
         var currentChapter = questIndex[..1];
-        int chapter = int.Parse(currentChapter);
+        var chapter = int.Parse(currentChapter);
         Quests = GetQuests(chapter);
 
         var quest = new Quest();
         if (Quests is not null)
             quest = GetQuestFromIndex(questIndex, Quests);
 
-        // Setup keyActions
-        var keyActions = SetupKeyActions(quest);
+        var keyActions = SetupKeyActionsInGame(quest);
 
         GameLoop(ref chapter, ref quest, keyActions);
     }
 
-    private Dictionary<ConsoleKey, Action> SetupKeyActions(Quest quest) =>
+    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Quest quest) =>
         new() { { ConsoleKey.M, () => GameMenu(quest.Index) } };
+
+    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGameMenu(string questIndex) =>
+        new()
+        {
+            { ConsoleKey.D1, () => StartGame(questIndex) },
+            { ConsoleKey.D2, () => SaveGame(questIndex) },
+            { ConsoleKey.D3, Run },
+            { ConsoleKey.D4, QuitGame },
+            { ConsoleKey.NumPad1, () => StartGame(questIndex) },
+            { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
+            { ConsoleKey.NumPad3, Run },
+            { ConsoleKey.NumPad4, QuitGame }
+        };
 
     private void GameLoop(ref int chapter, ref Quest? quest, Dictionary<ConsoleKey, Action> keyActions)
     {
@@ -112,7 +124,7 @@ public class Game
             // 4.1. If options exists
             if (quest.Options is not null)
                 quest = RunQuestWithOptions(quest, keyActions);
-            // 4.2. If option doesnt exist
+            // 4.2. If option does not exist
             // 4.2.1. Check for next chapter
             else if (_fileHelper.IsNextChapterExisting(chapter))
                 quest = RunQuestWithoutOptions(chapter, quest, keyActions);
@@ -158,7 +170,7 @@ public class Game
         // 4.1.2. User did not type in any digits
         else
         {
-            // 4.1.2.1 Check if user wants to go to meny
+            // 4.1.2.1 Check if user wants to go to menu
             CheckIfUserWantsToGoToGameMenu(keyActions, choice);
         }
 
@@ -184,47 +196,38 @@ public class Game
 
     private void HandleOptionEventsInQuest(Quest quest, ConsoleKeyInfo choice)
     {
+        if (Player is null)
+            return;
+
         var index = int.Parse(choice.KeyChar.ToString());
         var option = quest.Options?.FirstOrDefault(x => x.Index == index);
-        if (Player is not null && option is not null && option.MoralityScore is not 0)
-        {
-            Player.ApplyMoralityScore(option.MoralityScore);
-        }
+        if (option is null || option.MoralityScore is not 0)
+            return;
+
+        Player.ApplyMoralityScore(option.MoralityScore);
     }
 
     private void HandleQuestEvents(Quest quest)
     {
+        if (Player is null)
+            return;
+
         if (quest.Enemy is not null)
-        {
             FightEnemy(quest.Enemy, quest.Index);
-        }
-        if (Player is not null && quest.PowerUpScore is not 0)
-        {
+
+        if (quest.PowerUpScore is not 0)
             Player.ApplyPowerUpScore(quest.PowerUpScore);
-        }
-        if (Player is not null && quest is not null && quest.Item is not null)
-        {
+
+        if (quest is not null && quest.Item is not null)
             Player.AddInventoryItem(quest.Item);
-        }
     }
 
     public void GameMenu(string questIndex)
     {
         _userInteraction.ClearConsole();
-        var text = _stringHelper.GetGameMenuString();
-        _userInteraction.Print(text);
+        _userInteraction.Print(_stringHelper.GetGameMenuString());
 
-        var keyActions = new Dictionary<ConsoleKey, Action>
-        {
-          { ConsoleKey.D1, () => StartGame(questIndex) },
-          { ConsoleKey.D2, () => SaveGame(questIndex) },
-          { ConsoleKey.D3, Run },
-          { ConsoleKey.D4, QuitGame },
-          { ConsoleKey.NumPad1, () => StartGame(questIndex) },
-          { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
-          { ConsoleKey.NumPad3, Run },
-          { ConsoleKey.NumPad4, QuitGame },
-        };
+        var keyActions = SetupKeyActionsInGameMenu(questIndex);
 
         var choice = _userInteraction.GetChar();
 
