@@ -50,7 +50,6 @@ public class PathsOfPowerApp
         if (quests is null)
             return;
         var game = new Game(quests, player, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
-
         var quest = _questService.GetQuestFromIndex(questIndex, quests);
 
         var keyActions = SetupKeyActionsInGame(quest, game);
@@ -59,6 +58,7 @@ public class PathsOfPowerApp
 
         game.GameLoop(ref currentChapter, ref quest, keyActions);
     }
+
     public void LoadGame()
     {
         PrintSavedGames();
@@ -91,11 +91,13 @@ public class PathsOfPowerApp
         
         game.GameLoop(ref chapter, ref quest, keyActions);
     }
+
     private void QuitGame()
     {
         _userInteraction.Print("Game is shutting down");
         Environment.Exit(0);
     }
+
     public void PrintSavedGames()
     {
         var savedGames = new List<SavedGame>();
@@ -117,6 +119,7 @@ public class PathsOfPowerApp
         var text = _stringHelper.GetSavedGamesString(savedGames);
         _userInteraction.Print(text);
     }
+
     private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Quest quest, Game game) =>
         new() { { ConsoleKey.M, () => game.GameMenu(quest.Index) } };
 

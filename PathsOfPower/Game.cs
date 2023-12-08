@@ -64,32 +64,29 @@ public class Game
 
     public void GameLoop(ref int chapter, ref Quest quest, Dictionary<ConsoleKey, Action> keyActions)
     {
-        var isQuitting = false;
-        while (isQuitting is false)
+        var isQuittingGame = false;
+        while (isQuittingGame is false)
         {
-            if (Player is null)
+            if (Player is null || quest is null)
                 return;
 
             _userInteraction.ClearConsole();
 
-            if (quest is null)
-                return;
             PrintQuestWithOverlayAndInventory(quest);
-
             HandleQuestEvents(quest);
 
             if (quest.Options is not null)
                 quest = RunQuestWithOptions(quest, keyActions);
             else if (_fileHelper.IsNextChapterExisting(chapter))
-                (quest, isQuitting) = RunQuestWithoutOptions(chapter, quest, keyActions);
+                quest = RunQuestWithoutOptions(chapter + 1, quest, keyActions);
             else
-                isQuitting = PrintTheEnd();
+                isQuittingGame = PrintTheEnd();
         }
     }
 
-    private (Quest, bool) RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
-    {
-        Quests = GetQuestsInNextChapter(chapter);
+    private Quest RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
+    {;
+        Quests = _questService.GetQuestsFromChapter(chapter);
 
         if (Quests is not null)
             quest = _questService.GetQuestFromIndex(chapter.ToString(), Quests);
@@ -99,8 +96,8 @@ public class Game
         PrintContinueText();
 
         var input = _userInteraction.GetChar();
-        var isQuitting = CheckIfUserWantsToGoToGameMenu(keyActions, input);
-        return (quest, isQuitting);
+        CheckIfUserWantsToGoToGameMenu(keyActions, input);
+        return quest;
     }
 
     private Quest? RunQuestWithOptions(Quest quest, Dictionary<ConsoleKey, Action> keyActions)
@@ -125,14 +122,6 @@ public class Game
         return quest;
     }
 
-    private List<Quest>? GetQuestsInNextChapter(int currentChapter)
-    {
-        var nextChapter = currentChapter++;
-        if (_fileHelper.IsNextChapterExisting(nextChapter))
-            return GetQuests(nextChapter);
-        return null;
-    }
-
     private Quest GetNextQuestBasenOnChosenOption(Quest quest, ConsoleKeyInfo choice)
     {
         var index = _stringHelper.GetQuestIndexString(quest.Index, choice.KeyChar);
@@ -141,16 +130,10 @@ public class Game
         return quest;
     }
 
-    private bool CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
+    private void CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
     {
         if (keyActions.TryGetValue(input.Key, out var action))
-        { 
-            if (action.Method == typeof(Game).GetMethod(nameof(QuitGame)))
-                return QuitGame();
-            else
-                action.Invoke();
-        }
-        return false;
+            action.Invoke();
     }
 
     private void HandleOptionEventsInQuest(Quest quest, ConsoleKeyInfo choice)
@@ -188,17 +171,15 @@ public class Game
 
         var keyActions = SetupKeyActionsInGameMenu(questIndex);
 
-        var choice = _userInteraction.GetChar();
+        var input = _userInteraction.GetChar();
 
-        if (keyActions.TryGetValue(choice.Key, out var action))
-        {
+        if (keyActions.TryGetValue(input.Key, out var action))
+            //if (input.Key is ConsoleKey.D4 || input.Key is ConsoleKey.NumPad4)
+            //    return QuitGame();
+            //else
                 action.Invoke();
-        }
         else
-        {
             GameMenu(questIndex);
-        }
-
     }
 
     //public void LoadGame()
@@ -263,11 +244,10 @@ public class Game
         }
     }
 
-    private bool QuitGame()
+    private void QuitGame()
     {
         _userInteraction.Print("Game is shutting down");
-        return true;
-        //Environment.Exit(0);
+        Environment.Exit(0);
     }
 
     public void SaveGame(string questIndex)
@@ -324,10 +304,6 @@ public class Game
     //public SavedGame? DeserializeSavedGame(string jsonString) =>
     //    _savedGameService.GetSavedGame(jsonString);
 
-    public List<Quest> GetQuests(int chapterNumber)
-    {
-        return _questService.GetQuestsFromChapter(chapterNumber);
-    }
 
     #region Prints
     private void PrintQuestWithOverlayAndInventory(Quest quest)
