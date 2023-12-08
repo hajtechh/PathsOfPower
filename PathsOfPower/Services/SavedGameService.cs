@@ -38,16 +38,51 @@ public class SavedGameService : ISavedGameService
         return savedGames;
     }
 
-    public SavedGame? GetSavedGame(string jsonContent) =>
-        _jsonHelper.Deserialize<SavedGame>(jsonContent);
+    public (SavedGame? savedGame, string message) LoadGame(char input)
+    {
+        var savedGame = new SavedGame();
+        try
+        {
+            if (input < MIN_SLOT_NUMBER || input > MAX_SLOT_NUMBER)
+                throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+
+            var slotNumber = (int)char.GetNumericValue(input);
+            var jsonContent = _fileHelper.GetSavedGameFromFile(slotNumber);
+
+            if (jsonContent is null)
+                throw new ArgumentNullException(nameof(jsonContent));
+
+            savedGame = _jsonHelper.Deserialize<SavedGame>(jsonContent);
+
+            if (savedGame is null)
+                throw new FileHelperUnableToDeserialize("Error.. FileHelper can't deserialize SavedGame object.");
+        }
+        catch (SlotNumberOutOfBoundsException slotNumberOutOfBoundException)
+        {
+            return (null, slotNumberOutOfBoundException.Message);
+        }
+        catch (ArgumentNullException argumentNullException)
+        {
+            return (null, argumentNullException.Message);
+        }
+        catch (FileNotFoundException ex)
+        {
+            return (null, $"File does not exists. {nameof(FileNotFoundException)} message: {ex.Message}");
+        }
+        catch (FileHelperUnableToDeserialize fileHelperUnableToDeserialize)
+        {
+            return (null, fileHelperUnableToDeserialize.Message);
+        }
+        return (savedGame, "Successfully got the saved game");
+    }
 
     public (bool isSaved, string message) SaveGame(Player player, char slotNumber, string questIndex)
     {
-        var savedGame = new SavedGame(player, questIndex);
-        var jsonContent = _jsonHelper.Serialize(savedGame);
-
         try
         {
+            var savedGame = new SavedGame(player, questIndex);
+            var jsonContent = _jsonHelper.Serialize(savedGame);
+
             if (jsonContent is null)
                 throw new ArgumentNullException(nameof(jsonContent));
 
@@ -55,6 +90,9 @@ public class SavedGameService : ISavedGameService
 
             if (slotNumber < MIN_SLOT_NUMBER || slotNumber > MAX_SLOT_NUMBER)
                 throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+
+            _fileHelper.WriteAllText(jsonContent, slotNumber);
+            return (true, $"Successfully saved game for {savedGame.Player.Name}.");
         }
         catch (SlotNumberOutOfBoundsException slotNumberOutOfBoundException)
         {
@@ -68,12 +106,24 @@ public class SavedGameService : ISavedGameService
         {
             return (false, outOfMemoryException.Message);
         }
-
-        _fileHelper.WriteAllText(jsonContent, slotNumber);
-        return (true, $"Successfully saved game for {savedGame.Player.Name}.");
+        catch (PathTooLongException pathTooLongException)
+        {
+            return (false, pathTooLongException.Message);
+        }
+        catch (DirectoryNotFoundException directoryNotFoundException)
+        {
+            return (false, directoryNotFoundException.Message);
+        }
+        catch (NotSupportedException notSupportedException)
+        {
+            return (false, notSupportedException.Message);
+        }
     }
 
     public string? CreateSavedGame(SavedGame savedGame) =>
         _jsonHelper.Serialize(savedGame);
+
+    public SavedGame? GetSavedGame(string jsonContent) =>
+        _jsonHelper.Deserialize<SavedGame>(jsonContent);
 
 }

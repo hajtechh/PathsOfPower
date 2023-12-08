@@ -60,7 +60,7 @@ public class PathsOfPowerApp
 
         var currentChapter = int.Parse(questIndex);
 
-        game.GameLoop(ref currentChapter, keyActions);
+        game.RunLoop(ref currentChapter, keyActions);
     }
 
     public void LoadGame()
@@ -68,21 +68,14 @@ public class PathsOfPowerApp
         PrintSavedGames();
 
         var input = _userInteraction.GetChar().KeyChar;
-        var slotNumber = (int)char.GetNumericValue(input);
-        var text = string.Empty;
-        try
-        {
-            text += _fileHelper.GetSavedGameFromFile(slotNumber);
-        }
-        catch (FileNotFoundException ex)
-        {
-            _userInteraction.Print($"File doesn't exist: {ex.Message}");
-            return;
-        }
-        var savedGame = _savedGameService.GetSavedGame(text);
+
+        (var savedGame, var message) = _savedGameService.LoadGame(input);
 
         if (savedGame is null)
+        {
+            _userInteraction.Print(message);
             return;
+        }
 
         var player = savedGame.Player;
         var chapter = int.Parse(savedGame.QuestIndex[..1]);
@@ -93,7 +86,7 @@ public class PathsOfPowerApp
 
         var keyActions = SetupKeyActionsInGame(game);
 
-        game.GameLoop(ref chapter, keyActions);
+        game.RunLoop(ref chapter, keyActions);
     }
 
     private void QuitGame()

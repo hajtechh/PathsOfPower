@@ -14,11 +14,14 @@ public class Game
     private readonly ISavedGameService _savedGameService;
     #endregion
 
+    #region Properties
     public List<Quest> Quests { get; set; }
     public Quest Quest { get; set; }
     public Player Player { get; set; }
     public bool IsExitingGameLoop { get; set; }
+    #endregion
 
+    #region Constructor
     public Game(List<Quest> quests, Player player, Quest quest,
         IUserInteraction userInteraction,
         IStringHelper stringHelper,
@@ -36,6 +39,7 @@ public class Game
         Quests = quests;
         Quest = quest;
     }
+    #endregion
 
     private Dictionary<ConsoleKey, Action> SetupKeyActionsInGameMenu() =>
         new()
@@ -48,7 +52,7 @@ public class Game
             { ConsoleKey.NumPad4, QuitGame }
         };
 
-    public void GameLoop(ref int chapter, Dictionary<ConsoleKey, Action> keyActions)
+    public void RunLoop(ref int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
         while (IsExitingGameLoop is false)
         {
@@ -158,29 +162,6 @@ public class Game
         //    GameMenu(questIndex);
     }
 
-    //public void LoadGame()
-    //{
-    //    PrintSavedGames();
-
-    //    var input = _userInteraction.GetChar().KeyChar;
-    //    var slotNumber = (int)char.GetNumericValue(input);
-    //    var text = string.Empty;
-    //    try
-    //    {
-    //        text += _fileHelper.GetSavedGameFromFile(slotNumber);
-    //    }
-    //    catch (FileNotFoundException ex)
-    //    {
-    //        _userInteraction.Print($"File doesn't exist: {ex.Message}");
-    //        return;
-    //    }
-    //    var chosenGame = DeserializeSavedGame(text);
-    //    if (chosenGame is null)
-    //        return;
-    //    Player = chosenGame.Player;
-    //    //StartGame(chosenGame.QuestIndex);
-    //}
-
     public void FightEnemy(Enemy enemy)
     {
         if (Player is null)
@@ -232,10 +213,10 @@ public class Game
 
         var choice = _userInteraction.GetChar().KeyChar;
 
+        // Saving the game
         var (isSaved, message) = _savedGameService.SaveGame(Player, choice, Quest.Index);
 
-        if (isSaved)
-            _userInteraction.Print(message);
+        _userInteraction.Print(message);
 
         _userInteraction.Print(_stringHelper.GetContinueText());
         _userInteraction.GetChar();
@@ -280,7 +261,7 @@ public class Game
         _userInteraction.Print(moralityText);
     }
 
-    public void PrintSavedGames()
+    private void PrintSavedGames()
     {
         var savedGames = _savedGameService.GetSavedGames();
         var output = _stringHelper.GetSavedGamesString(savedGames);
