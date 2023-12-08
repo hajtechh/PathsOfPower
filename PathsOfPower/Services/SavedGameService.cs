@@ -20,6 +20,7 @@ public class SavedGameService : ISavedGameService
     public SavedGame? GetSavedGame(string jsonContent) =>
         _jsonHelper.Deserialize<SavedGame>(jsonContent);
 
+<<<<<<< Updated upstream
     public (bool isSaved, string message) SaveGame(Player player, char slotNumber, string questIndex)
     {
         var savedGame = new SavedGame(player, questIndex);
@@ -50,4 +51,10 @@ public class SavedGameService : ISavedGameService
 
         return (true, $"Successfully saved game for {savedGame.Player.Name}.");
     }
+=======
+    public string? CreateSavedGame(SavedGame savedGame) =>
+        _jsonHelper.Serialize(savedGame);
+
+
+>>>>>>> Stashed changes
 }
