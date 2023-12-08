@@ -49,14 +49,14 @@ public class PathsOfPowerApp
         var (player, quests) = SetupNewGame();
         if (quests is null)
             return;
-        var game = new Game(quests, player, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
         var quest = _questService.GetQuestFromIndex(questIndex, quests);
+        var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
-        var keyActions = SetupKeyActionsInGame(quest, game);
+        var keyActions = SetupKeyActionsInGame(game);
 
         var currentChapter = int.Parse(questIndex);
 
-        game.GameLoop(ref currentChapter, ref quest, keyActions);
+        game.GameLoop(ref currentChapter, keyActions);
     }
 
     public void LoadGame()
@@ -85,11 +85,11 @@ public class PathsOfPowerApp
         var quests = _questService.GetQuestsFromChapter(chapter);
         var quest = _questService.GetQuestFromIndex(savedGame.QuestIndex, quests);
 
-        var game = new Game(quests, player, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+        var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
         
-        var keyActions = SetupKeyActionsInGame(quest, game);
+        var keyActions = SetupKeyActionsInGame(game);
         
-        game.GameLoop(ref chapter, ref quest, keyActions);
+        game.GameLoop(ref chapter, keyActions);
     }
 
     private void QuitGame()
@@ -120,8 +120,8 @@ public class PathsOfPowerApp
         _userInteraction.Print(text);
     }
 
-    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Quest quest, Game game) =>
-        new() { { ConsoleKey.M, () => game.GameMenu(quest.Index) } };
+    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Game game) =>
+        new() { { ConsoleKey.M, () => game.GameMenu() } };
 
     public (Player player, List<Quest>? quests) SetupNewGame()
     {

@@ -1,4 +1,6 @@
-﻿namespace PathsOfPower.Core.Services;
+﻿using PathsOfPower.Core.Interfaces;
+
+namespace PathsOfPower.Core.Services;
 
 public class SavedGameService : ISavedGameService
 {
@@ -14,13 +16,31 @@ public class SavedGameService : ISavedGameService
         _fileHelper = fileHelper;
     }
 
-    public List<SavedGame>? GetSavedGames(string jsonContent) =>
-        _jsonHelper.Deserialize<List<SavedGame>>(jsonContent);
+    public List<SavedGame> GetSavedGames()
+    {
+        var savedGames = new List<SavedGame>();
+
+        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        if (files is null)
+            // THROW EXCEPTION there are no files
+            return savedGames;
+
+        foreach (var filePath in files)
+        {
+            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
+            var savedGame = new SavedGame();
+
+            if (!string.IsNullOrEmpty(jsonContent))
+                savedGame = GetSavedGame(jsonContent);
+
+            savedGames.Add(savedGame ?? new SavedGame());
+        }
+        return savedGames;
+    }
 
     public SavedGame? GetSavedGame(string jsonContent) =>
         _jsonHelper.Deserialize<SavedGame>(jsonContent);
 
-<<<<<<< Updated upstream
     public (bool isSaved, string message) SaveGame(Player player, char slotNumber, string questIndex)
     {
         var savedGame = new SavedGame(player, questIndex);
@@ -31,10 +51,10 @@ public class SavedGameService : ISavedGameService
             if (jsonContent is null)
                 throw new ArgumentNullException(nameof(jsonContent));
 
-            if (slotNumber >= MIN_SLOT_NUMBER && slotNumber <= MAX_SLOT_NUMBER)
-                throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+            var choice = char.GetNumericValue(slotNumber);
 
-            _fileHelper.WriteAllText(jsonContent, slotNumber);
+            if (slotNumber < MIN_SLOT_NUMBER || slotNumber > MAX_SLOT_NUMBER)
+                throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
         }
         catch (SlotNumberOutOfBoundsException slotNumberOutOfBoundException)
         {
@@ -49,12 +69,11 @@ public class SavedGameService : ISavedGameService
             return (false, outOfMemoryException.Message);
         }
 
+        _fileHelper.WriteAllText(jsonContent, slotNumber);
         return (true, $"Successfully saved game for {savedGame.Player.Name}.");
     }
-=======
+
     public string? CreateSavedGame(SavedGame savedGame) =>
         _jsonHelper.Serialize(savedGame);
 
-
->>>>>>> Stashed changes
 }
