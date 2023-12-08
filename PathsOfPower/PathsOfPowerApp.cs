@@ -36,9 +36,9 @@ public class PathsOfPowerApp
             case '2':
                 LoadGame();
                 break;
-            //case '3':
-            //    QuitGame();
-            //    break;
+            case '3':
+                QuitGame();
+                break;
             default:
                 break;
         }
@@ -90,6 +90,11 @@ public class PathsOfPowerApp
         var keyActions = SetupKeyActionsInGame(quest, game);
         
         game.GameLoop(ref chapter, ref quest, keyActions);
+    }
+    private void QuitGame()
+    {
+        _userInteraction.Print("Game is shutting down");
+        Environment.Exit(0);
     }
     public void PrintSavedGames()
     {

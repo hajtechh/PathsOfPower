@@ -55,17 +55,17 @@ public class Game
             //{ ConsoleKey.D1, () => StartGame(questIndex) },
             { ConsoleKey.D2, () => SaveGame(questIndex) },
             //{ ConsoleKey.D3, Run },
-            { ConsoleKey.D4, QuitGame },
+            { ConsoleKey.D4, () => QuitGame() },
             //{ ConsoleKey.NumPad1, () => StartGame(questIndex) },
             { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
             //{ ConsoleKey.NumPad3, Run },
-            { ConsoleKey.NumPad4, QuitGame }
+            { ConsoleKey.NumPad4, () => QuitGame() }
         };
 
     public void GameLoop(ref int chapter, ref Quest quest, Dictionary<ConsoleKey, Action> keyActions)
     {
-        var isRunning = true;
-        while (isRunning)
+        var isQuitting = false;
+        while (isQuitting is false)
         {
             if (Player is null)
                 return;
@@ -81,13 +81,13 @@ public class Game
             if (quest.Options is not null)
                 quest = RunQuestWithOptions(quest, keyActions);
             else if (_fileHelper.IsNextChapterExisting(chapter))
-                quest = RunQuestWithoutOptions(chapter, quest, keyActions);
+                (quest, isQuitting) = RunQuestWithoutOptions(chapter, quest, keyActions);
             else
-                isRunning = PrintTheEnd();
+                isQuitting = PrintTheEnd();
         }
     }
 
-    private Quest RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
+    private (Quest, bool) RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
     {
         Quests = GetQuestsInNextChapter(chapter);
 
@@ -99,8 +99,8 @@ public class Game
         PrintContinueText();
 
         var input = _userInteraction.GetChar();
-        CheckIfUserWantsToGoToGameMenu(keyActions, input);
-        return quest;
+        var isQuitting = CheckIfUserWantsToGoToGameMenu(keyActions, input);
+        return (quest, isQuitting);
     }
 
     private Quest? RunQuestWithOptions(Quest quest, Dictionary<ConsoleKey, Action> keyActions)
@@ -141,10 +141,16 @@ public class Game
         return quest;
     }
 
-    private void CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
+    private bool CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
     {
         if (keyActions.TryGetValue(input.Key, out var action))
-            action.Invoke();
+        { 
+            if (action.Method == typeof(Game).GetMethod(nameof(QuitGame)))
+                return QuitGame();
+            else
+                action.Invoke();
+        }
+        return false;
     }
 
     private void HandleOptionEventsInQuest(Quest quest, ConsoleKeyInfo choice)
@@ -186,12 +192,13 @@ public class Game
 
         if (keyActions.TryGetValue(choice.Key, out var action))
         {
-            action.Invoke();
+                action.Invoke();
         }
         else
         {
             GameMenu(questIndex);
         }
+
     }
 
     //public void LoadGame()
@@ -256,9 +263,11 @@ public class Game
         }
     }
 
-    private void QuitGame()
+    private bool QuitGame()
     {
-        Environment.Exit(0);
+        _userInteraction.Print("Game is shutting down");
+        return true;
+        //Environment.Exit(0);
     }
 
     public void SaveGame(string questIndex)
