@@ -1,8 +1,4 @@
-﻿using PathsOfPower.Core.Helpers;
-using PathsOfPower.Core.Interfaces;
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core;
+﻿namespace PathsOfPower.Core;
 
 public class PathsOfPowerApp
 {
@@ -37,9 +33,9 @@ public class PathsOfPowerApp
             case '1':
                 StartNewGame("1");
                 break;
-            //case '2':
-            //    LoadGame();
-            //    break;
+            case '2':
+                LoadGame();
+                break;
             //case '3':
             //    QuitGame();
             //    break;
@@ -63,7 +59,59 @@ public class PathsOfPowerApp
 
         game.GameLoop(ref currentChapter, ref quest, keyActions);
     }
+    public void LoadGame()
+    {
+        PrintSavedGames();
 
+        var input = _userInteraction.GetChar().KeyChar;
+        var slotNumber = (int)char.GetNumericValue(input);
+        var text = string.Empty;
+        try
+        {
+            text += _fileHelper.GetSavedGameFromFile(slotNumber);
+        }
+        catch (FileNotFoundException ex)
+        {
+            _userInteraction.Print($"File doesn't exist: {ex.Message}");
+            return;
+        }
+        var savedGame = _savedGameService.GetSavedGame(text);
+        
+        if (savedGame is null)
+            return;
+
+        var player = savedGame.Player;
+        var chapter = int.Parse(savedGame.QuestIndex[..1]);
+        var quests = _questService.GetQuestsFromChapter(chapter);
+        var quest = _questService.GetQuestFromIndex(savedGame.QuestIndex, quests);
+
+        var game = new Game(quests, player, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+        
+        var keyActions = SetupKeyActionsInGame(quest, game);
+        
+        game.GameLoop(ref chapter, ref quest, keyActions);
+    }
+    public void PrintSavedGames()
+    {
+        var savedGames = new List<SavedGame>();
+
+        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        if (files is null)
+            return;
+        foreach (var filePath in files)
+        {
+            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
+            var savedGame = new SavedGame();
+            if (!string.IsNullOrEmpty(jsonContent))
+            {
+                savedGame = _savedGameService.GetSavedGame(jsonContent);
+            }
+            savedGames.Add(savedGame ?? new SavedGame());
+        }
+
+        var text = _stringHelper.GetSavedGamesString(savedGames);
+        _userInteraction.Print(text);
+    }
     private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Quest quest, Game game) =>
         new() { { ConsoleKey.M, () => game.GameMenu(quest.Index) } };
 

@@ -194,28 +194,28 @@ public class Game
         }
     }
 
-    public void LoadGame()
-    {
-        PrintSavedGames();
+    //public void LoadGame()
+    //{
+    //    PrintSavedGames();
 
-        var input = _userInteraction.GetChar().KeyChar;
-        var slotNumber = (int)char.GetNumericValue(input);
-        var text = string.Empty;
-        try
-        {
-            text += _fileHelper.GetSavedGameFromFile(slotNumber);
-        }
-        catch (FileNotFoundException ex)
-        {
-            _userInteraction.Print($"File doesn't exist: {ex.Message}");
-            return;
-        }
-        var chosenGame = DeserializeSavedGame(text);
-        if (chosenGame is null)
-            return;
-        Player = chosenGame.Player;
-        //StartGame(chosenGame.QuestIndex);
-    }
+    //    var input = _userInteraction.GetChar().KeyChar;
+    //    var slotNumber = (int)char.GetNumericValue(input);
+    //    var text = string.Empty;
+    //    try
+    //    {
+    //        text += _fileHelper.GetSavedGameFromFile(slotNumber);
+    //    }
+    //    catch (FileNotFoundException ex)
+    //    {
+    //        _userInteraction.Print($"File doesn't exist: {ex.Message}");
+    //        return;
+    //    }
+    //    var chosenGame = DeserializeSavedGame(text);
+    //    if (chosenGame is null)
+    //        return;
+    //    Player = chosenGame.Player;
+    //    //StartGame(chosenGame.QuestIndex);
+    //}
 
     public void FightEnemy(Enemy enemy, string questIndex)
     {
@@ -263,27 +263,26 @@ public class Game
 
     public void SaveGame(string questIndex)
     {
-        PrintSavedGames();
-        var choice = _userInteraction.GetChar().KeyChar;
+        //var choice = _userInteraction.GetChar().KeyChar;
 
-        var jsonString = SerializeSavedGame(questIndex);
+        //var jsonString = SerializeSavedGame(questIndex);
 
-        if (jsonString is not null)
-        {
-            var isSaved = WriteToFile(choice, jsonString);
+        //if (jsonString is not null)
+        //{
+        //    var isSaved = WriteToFile(choice, jsonString);
 
-            if (isSaved)
-            {
-                var savedGame = DeserializeSavedGame(jsonString);
-                if (savedGame is not null)
-                {
-                    var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
-                    _userInteraction.Print(text);
-                }
-            }
-        }
-        _userInteraction.GetChar();
-        GameMenu(questIndex);
+        //    if (isSaved)
+        //    {
+        //        var savedGame = DeserializeSavedGame(jsonString);
+        //        if (savedGame is not null)
+        //        {
+        //            var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
+        //            _userInteraction.Print(text);
+        //        }
+        //    }
+        //}
+        //_userInteraction.GetChar();
+        //GameMenu(questIndex);
     }
 
     public bool WriteToFile(char choice, string jsonString)
@@ -313,8 +312,8 @@ public class Game
         return _savedGameService.CreateSavedGame(savedGame);
     }
 
-    public SavedGame? DeserializeSavedGame(string jsonString) =>
-        _savedGameService.GetSavedGame(jsonString);
+    //public SavedGame? DeserializeSavedGame(string jsonString) =>
+    //    _savedGameService.GetSavedGame(jsonString);
 
     public List<Quest> GetQuests(int chapterNumber)
     {
@@ -356,27 +355,27 @@ public class Game
         _userInteraction.Print(moralityText);
     }
 
-    public void PrintSavedGames()
-    {
-        var savedGames = new List<SavedGame>();
+    //public void PrintSavedGames()
+    //{
+    //    var savedGames = new List<SavedGame>();
 
-        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
-        if (files is null)
-            return;
-        foreach (var filePath in files)
-        {
-            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = new SavedGame();
-            if (!string.IsNullOrEmpty(jsonContent))
-            {
-                savedGame = _savedGameService.GetSavedGame(jsonContent);
-            }
-            savedGames.Add(savedGame ?? new SavedGame());
-        }
+    //    var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+    //    if (files is null)
+    //        return;
+    //    foreach (var filePath in files)
+    //    {
+    //        var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
+    //        var savedGame = new SavedGame();
+    //        if (!string.IsNullOrEmpty(jsonContent))
+    //        {
+    //            savedGame = _savedGameService.GetSavedGame(jsonContent);
+    //        }
+    //        savedGames.Add(savedGame ?? new SavedGame());
+    //    }
 
-        var text = _stringHelper.GetSavedGamesString(savedGames);
-        _userInteraction.Print(text);
-    }
+    //    var text = _stringHelper.GetSavedGamesString(savedGames);
+    //    _userInteraction.Print(text);
+    //}
 
     private void PrintQuest(Quest quest)
     {
