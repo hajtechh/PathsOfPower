@@ -24,23 +24,27 @@ public class PathsOfPowerApp
 
     public void Run()
     {
-        _userInteraction.ClearConsole();
-        PrintMenu();
-
-        var menuChoice = _userInteraction.GetChar().KeyChar;
-        switch (menuChoice)
+        var isExiting = false;
+        while (isExiting is false)
         {
-            case '1':
-                StartNewGame("1");
-                break;
-            case '2':
-                LoadGame();
-                break;
-            case '3':
-                QuitGame();
-                break;
-            default:
-                break;
+            _userInteraction.ClearConsole();
+            PrintMenu();
+            var menuChoice = _userInteraction.GetChar().KeyChar;
+            switch (menuChoice)
+            {
+                case '1':
+                    StartNewGame("1");
+                    break;
+                case '2':
+                    LoadGame();
+                    break;
+                case '3':
+                    QuitGame();
+                    isExiting = true;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -76,7 +80,7 @@ public class PathsOfPowerApp
             return;
         }
         var savedGame = _savedGameService.GetSavedGame(text);
-        
+
         if (savedGame is null)
             return;
 
@@ -86,9 +90,9 @@ public class PathsOfPowerApp
         var quest = _questService.GetQuestFromIndex(savedGame.QuestIndex, quests);
 
         var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
-        
+
         var keyActions = SetupKeyActionsInGame(game);
-        
+
         game.GameLoop(ref chapter, keyActions);
     }
 

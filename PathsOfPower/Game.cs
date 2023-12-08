@@ -6,8 +6,6 @@ public class Game
 {
     #region PrivateVariables
     private const int MAX_HEALTH_POINTS = 100;
-    private const char MIN_SLOT_NUMBER = '1';
-    private const char MAX_SLOT_NUMBER = '3';
 
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
@@ -19,6 +17,7 @@ public class Game
     public List<Quest> Quests { get; set; }
     public Quest Quest { get; set; }
     public Player Player { get; set; }
+    public bool IsExitingGameLoop { get; set; }
 
     public Game(List<Quest> quests, Player player, Quest quest,
         IUserInteraction userInteraction,
@@ -41,18 +40,17 @@ public class Game
     private Dictionary<ConsoleKey, Action> SetupKeyActionsInGameMenu() =>
         new()
         {
-            { ConsoleKey.D2, () => SaveGame() },
-            //{ ConsoleKey.D3, Run },
-            { ConsoleKey.D4, () => QuitGame() },
-            { ConsoleKey.NumPad2, () => SaveGame() },
-            //{ ConsoleKey.NumPad3, Run },
-            { ConsoleKey.NumPad4, () => QuitGame() }
+            { ConsoleKey.D2, SaveGame },
+            { ConsoleKey.NumPad2, SaveGame },
+            { ConsoleKey.D3, QuitToMainMenu },
+            { ConsoleKey.NumPad3, QuitToMainMenu },
+            { ConsoleKey.D4, QuitGame },
+            { ConsoleKey.NumPad4, QuitGame }
         };
 
     public void GameLoop(ref int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
-        var isQuittingGame = false;
-        while (isQuittingGame is false)
+        while (IsExitingGameLoop is false)
         {
             if (Player is null || Quest is null)
                 return;
@@ -67,12 +65,13 @@ public class Game
             else if (_fileHelper.IsNextChapterExisting(chapter))
                 RunQuestWithoutOptions(chapter + 1, keyActions);
             else
-                isQuittingGame = PrintTheEnd();
+                TheEnd();
         }
     }
 
     private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
-    {;
+    {
+        ;
         Quests = _questService.GetQuestsFromChapter(chapter);
 
         if (Quests is not null)
@@ -154,7 +153,7 @@ public class Game
             //if (input.Key is ConsoleKey.D4 || input.Key is ConsoleKey.NumPad4)
             //    return QuitGame();
             //else
-                action.Invoke();
+            action.Invoke();
         //else
         //    GameMenu(questIndex);
     }
@@ -243,15 +242,8 @@ public class Game
         GameMenu();
     }
 
-    public bool WriteToFile(char choice, string jsonString)
-    {
-        if (choice >= MIN_SLOT_NUMBER && choice <= MAX_SLOT_NUMBER)
-        {
-            _fileHelper.WriteAllText(jsonString, choice);
-            return true;
-        }
-        throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
-    }
+    public void QuitToMainMenu() =>
+        IsExitingGameLoop = true;
 
     #region Prints
     private void PrintQuestWithOverlayAndInventory()
@@ -261,10 +253,10 @@ public class Game
         PrintInventory();
     }
 
-    private bool PrintTheEnd()
+    private void TheEnd()
     {
         _userInteraction.Print("The end");
-        return false;
+        IsExitingGameLoop = true;
     }
 
     private void PrintContinueText() =>
