@@ -1,23 +1,21 @@
-﻿using PathsOfPower.Core.Exceptions;
-using PathsOfPower.Core.Interfaces;
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core;
+﻿namespace PathsOfPower.Core;
 
 public class Game
 {
+    #region PrivateVariables
     private const int MaxHealthPoints = 100;
     private const char MinSlotNumber = '1';
     private const char MaxSlotNumber = '3';
-
-    public List<Quest>? Quests { get; set; }
-    public Player? Player { get; set; }
 
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
     private readonly IFileHelper _fileHelper;
     private readonly IQuestService _questService;
     private readonly ISavedGameService _savedGameService;
+    #endregion
+
+    public List<Quest>? Quests { get; set; }
+    public Player? Player { get; set; }
 
     public Game(IUserInteraction userInteraction,
         IStringHelper stringHelper,
@@ -31,6 +29,7 @@ public class Game
         _questService = questService;
         _savedGameService = savedGameService;
     }
+
     public void Run()
     {
         _userInteraction.ClearConsole();
@@ -65,29 +64,32 @@ public class Game
             quest = GetQuestFromIndex(questIndex, Quests);
 
         // Setup keyActions
-        var keyActions = new Dictionary<ConsoleKey, Action>
-        {
-            { ConsoleKey.M, () => GameMenu(quest.Index) },
-        };
+        var keyActions = SetupKeyActions(quest);
+
         GameLoop(ref chapter, ref quest, keyActions);
     }
 
+    private Dictionary<ConsoleKey, Action> SetupKeyActions(Quest quest) =>
+        new() { { ConsoleKey.M, () => GameMenu(quest.Index) } };
+
     private void GameLoop(ref int chapter, ref Quest? quest, Dictionary<ConsoleKey, Action> keyActions)
     {
-        /*  Clear Console
-        *   Print
-        *   Options ?
-        *      If
-        *           Get input
-        *               HandleEvent
-        *           Get next quest
-        *           
-        *      else
-        *           Check for next chapter
-        *               if
-        *                   Get next chapter
-        *               else
-        *                   The end
+        /*  1. Clear Console
+        *   2. Print
+        *   3. HandleQuestEvents
+        *   4. Options ?
+        *       4.1. If true
+        *           4.1.1. Get input
+        *               4.1.1.1. Get next quest
+        *               4.1.1.2. HandleEvent
+        *       4.2. else
+        *           4.2.1. Check for next chapter
+        *               4.2.1.1. Get quests in next chapter
+        *               4.2.1.2. Get quest in chapter
+        *               4.2.1.3. HandleQuestEvents
+        *               4.2.1.4. Print continuetext
+        *               4.2.1.5. Check if user wants to go to game menu
+        *           4.2.2. No next chapter exists. The end
         *
         */
         var isRunning = true;
@@ -96,86 +98,91 @@ public class Game
             if (Player is null)
                 return;
 
+            // 1. Clear console
             _userInteraction.ClearConsole();
 
-            PrintOverlay();
-
+            // 2. Prints
             if (quest is null)
                 return;
+            PrintQuestWithOverlayAndInventory(quest);
 
-            PrintQuest(quest);
-
-            var inventory = _stringHelper.GetPlayerInventoryAsString(Player);
-            _userInteraction.Print(inventory);
-
+            // 3. Handle quest events
             HandleQuestEvents(quest);
 
+            // 4.1. If options exists
             if (quest.Options is not null)
-            {
-                var choice = _userInteraction.GetChar();
-                if (char.IsDigit(choice.KeyChar))
-                {
-                    var index = _stringHelper.GetQuestIndexString(quest.Index, choice.KeyChar);
-                    if (Quests is not null)
-                        quest = GetQuestFromIndex(index, Quests);
-
-                    HandleOptionEvents(quest, choice);
-                }
-                else
-                {
-                    if (keyActions.TryGetValue(choice.Key, out var action))
-                    {
-                        action.Invoke();
-                    }
-                }
-            }
+                quest = RunQuestWithOptions(quest, keyActions);
+            // 4.2. If option doesnt exist
+            // 4.2.1. Check for next chapter
             else if (_fileHelper.IsNextChapterExisting(chapter))
-            {
-
-                chapter++;
-                Quests = GetQuests(chapter);
-                if (Quests is not null)
-                    quest = GetQuestFromIndex(chapter.ToString(), Quests);
-
-                if (Player is not null && quest is not null && quest.Item is not null)
-                {
-                    Player.AddInventoryItem(quest.Item);
-                }
-
-                var continueText = _stringHelper.GetContinueText();
-                _userInteraction.Print(continueText);
-                var input = _userInteraction.GetChar();
-
-                if (keyActions.TryGetValue(input.Key, out var action))
-                {
-                    action.Invoke();
-                }
-                else
-                {
-                    continue;
-                }
-            }
+                quest = RunQuestWithoutOptions(chapter, quest, keyActions);
+            // 4.2.2. No next chapter exists, end the game.
             else
-            {
-                isRunning = false;
-                _userInteraction.Print("The end");
-            }
+                isRunning = PrintTheEnd();
         }
     }
 
-    private void PrintOverlay()
+    private Quest RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
     {
-        var menuButton = _stringHelper.GetGameMenuButton();
-        _userInteraction.Print(menuButton);
+        // 4.2.1.1. Get quests in next chapter
+        Quests = GetQuestInNextChapter(chapter);
 
-        var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
-        _userInteraction.Print(statisticsText);
+        // 4.2.1.2. Get quest in chapter
+        if (Quests is not null)
+            quest = GetQuestFromIndex(chapter.ToString(), Quests);
 
-        var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
-        _userInteraction.Print(moralityText);
+        // 4.2.1.3. HandleQuestEvents
+        HandleQuestEvents(quest);
+
+        // 4.2.1.4. Print continuetext
+        PrintContinueText();
+
+        // 4.2.1.5. Check if user wants to go to game menu
+        var input = _userInteraction.GetChar();
+        CheckIfUserWantsToGoToGameMenu(keyActions, input);
+        return quest;
     }
 
-    private void HandleOptionEvents(Quest quest, ConsoleKeyInfo choice)
+    private Quest? RunQuestWithOptions(Quest quest, Dictionary<ConsoleKey, Action> keyActions)
+    {
+        // 4.1.1. Get input
+        var choice = _userInteraction.GetChar();
+        if (char.IsDigit(choice.KeyChar))
+        {
+            // 4.1.1.1. Get next quest based on what option is chosen
+            quest = GetNextQuestBasenOnChosenOption(quest, choice);
+
+            // 4.1.1.2. HandleOptionEvents
+            HandleOptionEventsInQuest(quest, choice);
+        }
+        // 4.1.2. User did not type in any digits
+        else
+        {
+            // 4.1.2.1 Check if user wants to go to meny
+            CheckIfUserWantsToGoToGameMenu(keyActions, choice);
+        }
+
+        return quest;
+    }
+
+    private List<Quest>? GetQuestInNextChapter(int currentChapter) =>
+        Quests = GetQuests(currentChapter++);
+
+    private Quest GetNextQuestBasenOnChosenOption(Quest quest, ConsoleKeyInfo choice)
+    {
+        var index = _stringHelper.GetQuestIndexString(quest.Index, choice.KeyChar);
+        if (Quests is not null)
+            quest = GetQuestFromIndex(index, Quests);
+        return quest;
+    }
+
+    private void CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
+    {
+        if (keyActions.TryGetValue(input.Key, out var action))
+            action.Invoke();
+    }
+
+    private void HandleOptionEventsInQuest(Quest quest, ConsoleKeyInfo choice)
     {
         var index = int.Parse(choice.KeyChar.ToString());
         var option = quest.Options?.FirstOrDefault(x => x.Index == index);
@@ -200,7 +207,6 @@ public class Game
             Player.AddInventoryItem(quest.Item);
         }
     }
-
 
     public void GameMenu(string questIndex)
     {
@@ -324,28 +330,6 @@ public class Game
         GameMenu(questIndex);
     }
 
-    public void PrintSavedGames()
-    {
-        var savedGames = new List<SavedGame>();
-
-        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
-        if (files is null)
-            return;
-        foreach (var filePath in files)
-        {
-            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = new SavedGame();
-            if (!string.IsNullOrEmpty(jsonContent))
-            {
-                savedGame = _savedGameService.GetSavedGame(jsonContent);
-            }
-            savedGames.Add(savedGame ?? new SavedGame());
-        }
-
-        var text = _stringHelper.GetSavedGamesString(savedGames);
-        _userInteraction.Print(text);
-    }
-
     public bool WriteToFile(char choice, string jsonString)
     {
         try
@@ -375,18 +359,6 @@ public class Game
 
     public SavedGame? DeserializeSavedGame(string jsonString) =>
         _savedGameService.GetSavedGame(jsonString);
-
-    private void PrintMenu()
-    {
-        var menu = _stringHelper.GetMenu();
-        _userInteraction.Print(menu);
-    }
-
-    private void PrintQuest(Quest quest)
-    {
-        var text = _stringHelper.GetQuestWithOptions(quest);
-        _userInteraction.Print(text);
-    }
 
     private Quest GetQuestFromIndex(string index, List<Quest> quests)
     {
@@ -420,4 +392,74 @@ public class Game
 
         return new Player(name);
     }
+
+    #region Prints
+    private void PrintQuestWithOverlayAndInventory(Quest quest)
+    {
+        PrintOverlay();
+        PrintQuest(quest);
+        PrintInventory();
+    }
+
+    private bool PrintTheEnd()
+    {
+        _userInteraction.Print("The end");
+        return false;
+    }
+
+    private void PrintContinueText() =>
+        _userInteraction.Print(_stringHelper.GetContinueText());
+
+    private void PrintInventory()
+    {
+        var inventory = _stringHelper.GetPlayerInventoryAsString(Player);
+        _userInteraction.Print(inventory);
+    }
+
+    private void PrintOverlay()
+    {
+        var menuButton = _stringHelper.GetGameMenuButton();
+        _userInteraction.Print(menuButton);
+
+        var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
+        _userInteraction.Print(statisticsText);
+
+        var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
+        _userInteraction.Print(moralityText);
+    }
+
+    public void PrintSavedGames()
+    {
+        var savedGames = new List<SavedGame>();
+
+        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+        if (files is null)
+            return;
+        foreach (var filePath in files)
+        {
+            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
+            var savedGame = new SavedGame();
+            if (!string.IsNullOrEmpty(jsonContent))
+            {
+                savedGame = _savedGameService.GetSavedGame(jsonContent);
+            }
+            savedGames.Add(savedGame ?? new SavedGame());
+        }
+
+        var text = _stringHelper.GetSavedGamesString(savedGames);
+        _userInteraction.Print(text);
+    }
+
+    private void PrintMenu()
+    {
+        var menu = _stringHelper.GetMenu();
+        _userInteraction.Print(menu);
+    }
+
+    private void PrintQuest(Quest quest)
+    {
+        var text = _stringHelper.GetQuestWithOptions(quest);
+        _userInteraction.Print(text);
+    }
+    #endregion
 }
