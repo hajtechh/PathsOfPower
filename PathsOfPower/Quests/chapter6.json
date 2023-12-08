@@ -71,7 +71,7 @@
   },
   {
     "Index": "6.1.1.1.1.1.1",
-    "Description": "He types something into an old computer. After a few seonds, he mumbles about 'these damn muggle-objects'. He tells you to just go to floor five and ask around, because those wildlife specialists are never busy anyways.",
+    "Description": "He types something into an old computer. After a few seconds, he mumbles about 'these damn muggle-objects'. He tells you to just go to floor five and ask around, because those wildlife specialists are never busy anyways.",
     "Options": [
       {
         "Index": 1,
@@ -147,13 +147,13 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Thank Mr Bloom and go to tha eldertree area"
+        "Name": "Thank Mr Bloom and go to the eldertree area"
       }
     ]
   },
   {
     "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1.1",
-    "Description": "You go through the area, filled with oak-trees. You remeber the map Mr Bloom showed you, and you go toward the middle of the area, where the eldertrees should be.",
+    "Description": "You go through the area, filled with oak-trees. You remember the map Mr Bloom showed you, and you go toward the middle of the area, where the eldertrees should be.",
     "Options": [
       {
         "Index": 1,
@@ -163,7 +163,7 @@
   },
   {
     "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
-    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognice it right away, elderwood. You grab a branch and break it off of the tree. Now theres only two more steps.",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
     "Item": {
       "Name": "Elder-wood"
     }
@@ -217,7 +217,7 @@
   },
   {
     "Index": "6.1.1.2.1.1.1.1",
-    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now theres only two more steps.",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now there´s only two more steps.",
     "Item": {
       "Name": "Elder-wood"
     }
@@ -235,7 +235,7 @@
   },
   {
     "Index": "6.1.1.2.1.1.2.1",
-    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now theres only two more steps.",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now there´s only two more steps.",
     "Item": {
       "Name": "Elder-wood"
     }
