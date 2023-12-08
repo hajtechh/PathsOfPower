@@ -1,4 +1,7 @@
-﻿namespace PathsOfPower.Tests;
+﻿
+using PathsOfPower.Core.Interfaces;
+
+namespace PathsOfPower.Tests;
 
 public class FileHelperTests
 {
@@ -35,7 +38,7 @@ public class FileHelperTests
     }
 
     [Fact]
-    public void GetSavedGameFromFileFullPathShouldRunOnce()
+    public void GetSavedGameFromFileFullPathShouldNotReturnNullOrEmpty()
     {
         // Arrange
         var sut = new FileHelper();
@@ -65,8 +68,8 @@ public class FileHelperTests
     }
 
     [Theory]
-    [InlineData(4)]
-    [InlineData(5)]
+    [InlineData(10)]
+    [InlineData(66)]
     [InlineData(-1)]
     public void CheckIfNextChapterExistsShouldReturnFalse(int currentChapter)
     {
@@ -106,5 +109,21 @@ public class FileHelperTests
 
         // Assert
         sutMockFileHelper.Verify(x => x.WriteAllText(jsonContent, slotNumber), Times.Once);
+    }
+
+
+    [Fact]
+    public void GetQuestsFromFileShouldNotReturnNullOrEmpty()
+    {
+        // Arrange
+        var sut = new FileHelper();
+        var chapterNumber = 1;
+
+        // Act
+        var actual = sut.GetQuestsFromFile(chapterNumber);
+
+        // Assert
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
     }
 }

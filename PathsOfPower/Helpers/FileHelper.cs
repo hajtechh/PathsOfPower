@@ -1,6 +1,6 @@
-﻿using PathsOfPower.Interfaces;
+﻿using PathsOfPower.Core.Interfaces;
 
-namespace PathsOfPower.Helpers;
+namespace PathsOfPower.Core.Helpers;
 
 public class FileHelper : IFileHelper
 {
@@ -25,4 +25,7 @@ public class FileHelper : IFileHelper
 
     public string? GetSavedGameFromFile(string fullPath) =>
         File.ReadAllText(fullPath);
+
+    public string? GetQuestsFromFile(int chapterNumber) =>
+        File.ReadAllText($"{_baseQuestPath}{chapterNumber}.json");
 }
