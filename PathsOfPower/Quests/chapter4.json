@@ -69,13 +69,7 @@
       {
         "Index": 2,
         "Name": "Threathen him(trigger a fight)",
-        "MoralityScore": -2,
-        "Enemy": {
-          "Name": "Peeves the Poltergeist",
-          "MaxHealthPoints": 80,
-          "CurrentHealthPoints": 80,
-          "Power": 10
-        }
+        "MoralityScore": -2
       }
     ]
   },
@@ -96,19 +90,35 @@
   },
   {
     "Index": "4.1.1.1.1.1.1.1",
-    "Description": "he tells you about the wand(placeholder)."
+    "Description": "His eyes light up when you´re done describing the wand. He snickers, then tells you that the wand you´re describing..."
   },
 
   {
     "Index": "4.1.1.1.1.1.1.2",
-    "Description": "you steal and read the book(placeholder)."
+    "Description": "You cast accio and the book flies from Peeves hands into yours. The poltergeist blows a raspberry and leaves you alone. You browse through the book and find a page about a wand that looks exactly like the one you found. The wand you found..."
   },
 
   {
     "Index": "4.1.1.1.1.1.2",
-    "Description": "Peeves throws the book in your face, then runs away. You browse through the book and find a page about a wand that looks exactly like the one you found. The wand you found..."
+    "Description": "The poltergeist gets angry and starts attacking you!",
+    "Enemy": {
+      "Name": "Peeves the Poltergeist",
+      "MaxHealthPoints": 80,
+      "CurrentHealthPoints": 80,
+      "Power": 10
+    },
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Demand he gives you the book, or else..."
+      }
+    ]
   },
 
+  {
+    "Index": "4.1.1.1.1.1.2.1",
+    "Description": "Peeves throws the book in your face, then runs away. You browse through the book and find a page about a wand that looks exactly like the one you found. The wand you found..."
+  },
 
   {
     "Index": "4.1.1.2",
@@ -142,13 +152,7 @@
       {
         "Index": 2,
         "Name": "Intervene, fight the poltergeist",
-        "MoralityScore": -1,
-        "Enemy": {
-          "Name": "Peeves the Poltergeist",
-          "MaxHealthPoints": 80,
-          "CurrentHealthPoints": 80,
-          "Power": 10
-        }
+        "MoralityScore": -1
       }
     ]
   },
@@ -169,17 +173,23 @@
 
   {
     "Index": "4.1.1.2.1.1.2",
-    "Description": "Peeves runs away. Your colleague thanks you, and ask what you are looking for in the restricted section.",
+    "Description": "The poltergeist attacks you.",
+    "Enemy": {
+      "Name": "Peeves the Poltergeist",
+      "MaxHealthPoints": 80,
+      "CurrentHealthPoints": 80,
+      "Power": 10
+    },
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell them what you´re looking for"
+        "Name": "Tell him to leave, or else..."
       }
     ]
   },
   {
     "Index": "4.1.1.2.1.1.2.1",
-    "Description": "They tell you they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand you´re asking about..."
+    "Description": "Your colleague thanks you, and asks what you where looking for in the first place. You describe the wand and their eyes widen. They tell you that they know the wand you´re looking for, that it belonged to some of the most powerful wizards of all time, but got destroyed and lost years ago. They tell you that the wand you´re describing..."
   },
 
   {
