@@ -15,10 +15,10 @@ public class Program
         IFileHelper fileHelper = new FileHelper();
         IJsonHelper jsonHelper = new JsonHelper();
 
-        IQuestService questService = new QuestService(jsonHelper);
+        IQuestService questService = new QuestService(jsonHelper, fileHelper);
         ISavedGameService savedGameService = new SavedGameService(jsonHelper);
 
-        var game = new Game(userInteraction, stringHelper, fileHelper, questService, savedGameService);
-        game.Run();
+        var pathsOfPowerApp = new PathsOfPowerApp(userInteraction, stringHelper, questService, fileHelper, savedGameService);
+        pathsOfPowerApp.Run();
     }
 }
