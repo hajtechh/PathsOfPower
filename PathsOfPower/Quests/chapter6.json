@@ -6,10 +6,6 @@
       {
         "Index": 1,
         "Name": "...to find the materials its made from, and use alchemy to repair it"
-      },
-      {
-        "Index": 2,
-        "Name": "...to make a deal with Death, to request it to repair the wand it once created" // make a big sacrifice, change someone elses destined death or take part of your own life
       }
     ]
   },
@@ -26,7 +22,156 @@
   },
   {
     "Index": "6.1.1",
-    "Description": "Eldertrees are very rare, and because of their magical properties, well hidden. You decide it´s more likely to find an object made from elderwood. You immediately think an old friend that collects all kinds of magical objects and materials.",
+    "Description": "You know eldertrees are very rare, and because of their magical properties, well hidden. Perhaps it would be easier finding an object made out of elderwood instead.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Look for an eldertree"
+      },
+      {
+        "Index": 2,
+        "Name": "Look for an object"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1",
+    "Description": "If anyone knows where to find an eldertree, it´s the people protecting them.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to the Ministry of Magic"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1",
+    "Description": "You go through the entrance, and step up to the reception-desk. The receptionist asks you what your business with the Ministry is about, and how he can help.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him that you are a reporter, covering rare trees and protected wildlife."
+      },
+      {
+        "Index": 2,
+        "Name": "."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1",
+    "Description": "He pauses for a second, then asks what he should do with that information.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you want to talk to someone that knows a lot about eldertrees."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1",
+    "Description": "He types something into an old computer. After a few seonds, he mumbles about 'these damn muggle-objects'. He tells you to just go to floor five and ask around, because those wildlife specialists are never busy anyways.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to floor five."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1",
+    "Description": "You walk through the corridors on floor five, until you fínd the Department of Wildlife Research and Protection. You read the name-tags outside of the offices. You decide to knock on...",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "...Mr Blooms office"
+      },
+      {
+        "Index": 2,
+        "Name": "...Mrs Ordvalds office"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1",
+    "Description": "The door opens and a man with a big, orange beard greets you with a smile. He tells you to come in and sits down by his desk. He asks you how he can help you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you are writing an article about eldertrees, and need to know more about them"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1",
+    "Description": "He scoffs and tells you that you came to the right man. He asks you what you want to know.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask him where to find any eldertrees"
+      },
+      {
+        "Index": 2,
+        "Name": "Start with an unsuspecting question"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1",
+    "Description": "He fidgets for a while, then tells you that he can´t say.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go for his ego"
+      },
+      {
+        "Index": 2,
+        "Name": "Bribe him"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "You sigh, and tell him you heard he was the best, but you suppose that was wrong. You suggest that maybe Mrs Ordival could answer your questions instead. Mr Bloom laughs mockingly. He says that she can´t even differentiate a phoenix-feather from a duck-feather, and that unlike him, she is not knowledgeble.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask him to prove his knowledge"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "He shrugs and mumbles about what damage it could do, the proceeds to show you a map of a nearby area. He says the trees are cloaked to look like ordinary oak-trees, but they are in fact eldertrees in disguise. You know the area, a few miles outside Hogwarts.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Thank Mr Bloom and go to tha eldertree area"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "You go through the area, filled with oak-trees. You remeber the map Mr Bloom showed you, and you go toward the middle of the area, where the eldertrees should be.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognice it right away, elderwood. You grab a branch and break it off of the tree. Now theres only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.2",
+    "Description": "You decide it´s more likely to find an object made from elderwood. You immediately think an old friend that collects all kinds of magical objects and materials.",
     "Options": [
       {
         "Index": 1,
@@ -36,7 +181,7 @@
   },
 
   {
-    "Index": "6.1.1.1",
+    "Index": "6.1.1.2.1",
     "Description": "You wait until the weekend, and you take the train to the village where your friend lives; Ottery St. Catchpole. You walk through the village, to an open field a few minutes away. Suddenly you see a familiar house, and a familiar person sitting outside on the porch. They stand up and greet you, with a surprised and excited look.",
     "Options": [
       {
@@ -46,7 +191,7 @@
     ]
   },
   {
-    "Index": "6.1.1.1.1",
+    "Index": "6.1.1.2.1.1",
     "Description": "Terra Lovegood smiles wide, and asks you what you´re doing here.",
     "Options": [
       {
@@ -61,7 +206,7 @@
   },
 
   {
-    "Index": "6.1.1.1.1.1",
+    "Index": "6.1.1.2.1.1.1",
     "Description": "She nods and smiles through your whole story, and at the end, you´re convinced she doesn´t believe you. She laughs and disappears into the house.",
     "Options": [
       {
@@ -71,73 +216,15 @@
     ]
   },
   {
-    "Index": "6.1.1.1.1.1.1",
-    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Thank her, and go back to Hogwarts"
-      }
-    ]
-  },
-  {
-    "Index": "6.1.1.1.1.1.1.1",
-    "Description": "On the train back you read about thestrals. You have never seen one before, but you know there are some on Hogwarts grounds. After reading for a while you heart sinks. You can only see a thestral if you´ve seen someone die.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Go to St:Mungos hospital and look for a dying person"
-      }
-    ]
-  },
-  {
-    "Index": "6.1.1.1.1.1.1.1.1",
-    "Description": "You get off the train near St:Mungos, and enter the hospital. You walk through the corridors, looking at the sick people. Suddenly, you see an ald man, gasping for air.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Get him help, and save him"
-      },
-      {
-        "Index": 2,
-        "Name": "Do nothing, and let him die"
-      }
-    ]
-  },
-  {
-    "Index": "6.1.1.1.1.1.1.1.1.1",
-    "Description": "You call for help, but no one comes. You run to the old man and grab him, trying to save him. You ask him what´s wrong but he can´t make a sound. Suddenly, his face turns blue and his body gets limp. The man is dead.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Leave, and go back to Hogwarts"
-      }
-    ]
-  },
-  {
-    "Index": "6.1.1.1.1.1.1.1.1.1.1",
-    "Description": "You call for help, but no one comes. You run to the old man and grab him, trying to save him. You ask him what´s wrong but he can´t make a sound. Suddenly, his face turns blue and his body gets limp. The man is dead.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Leave, and go back to Hogwarts"
-      }
-    ]
+    "Index": "6.1.1.2.1.1.1.1",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now theres only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
   },
 
   {
-    "Index": "6.1.1.1.1.1.1.1.1.2",
-    "Description": "You step into the room and close the door. The old man gives you a terrified look, before his face turns blue and he stops moving. The man is dead.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Leave, and go back to Hogwarts"
-      }
-    ]
-  },
-
-  {
-    "Index": "6.1.1.1.1.2",
+    "Index": "6.1.1.2.1.1.2",
     "Description": "She nods through your explanation, and at the end, you´re convinced she doesn´t believe your lie. She laughs and disappears into the house.",
     "Options": [
       {
@@ -147,34 +234,10 @@
     ]
   },
   {
-    "Index": "6.1.1.1.1.2.1",
-    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Thank her, and go back to Hogwarts"
-      }
-    ]
-  },
-
-  {
-    "Index": "6.1.1.1.1.2.1.1",
-    "Description": "On the train back you read about thestrals. You have never seen one before, but you know there are some on Hogwarts grounds. After reading for a while your eyes stick to a certain sentence. You can only see a thestral if you´ve seen someone die.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Kill someone"
-      }
-    ]
-  },
-  {
-    "Index": "6.1.1.1.1.2.1.1.1",
-    "Description": "You look around the train car. There is only one other person here. You pull out your wand and walk towards them. You look them in the eyes as the words Avada Kedavra leaves your mouth, and they sink into their seat without a sound. You killed them.",
-    "Options": [
-      {
-        "Index": 1,
-        "Name": "Leave the train car, and go back to Hogwarts"
-      }
-    ]
+    "Index": "6.1.1.2.1.1.2.1",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now theres only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
   }
 ]
