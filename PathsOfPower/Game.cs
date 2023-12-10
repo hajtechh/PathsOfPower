@@ -232,8 +232,7 @@ public class Game
     {
         PrintSavedGames();
 
-        var input = _userInteraction.GetChar().KeyChar;
-        var slotNumber = (int)char.GetNumericValue(input);
+        int slotNumber = CheckForValidSlotNumber();
         var text = string.Empty;
         try
         {
@@ -249,6 +248,26 @@ public class Game
             return;
         Player = chosenGame.Player;
         StartGame(chosenGame.QuestIndex);
+    }
+
+    private int CheckForValidSlotNumber()
+    {
+        int slotNumber;
+        while (true)
+        {
+            var input = _userInteraction.GetChar().KeyChar;
+            slotNumber = (int)char.GetNumericValue(input);
+
+            if (input >= MinSlotNumber && input <= MaxSlotNumber)
+            {
+                break;
+            }
+            else
+            {
+                _userInteraction.Print($"Invalid slot number. \r\nPlease enter a number between 1 and 3");
+            }
+        }
+        return slotNumber;
     }
 
     public void FightEnemy(Enemy enemy, string questIndex)
