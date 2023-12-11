@@ -66,23 +66,16 @@ public class PathsOfPowerApp
     public void LoadGame()
     {
         PrintSavedGames();
-
-
         var input = _userInteraction.GetChar().KeyChar;
-        while (_savedGameService.CheckForValidSlotNumber(input) is false)
+        (var savedGame, var message) = _savedGameService.LoadGame(input);
+
+        while (savedGame is null)
         {
             _userInteraction.ClearConsole();
             PrintSavedGames();
-            _userInteraction.Print("Please enter valid slotnumber.");
-            input = _userInteraction.GetChar().KeyChar;
-        }
-
-        (var savedGame, var message) = _savedGameService.LoadGame(input);
-
-        if (savedGame is null)
-        {
             _userInteraction.Print(message);
-            return;
+            input = _userInteraction.GetChar().KeyChar;
+            (savedGame, message) = _savedGameService.LoadGame(input);
         }
 
         var player = savedGame.Player;
