@@ -1,6 +1,8 @@
 ﻿using PathsOfPower.Core.Models;
 namespace PathsOfPower.Core.Interfaces;
 
+namespace PathsOfPower.Core.Interfaces;
+
 public interface IStringHelper
 {
     string GetMenu();

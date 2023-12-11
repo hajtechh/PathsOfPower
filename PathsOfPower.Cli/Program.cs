@@ -16,7 +16,7 @@ public class Program
         IJsonHelper jsonHelper = new JsonHelper();
 
         IQuestService questService = new QuestService(jsonHelper, fileHelper);
-        ISavedGameService savedGameService = new SavedGameService(jsonHelper);
+        ISavedGameService savedGameService = new SavedGameService(jsonHelper, fileHelper);
 
         var pathsOfPowerApp = new PathsOfPowerApp(userInteraction, stringHelper, questService, fileHelper, savedGameService);
         pathsOfPowerApp.Run();

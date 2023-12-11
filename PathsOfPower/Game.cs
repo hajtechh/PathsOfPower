@@ -55,41 +55,38 @@ public class Game
             //{ ConsoleKey.D1, () => StartGame(questIndex) },
             { ConsoleKey.D2, () => SaveGame(questIndex) },
             //{ ConsoleKey.D3, Run },
-            { ConsoleKey.D4, QuitGame },
+            { ConsoleKey.D4, () => QuitGame() },
             //{ ConsoleKey.NumPad1, () => StartGame(questIndex) },
             { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
             //{ ConsoleKey.NumPad3, Run },
-            { ConsoleKey.NumPad4, QuitGame }
+            { ConsoleKey.NumPad4, () => QuitGame() }
         };
 
     public void GameLoop(ref int chapter, ref Quest quest, Dictionary<ConsoleKey, Action> keyActions)
     {
-        var isRunning = true;
-        while (isRunning)
+        var isQuittingGame = false;
+        while (isQuittingGame is false)
         {
-            if (Player is null)
+            if (Player is null || quest is null)
                 return;
 
             _userInteraction.ClearConsole();
 
-            if (quest is null)
-                return;
             PrintQuestWithOverlayAndInventory(quest);
-
             HandleQuestEvents(quest);
 
             if (quest.Options is not null)
                 quest = RunQuestWithOptions(quest, keyActions);
             else if (_fileHelper.IsNextChapterExisting(chapter))
-                quest = RunQuestWithoutOptions(chapter, quest, keyActions);
+                quest = RunQuestWithoutOptions(chapter + 1, quest, keyActions);
             else
-                isRunning = PrintTheEnd();
+                isQuittingGame = PrintTheEnd();
         }
     }
 
     private Quest RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
-    {
-        Quests = GetQuestsInNextChapter(chapter);
+    {;
+        Quests = _questService.GetQuestsFromChapter(chapter);
 
         if (Quests is not null)
             quest = _questService.GetQuestFromIndex(chapter.ToString(), Quests);
@@ -123,14 +120,6 @@ public class Game
         }
 
         return quest;
-    }
-
-    private List<Quest>? GetQuestsInNextChapter(int currentChapter)
-    {
-        var nextChapter = currentChapter++;
-        if (_fileHelper.IsNextChapterExisting(nextChapter))
-            return GetQuests(nextChapter);
-        return null;
     }
 
     private Quest GetNextQuestBasenOnChosenOption(Quest quest, ConsoleKeyInfo choice)
@@ -182,40 +171,39 @@ public class Game
 
         var keyActions = SetupKeyActionsInGameMenu(questIndex);
 
-        var choice = _userInteraction.GetChar();
+        var input = _userInteraction.GetChar();
 
-        if (keyActions.TryGetValue(choice.Key, out var action))
-        {
-            action.Invoke();
-        }
+        if (keyActions.TryGetValue(input.Key, out var action))
+            //if (input.Key is ConsoleKey.D4 || input.Key is ConsoleKey.NumPad4)
+            //    return QuitGame();
+            //else
+                action.Invoke();
         else
-        {
             GameMenu(questIndex);
-        }
     }
 
-    public void LoadGame()
-    {
-        PrintSavedGames();
+    //public void LoadGame()
+    //{
+    //    PrintSavedGames();
 
-        var input = _userInteraction.GetChar().KeyChar;
-        var slotNumber = (int)char.GetNumericValue(input);
-        var text = string.Empty;
-        try
-        {
-            text += _fileHelper.GetSavedGameFromFile(slotNumber);
-        }
-        catch (FileNotFoundException ex)
-        {
-            _userInteraction.Print($"File doesn't exist: {ex.Message}");
-            return;
-        }
-        var chosenGame = DeserializeSavedGame(text);
-        if (chosenGame is null)
-            return;
-        Player = chosenGame.Player;
-        //StartGame(chosenGame.QuestIndex);
-    }
+    //    var input = _userInteraction.GetChar().KeyChar;
+    //    var slotNumber = (int)char.GetNumericValue(input);
+    //    var text = string.Empty;
+    //    try
+    //    {
+    //        text += _fileHelper.GetSavedGameFromFile(slotNumber);
+    //    }
+    //    catch (FileNotFoundException ex)
+    //    {
+    //        _userInteraction.Print($"File doesn't exist: {ex.Message}");
+    //        return;
+    //    }
+    //    var chosenGame = DeserializeSavedGame(text);
+    //    if (chosenGame is null)
+    //        return;
+    //    Player = chosenGame.Player;
+    //    //StartGame(chosenGame.QuestIndex);
+    //}
 
     public void FightEnemy(Enemy enemy, string questIndex)
     {
@@ -258,32 +246,32 @@ public class Game
 
     private void QuitGame()
     {
+        _userInteraction.Print("Game is shutting down");
         Environment.Exit(0);
     }
 
     public void SaveGame(string questIndex)
     {
-        PrintSavedGames();
-        var choice = _userInteraction.GetChar().KeyChar;
+        //var choice = _userInteraction.GetChar().KeyChar;
 
-        var jsonString = SerializeSavedGame(questIndex);
+        //var jsonString = SerializeSavedGame(questIndex);
 
-        if (jsonString is not null)
-        {
-            var isSaved = WriteToFile(choice, jsonString);
+        //if (jsonString is not null)
+        //{
+        //    var isSaved = WriteToFile(choice, jsonString);
 
-            if (isSaved)
-            {
-                var savedGame = DeserializeSavedGame(jsonString);
-                if (savedGame is not null)
-                {
-                    var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
-                    _userInteraction.Print(text);
-                }
-            }
-        }
-        _userInteraction.GetChar();
-        GameMenu(questIndex);
+        //    if (isSaved)
+        //    {
+        //        var savedGame = DeserializeSavedGame(jsonString);
+        //        if (savedGame is not null)
+        //        {
+        //            var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
+        //            _userInteraction.Print(text);
+        //        }
+        //    }
+        //}
+        //_userInteraction.GetChar();
+        //GameMenu(questIndex);
     }
 
     public bool WriteToFile(char choice, string jsonString)
@@ -313,13 +301,9 @@ public class Game
         return _savedGameService.CreateSavedGame(savedGame);
     }
 
-    public SavedGame? DeserializeSavedGame(string jsonString) =>
-        _savedGameService.GetSavedGame(jsonString);
+    //public SavedGame? DeserializeSavedGame(string jsonString) =>
+    //    _savedGameService.GetSavedGame(jsonString);
 
-    public List<Quest> GetQuests(int chapterNumber)
-    {
-        return _questService.GetQuestsFromChapter(chapterNumber);
-    }
 
     #region Prints
     private void PrintQuestWithOverlayAndInventory(Quest quest)
@@ -356,27 +340,27 @@ public class Game
         _userInteraction.Print(moralityText);
     }
 
-    public void PrintSavedGames()
-    {
-        var savedGames = new List<SavedGame>();
+    //public void PrintSavedGames()
+    //{
+    //    var savedGames = new List<SavedGame>();
 
-        var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
-        if (files is null)
-            return;
-        foreach (var filePath in files)
-        {
-            var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = new SavedGame();
-            if (!string.IsNullOrEmpty(jsonContent))
-            {
-                savedGame = _savedGameService.GetSavedGame(jsonContent);
-            }
-            savedGames.Add(savedGame ?? new SavedGame());
-        }
+    //    var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
+    //    if (files is null)
+    //        return;
+    //    foreach (var filePath in files)
+    //    {
+    //        var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
+    //        var savedGame = new SavedGame();
+    //        if (!string.IsNullOrEmpty(jsonContent))
+    //        {
+    //            savedGame = _savedGameService.GetSavedGame(jsonContent);
+    //        }
+    //        savedGames.Add(savedGame ?? new SavedGame());
+    //    }
 
-        var text = _stringHelper.GetSavedGamesString(savedGames);
-        _userInteraction.Print(text);
-    }
+    //    var text = _stringHelper.GetSavedGamesString(savedGames);
+    //    _userInteraction.Print(text);
+    //}
 
     private void PrintQuest(Quest quest)
     {
