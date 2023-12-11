@@ -32,8 +32,6 @@ public class StringHelper : IStringHelper
 
     private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
 
-
-    public string GetNewLine() => NEW_LINE;
     public string GetMenu() => _menu;
 
     public string GetGameMenuString() => _gameMenu;

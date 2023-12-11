@@ -148,7 +148,7 @@ public class PathsOfPowerApp
 
     private void PrintMenu()
     {
-        var menu = _stringHelper.GetNewLine();
+        var menu = _stringHelper.GetMenu();
         _userInteraction.Print(menu);
     }
 }

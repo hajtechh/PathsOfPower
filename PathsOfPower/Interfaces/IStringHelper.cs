@@ -2,7 +2,7 @@
 
 public interface IStringHelper
 {
-    string GetNewLine();
+    string GetMenu();
     string BuildString(List<string> strings);
     string GetGameMenuString();
     string GetGameMenuButton();
