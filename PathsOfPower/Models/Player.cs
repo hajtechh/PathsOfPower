@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Core.Interfaces;
-
-namespace PathsOfPower.Core.Models;
+﻿namespace PathsOfPower.Core.Models;
 
 public class Player : ICharacter
 {

@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core;
+﻿namespace PathsOfPower.Core;
 
 public class Game
 {
@@ -41,7 +39,7 @@ public class Game
     }
     #endregion
 
-    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGameMenu() =>
+    public Dictionary<ConsoleKey, Action> SetupkeyActionsGoToGameMenu() =>
         new()
         {
             { ConsoleKey.D2, SaveGame },
@@ -51,6 +49,26 @@ public class Game
             { ConsoleKey.D4, QuitGame },
             { ConsoleKey.NumPad4, QuitGame }
         };
+
+    /// <summary>
+    /// 
+    /// Gets the action from Dictionary list of actions.
+    /// If input match any ConsoleKey from Dictionary list of ConsoleKeys then invoke the action.
+    /// </summary>
+    /// <param name="keyActions">Dictionary of ConsoleKey and Action (key = Consolekey, value = Action)</param>
+    /// <param name="input">ConsoleKeyInfo of any key pressed by the user</param>
+    public void CheckKeyPressFromKeyActions(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
+    {
+        var action = GetAction(keyActions, input);
+        action?.Invoke();
+    }
+
+    public Action? GetAction(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
+    {
+        if (keyActions.TryGetValue(input.Key, out var action))
+            return action;
+        return null;
+    }
 
     public void RunLoop(ref int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
@@ -74,7 +92,6 @@ public class Game
     }
     private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
-        ;
         Quests = _questService.GetQuestsFromChapter(chapter);
 
         if (Quests is not null)
@@ -82,10 +99,10 @@ public class Game
 
         HandleQuestEvents();
 
-        PrintContinueText();
+        PrintText(_stringHelper.GetContinueText());
 
         var input = _userInteraction.GetChar();
-        CheckIfUserWantsToGoToGameMenu(keyActions, input);
+        CheckKeyPressFromKeyActions(keyActions, input);
     }
 
     private void RunQuestWithOptions(Dictionary<ConsoleKey, Action> keyActions)
@@ -98,21 +115,14 @@ public class Game
         }
         else
         {
-            CheckIfUserWantsToGoToGameMenu(keyActions, choice);
+            CheckKeyPressFromKeyActions(keyActions, choice);
         }
     }
 
     private void GetNextQuestBasenOnChosenOption(ConsoleKeyInfo choice)
     {
         var index = _stringHelper.GetQuestIndexString(Quest.Index, choice.KeyChar);
-        if (Quests is not null)
-            Quest = _questService.GetQuestFromIndex(index, Quests);
-    }
-
-    private void CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
-    {
-        if (keyActions.TryGetValue(input.Key, out var action))
-            action.Invoke();
+        Quest = _questService.GetQuestFromIndex(index, Quests);
     }
 
     private void HandleOptionEventsInQuest(ConsoleKeyInfo choice)
@@ -143,22 +153,17 @@ public class Game
             Player.AddInventoryItem(Quest.Item);
     }
 
-    public void GameMenu()
+    public void GoToGameMenu()
     {
         _userInteraction.ClearConsole();
-        _userInteraction.Print(_stringHelper.GetGameMenuString());
+        PrintText(_stringHelper.GetGameMenuString());
 
-        var keyActions = SetupKeyActionsInGameMenu();
+        var keyActionsGoToGameMenu = SetupkeyActionsGoToGameMenu();
 
         var input = _userInteraction.GetChar();
 
-        if (keyActions.TryGetValue(input.Key, out var action))
-            //if (input.Key is ConsoleKey.D4 || input.Key is ConsoleKey.NumPad4)
-            //    return QuitGame();
-            //else
+        if (keyActionsGoToGameMenu.TryGetValue(input.Key, out var action))
             action.Invoke();
-        //else
-        //    GameMenu(questIndex);
     }
 
     public void FightEnemy(Enemy enemy)
@@ -166,7 +171,7 @@ public class Game
         if (Player is null)
             return;
 
-        var strings = new List<string>
+        var fightLog = new List<string>
         {
             _stringHelper.GetEnemyForFightLog(enemy)
         };
@@ -174,17 +179,16 @@ public class Game
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
-            strings.Add(_stringHelper.GetActionForFightLog(Player, enemy));
+            fightLog.Add(_stringHelper.GetActionForFightLog(Player, enemy));
 
             enemy.PerformAttack(Player);
-            strings.Add(_stringHelper.GetActionForFightLog(enemy, Player));
+            fightLog.Add(_stringHelper.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
-            strings.Add(_stringHelper.GetSurvivorForFightLog(enemy));
-            var fightLog = _stringHelper.BuildString(strings);
-            _userInteraction.Print(fightLog);
+            fightLog.Add(_stringHelper.GetSurvivorForFightLog(enemy));
+            PrintText(_stringHelper.BuildString(fightLog));
 
             Player.HealthPoints = MAX_HEALTH_POINTS;
             _userInteraction.GetChar();
@@ -193,84 +197,51 @@ public class Game
         }
         else
         {
-
-            strings.Add(_stringHelper.GetSurvivorForFightLog(Player));
-            var fightLog = _stringHelper.BuildString(strings);
-            _userInteraction.Print(fightLog);
+            fightLog.Add(_stringHelper.GetSurvivorForFightLog(Player));
+            PrintText(_stringHelper.BuildString(fightLog));
         }
     }
 
-    private void QuitGame()
+    public void QuitGame()
     {
-        _userInteraction.Print("Game is shutting down");
+        PrintText(_stringHelper.GetExitGame());
         Environment.Exit(0);
     }
 
     public void SaveGame()
     {
-        PrintSavedGames();
+        var savedGames = _savedGameService.GetSavedGames();
+        PrintText(_stringHelper.GetSavedGamesString(savedGames));
 
         var choice = _userInteraction.GetChar().KeyChar;
 
         // Saving the game
         var (isSaved, message) = _savedGameService.SaveGame(Player, choice, Quest.Index);
 
-        _userInteraction.Print(message);
+        PrintText($"{message}\r\n{_stringHelper.GetContinueText()}");
 
-        _userInteraction.Print(_stringHelper.GetContinueText());
         _userInteraction.GetChar();
-        GameMenu();
+        GoToGameMenu();
     }
 
     public void QuitToMainMenu() =>
         IsExitingGameLoop = true;
 
-    #region Prints
-    private void PrintQuestWithOverlayAndInventory()
-    {
-        PrintOverlay();
-        PrintQuest();
-        PrintInventory();
-    }
-
     private void TheEnd()
     {
-        _userInteraction.Print("The end");
+        PrintText(_stringHelper.GetTheEndText());
         IsExitingGameLoop = true;
     }
 
-    private void PrintContinueText() =>
-        _userInteraction.Print(_stringHelper.GetContinueText());
-
-    private void PrintInventory()
+    private void PrintQuestWithOverlayAndInventory()
     {
-        var inventory = _stringHelper.GetPlayerInventoryAsString(Player);
-        _userInteraction.Print(inventory);
+        PrintText(_stringHelper.GetGameMenuButton());
+        PrintText(_stringHelper.GetCharacterStatisticsString(Player));
+        PrintText(_stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum));
+        PrintText(_stringHelper.GetQuestWithOptions(Quest));
+        PrintText(_stringHelper.GetPlayerInventoryAsString(Player));
     }
 
-    private void PrintOverlay()
-    {
-        var menuButton = _stringHelper.GetGameMenuButton();
-        _userInteraction.Print(menuButton);
-
-        var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
-        _userInteraction.Print(statisticsText);
-
-        var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
-        _userInteraction.Print(moralityText);
-    }
-
-    private void PrintSavedGames()
-    {
-        var savedGames = _savedGameService.GetSavedGames();
-        var output = _stringHelper.GetSavedGamesString(savedGames);
-        _userInteraction.Print(output);
-    }
-
-    private void PrintQuest()
-    {
-        var text = _stringHelper.GetQuestWithOptions(Quest);
+    public void PrintText(string text) =>
         _userInteraction.Print(text);
-    }
-    #endregion
 }

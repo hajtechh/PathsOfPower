@@ -20,5 +20,7 @@ public interface IStringHelper
     string GetCurrentChapterAsString(string index);
     string BuildString(List<string> strings);
     string GetQuestIndexString(string parentQuestIndex, char choice);
+    string GetTheEndText();
+    string GetExitGame();
     string TrimInputString(string name);
 }

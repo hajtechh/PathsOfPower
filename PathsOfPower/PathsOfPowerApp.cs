@@ -39,7 +39,7 @@ public class PathsOfPowerApp
                     LoadGame();
                     break;
                 case '3':
-                    QuitGame();
+                    ExitApplication();
                     isExiting = true;
                     break;
                 default:
@@ -56,11 +56,11 @@ public class PathsOfPowerApp
         var quest = _questService.GetQuestFromIndex(questIndex, quests);
         var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
-        var keyActions = SetupKeyActionsInGame(game);
+        var keyActionsGoToGameMenu = GetKeyActionsGoToGameMenu(game);
 
         var currentChapter = int.Parse(questIndex);
 
-        game.RunLoop(ref currentChapter, keyActions);
+        game.RunLoop(ref currentChapter, keyActionsGoToGameMenu);
     }
 
     public void LoadGame()
@@ -85,12 +85,12 @@ public class PathsOfPowerApp
 
         var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
-        var keyActions = SetupKeyActionsInGame(game);
+        var keyActions = GetKeyActionsGoToGameMenu(game);
 
         game.RunLoop(ref chapter, keyActions);
     }
 
-    private void QuitGame()
+    private void ExitApplication()
     {
         _userInteraction.Print("Game is shutting down");
         Environment.Exit(0);
@@ -118,8 +118,8 @@ public class PathsOfPowerApp
         _userInteraction.Print(text);
     }
 
-    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Game game) =>
-        new() { { ConsoleKey.M, () => game.GameMenu() } };
+    private Dictionary<ConsoleKey, Action> GetKeyActionsGoToGameMenu(Game game) =>
+        new() { { ConsoleKey.M, game.GoToGameMenu } };
 
     public (Player player, List<Quest>? quests) SetupNewGame()
     {

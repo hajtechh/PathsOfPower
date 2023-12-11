@@ -32,7 +32,6 @@ public class StringHelper : IStringHelper
 
     private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
 
-
     public string GetMenu() => _menu;
 
     public string GetGameMenuString() => _gameMenu;
@@ -185,6 +184,12 @@ public class StringHelper : IStringHelper
     {
         return $"{parentQuestIndex}.{choice}";
     }
+
+    public string GetTheEndText() =>
+        "The end";
+
+    public string GetExitGame() =>
+        "Game is shutting down";
 
     public string TrimInputString(string message)
     {
