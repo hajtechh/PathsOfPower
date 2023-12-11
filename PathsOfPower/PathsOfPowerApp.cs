@@ -120,7 +120,7 @@ public class PathsOfPowerApp
     }
 
     private Dictionary<ConsoleKey, Action> GetKeyActionsGoToGameMenu(Game game) =>
-        new() { { ConsoleKey.M, game.GameMenu } };
+        new() { { ConsoleKey.M, game.GoToGameMenu } };
 
     public (Player player, List<Quest>? quests) SetupNewGame()
     {
@@ -148,7 +148,7 @@ public class PathsOfPowerApp
 
     private void PrintMenu()
     {
-        var menu = _stringHelper.GetMenu();
+        var menu = _stringHelper.GetNewLine();
         _userInteraction.Print(menu);
     }
 }

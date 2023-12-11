@@ -2,7 +2,7 @@
 
 public interface IStringHelper
 {
-    string GetMenu();
+    string GetNewLine();
     string BuildString(List<string> strings);
     string GetGameMenuString();
     string GetGameMenuButton();
@@ -20,4 +20,6 @@ public interface IStringHelper
     string GetSurvivorForFightLog(ICharacter character);
     string GetCurrentChapterAsString(string index);
     string GetQuestIndexString(string parentQuestIndex, char choice);
+    string GetTheEndText();
+    string GetExitGame();
 }

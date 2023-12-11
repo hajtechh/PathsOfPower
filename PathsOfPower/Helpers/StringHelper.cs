@@ -1,7 +1,4 @@
-﻿using PathsOfPower.Core.Interfaces;
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core.Helpers;
+﻿namespace PathsOfPower.Core.Helpers;
 
 public class StringHelper : IStringHelper
 {
@@ -36,6 +33,7 @@ public class StringHelper : IStringHelper
     private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
 
 
+    public string GetNewLine() => NEW_LINE;
     public string GetMenu() => _menu;
 
     public string GetGameMenuString() => _gameMenu;
@@ -188,5 +186,11 @@ public class StringHelper : IStringHelper
     {
         return $"{parentQuestIndex}.{choice}";
     }
+
+    public string GetTheEndText() =>
+        "The end";
+
+    public string GetExitGame() =>
+        "Game is shutting down";
 }
 
