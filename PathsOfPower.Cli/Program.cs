@@ -1,8 +1,4 @@
-﻿using PathsOfPower.Core;
-using PathsOfPower.Core.Helpers;
-using PathsOfPower.Core.Services;
-
-namespace PathsOfPower.Cli;
+﻿namespace PathsOfPower.Cli;
 
 public class Program
 {
@@ -18,7 +14,9 @@ public class Program
         IQuestService questService = new QuestService(jsonHelper, fileHelper);
         ISavedGameService savedGameService = new SavedGameService(jsonHelper, fileHelper);
 
-        var pathsOfPowerApp = new PathsOfPowerApp(userInteraction, stringHelper, questService, fileHelper, savedGameService);
+        //IFactory factory = new Factory();
+
+        var pathsOfPowerApp = new PathsOfPowerApp(/*factory,*/ userInteraction, stringHelper, questService, fileHelper, savedGameService);
         pathsOfPowerApp.Run();
     }
 }
