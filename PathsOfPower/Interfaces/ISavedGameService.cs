@@ -1,4 +1,6 @@
-﻿namespace PathsOfPower.Core.Interfaces;
+﻿using PathsOfPower.Core.Models;
+
+namespace PathsOfPower.Core.Interfaces;
 
 public interface ISavedGameService
 {
