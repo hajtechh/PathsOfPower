@@ -4,8 +4,6 @@ public class Game
 {
     #region PrivateVariables
     private const int MAX_HEALTH_POINTS = 100;
-    private const char MIN_SLOT_NUMBER = '1';
-    private const char MAX_SLOT_NUMBER = '3';
 
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
@@ -14,10 +12,15 @@ public class Game
     private readonly ISavedGameService _savedGameService;
     #endregion
 
+    #region Properties
     public List<Quest> Quests { get; set; }
+    public Quest Quest { get; set; }
     public Player Player { get; set; }
+    public bool IsExitingGameLoop { get; set; }
+    #endregion
 
-    public Game(List<Quest> quests, Player player,
+    #region Constructor
+    public Game(List<Quest> quests, Player player, Quest quest,
         IUserInteraction userInteraction,
         IStringHelper stringHelper,
         IFileHelper fileHelper,
@@ -32,185 +35,144 @@ public class Game
 
         Player = player;
         Quests = quests;
+        Quest = quest;
     }
+    #endregion
 
-    //private void StartGame(string questIndex)
-    //{
-    //    var currentChapter = questIndex[..1];
-    //    var chapter = int.Parse(currentChapter);
-    //    Quests = GetQuests(chapter);
-
-    //    var quest = new Quest();
-    //    if (Quests is not null)
-    //        quest = GetQuestFromIndex(questIndex, Quests);
-
-    //    var keyActions = SetupKeyActionsInGame(quest);
-
-    //    GameLoop(ref chapter, ref quest, keyActions);
-    //}
-
-    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGameMenu(string questIndex) =>
+    public Dictionary<ConsoleKey, Action> SetupkeyActionsGoToGameMenu() =>
         new()
         {
-            //{ ConsoleKey.D1, () => StartGame(questIndex) },
-            { ConsoleKey.D2, () => SaveGame(questIndex) },
-            //{ ConsoleKey.D3, Run },
-            { ConsoleKey.D4, () => QuitGame() },
-            //{ ConsoleKey.NumPad1, () => StartGame(questIndex) },
-            { ConsoleKey.NumPad2, () => SaveGame(questIndex) },
-            //{ ConsoleKey.NumPad3, Run },
-            { ConsoleKey.NumPad4, () => QuitGame() }
+            { ConsoleKey.D2, SaveGame },
+            { ConsoleKey.NumPad2, SaveGame },
+            { ConsoleKey.D3, QuitToMainMenu },
+            { ConsoleKey.NumPad3, QuitToMainMenu },
+            { ConsoleKey.D4, QuitGame },
+            { ConsoleKey.NumPad4, QuitGame }
         };
 
-    public void GameLoop(ref int chapter, ref Quest quest, Dictionary<ConsoleKey, Action> keyActions)
+    /// <summary>
+    /// 
+    /// Gets the action from Dictionary list of actions.
+    /// If input match any ConsoleKey from Dictionary list of ConsoleKeys then invoke the action.
+    /// </summary>
+    /// <param name="keyActions">Dictionary of ConsoleKey and Action (key = Consolekey, value = Action)</param>
+    /// <param name="input">ConsoleKeyInfo of any key pressed by the user</param>
+    public void CheckKeyPressFromKeyActions(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
     {
-        var isQuittingGame = false;
-        while (isQuittingGame is false)
+        var action = GetAction(keyActions, input);
+        action?.Invoke();
+    }
+
+    public Action? GetAction(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
+    {
+        if (keyActions.TryGetValue(input.Key, out var action))
+            return action;
+        return null;
+    }
+
+    public void RunLoop(ref int chapter, Dictionary<ConsoleKey, Action> keyActions)
+    {
+        while (IsExitingGameLoop is false)
         {
-            if (Player is null || quest is null)
+            if (Player is null || Quest is null)
                 return;
 
             _userInteraction.ClearConsole();
 
-            PrintQuestWithOverlayAndInventory(quest);
-            HandleQuestEvents(quest);
+            PrintQuestWithOverlayAndInventory();
+            HandleQuestEvents();
 
-            if (quest.Options is not null)
-                quest = RunQuestWithOptions(quest, keyActions);
+            if (Quest.Options is not null)
+                RunQuestWithOptions(keyActions);
             else if (_fileHelper.IsNextChapterExisting(chapter))
-                quest = RunQuestWithoutOptions(chapter + 1, quest, keyActions);
+                RunQuestWithoutOptions(chapter + 1, keyActions);
             else
-                isQuittingGame = PrintTheEnd();
+                TheEnd();
         }
     }
 
-    private Quest RunQuestWithoutOptions(int chapter, Quest quest, Dictionary<ConsoleKey, Action> keyActions)
-    {;
+    private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
+    {
         Quests = _questService.GetQuestsFromChapter(chapter);
 
         if (Quests is not null)
-            quest = _questService.GetQuestFromIndex(chapter.ToString(), Quests);
+            Quest = _questService.GetQuestFromIndex(chapter.ToString(), Quests);
 
-        HandleQuestEvents(quest);
+        HandleQuestEvents();
 
-        PrintContinueText();
+        PrintText(_stringHelper.GetContinueText());
 
         var input = _userInteraction.GetChar();
-        CheckIfUserWantsToGoToGameMenu(keyActions, input);
-        return quest;
+        CheckKeyPressFromKeyActions(keyActions, input);
     }
 
-    private Quest? RunQuestWithOptions(Quest quest, Dictionary<ConsoleKey, Action> keyActions)
+    private void RunQuestWithOptions(Dictionary<ConsoleKey, Action> keyActions)
     {
-        // 4.1.1. Get input
         var choice = _userInteraction.GetChar();
         if (char.IsDigit(choice.KeyChar))
         {
-            // 4.1.1.1. Get next quest based on what option is chosen
-            quest = GetNextQuestBasenOnChosenOption(quest, choice);
-
-            // 4.1.1.2. HandleOptionEvents
-            HandleOptionEventsInQuest(quest, choice);
+            GetNextQuestBasenOnChosenOption(choice);
+            HandleOptionEventsInQuest(choice);
         }
-        // 4.1.2. User did not type in any digits
         else
         {
-            // 4.1.2.1 Check if user wants to go to menu
-            CheckIfUserWantsToGoToGameMenu(keyActions, choice);
+            CheckKeyPressFromKeyActions(keyActions, choice);
         }
-
-        return quest;
     }
 
-    private Quest GetNextQuestBasenOnChosenOption(Quest quest, ConsoleKeyInfo choice)
+    private void GetNextQuestBasenOnChosenOption(ConsoleKeyInfo choice)
     {
-        var index = _stringHelper.GetQuestIndexString(quest.Index, choice.KeyChar);
-        if (Quests is not null)
-            quest = _questService.GetQuestFromIndex(index, Quests);
-        return quest;
+        var index = _stringHelper.GetQuestIndexString(Quest.Index, choice.KeyChar);
+        Quest = _questService.GetQuestFromIndex(index, Quests);
     }
 
-    private void CheckIfUserWantsToGoToGameMenu(Dictionary<ConsoleKey, Action> keyActions, ConsoleKeyInfo input)
-    {
-        if (keyActions.TryGetValue(input.Key, out var action))
-            action.Invoke();
-    }
-
-    private void HandleOptionEventsInQuest(Quest quest, ConsoleKeyInfo choice)
+    private void HandleOptionEventsInQuest(ConsoleKeyInfo choice)
     {
         if (Player is null)
             return;
 
         var index = int.Parse(choice.KeyChar.ToString());
-        var option = quest.Options?.FirstOrDefault(x => x.Index == index);
+        var option = Quest.Options?.FirstOrDefault(x => x.Index == index);
         if (option is null || option.MoralityScore is not 0)
             return;
 
         Player.ApplyMoralityScore(option.MoralityScore);
     }
 
-    private void HandleQuestEvents(Quest quest)
+    private void HandleQuestEvents()
     {
         if (Player is null)
             return;
 
-        if (quest.Enemy is not null)
-            FightEnemy(quest.Enemy, quest.Index);
+        if (Quest.Enemy is not null)
+            FightEnemy(Quest.Enemy);
 
-        if (quest.PowerUpScore is not 0)
-            Player.ApplyPowerUpScore(quest.PowerUpScore);
+        if (Quest.PowerUpScore is not 0)
+            Player.ApplyPowerUpScore(Quest.PowerUpScore);
 
-        if (quest is not null && quest.Item is not null)
-            Player.AddInventoryItem(quest.Item);
+        if (Quest is not null && Quest.Item is not null)
+            Player.AddInventoryItem(Quest.Item);
     }
 
-    public void GameMenu(string questIndex)
+    public void GoToGameMenu()
     {
         _userInteraction.ClearConsole();
-        _userInteraction.Print(_stringHelper.GetGameMenuString());
+        PrintText(_stringHelper.GetGameMenuString());
 
-        var keyActions = SetupKeyActionsInGameMenu(questIndex);
+        var keyActionsGoToGameMenu = SetupkeyActionsGoToGameMenu();
 
         var input = _userInteraction.GetChar();
 
-        if (keyActions.TryGetValue(input.Key, out var action))
-            //if (input.Key is ConsoleKey.D4 || input.Key is ConsoleKey.NumPad4)
-            //    return QuitGame();
-            //else
-                action.Invoke();
-        else
-            GameMenu(questIndex);
+        if (keyActionsGoToGameMenu.TryGetValue(input.Key, out var action))
+            action.Invoke();
     }
 
-    //public void LoadGame()
-    //{
-    //    PrintSavedGames();
-
-    //    var input = _userInteraction.GetChar().KeyChar;
-    //    var slotNumber = (int)char.GetNumericValue(input);
-    //    var text = string.Empty;
-    //    try
-    //    {
-    //        text += _fileHelper.GetSavedGameFromFile(slotNumber);
-    //    }
-    //    catch (FileNotFoundException ex)
-    //    {
-    //        _userInteraction.Print($"File doesn't exist: {ex.Message}");
-    //        return;
-    //    }
-    //    var chosenGame = DeserializeSavedGame(text);
-    //    if (chosenGame is null)
-    //        return;
-    //    Player = chosenGame.Player;
-    //    //StartGame(chosenGame.QuestIndex);
-    //}
-
-    public void FightEnemy(Enemy enemy, string questIndex)
+    public void FightEnemy(Enemy enemy)
     {
         if (Player is null)
             return;
 
-        var strings = new List<string>
+        var fightLog = new List<string>
         {
             _stringHelper.GetEnemyForFightLog(enemy)
         };
@@ -218,154 +180,69 @@ public class Game
         while (Player.HealthPoints > 0 && enemy.HealthPoints > 0)
         {
             Player.PerformAttack(enemy);
-            strings.Add(_stringHelper.GetActionForFightLog(Player, enemy));
+            fightLog.Add(_stringHelper.GetActionForFightLog(Player, enemy));
 
             enemy.PerformAttack(Player);
-            strings.Add(_stringHelper.GetActionForFightLog(enemy, Player));
+            fightLog.Add(_stringHelper.GetActionForFightLog(enemy, Player));
         }
 
         if (Player.HealthPoints <= 0)
         {
-            strings.Add(_stringHelper.GetSurvivorForFightLog(enemy));
-            var fightLog = _stringHelper.BuildString(strings);
-            _userInteraction.Print(fightLog);
+            fightLog.Add(_stringHelper.GetSurvivorForFightLog(enemy));
+            PrintText(_stringHelper.BuildString(fightLog));
 
             Player.HealthPoints = MAX_HEALTH_POINTS;
             _userInteraction.GetChar();
-            SaveGame(questIndex);
+            SaveGame();
             QuitGame();
         }
         else
         {
-
-            strings.Add(_stringHelper.GetSurvivorForFightLog(Player));
-            var fightLog = _stringHelper.BuildString(strings);
-            _userInteraction.Print(fightLog);
+            fightLog.Add(_stringHelper.GetSurvivorForFightLog(Player));
+            PrintText(_stringHelper.BuildString(fightLog));
         }
     }
 
-    private void QuitGame()
+    public void QuitGame()
     {
-        _userInteraction.Print("Game is shutting down");
+        PrintText(_stringHelper.GetExitGame());
         Environment.Exit(0);
     }
 
-    public void SaveGame(string questIndex)
+    public void SaveGame()
     {
-        //var choice = _userInteraction.GetChar().KeyChar;
+        var savedGames = _savedGameService.GetSavedGames();
+        PrintText(_stringHelper.GetSavedGamesString(savedGames));
 
-        //var jsonString = SerializeSavedGame(questIndex);
+        var choice = _userInteraction.GetChar().KeyChar;
 
-        //if (jsonString is not null)
-        //{
-        //    var isSaved = WriteToFile(choice, jsonString);
+        // Saving the game
+        var (isSaved, message) = _savedGameService.SaveGame(Player, choice, Quest.Index);
 
-        //    if (isSaved)
-        //    {
-        //        var savedGame = DeserializeSavedGame(jsonString);
-        //        if (savedGame is not null)
-        //        {
-        //            var text = _stringHelper.GetConfirmationStringForSavedGame(savedGame);
-        //            _userInteraction.Print(text);
-        //        }
-        //    }
-        //}
-        //_userInteraction.GetChar();
-        //GameMenu(questIndex);
+        PrintText($"{message}\r\n{_stringHelper.GetContinueText()}");
+
+        _userInteraction.GetChar();
+        GoToGameMenu();
     }
 
-    public bool WriteToFile(char choice, string jsonString)
+    public void QuitToMainMenu() =>
+        IsExitingGameLoop = true;
+
+    private void TheEnd()
     {
-        try
-        {
-            if (choice >= MIN_SLOT_NUMBER && choice <= MAX_SLOT_NUMBER)
-            {
-                _fileHelper.WriteAllText(jsonString, choice);
-                return true;
-            }
-            throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
-        }
-        catch (SlotNumberOutOfBoundsException ex)
-        {
-            _userInteraction.Print(ex.Message);
-            throw;
-        }
+        PrintText(_stringHelper.GetTheEndText());
+        IsExitingGameLoop = true;
     }
 
-    public string? SerializeSavedGame(string questIndex)
+    private void PrintQuestWithOverlayAndInventory()
     {
-        if (Player is null)
-            return null;
-
-        var savedGame = new SavedGame(Player, questIndex);
-        return _savedGameService.CreateSavedGame(savedGame);
+        PrintText(_stringHelper.GetGameMenuButton());
+        PrintText(_stringHelper.GetCharacterStatisticsString(Player));
+        PrintText(_stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum));
+        PrintText(_stringHelper.GetQuestWithOptions(Quest));
+        PrintText(_stringHelper.GetPlayerInventoryAsString(Player));
     }
 
-    //public SavedGame? DeserializeSavedGame(string jsonString) =>
-    //    _savedGameService.GetSavedGame(jsonString);
-
-
-    #region Prints
-    private void PrintQuestWithOverlayAndInventory(Quest quest)
-    {
-        PrintOverlay();
-        PrintQuest(quest);
-        PrintInventory();
-    }
-
-    private bool PrintTheEnd()
-    {
-        _userInteraction.Print("The end");
-        return false;
-    }
-
-    private void PrintContinueText() =>
-        _userInteraction.Print(_stringHelper.GetContinueText());
-
-    private void PrintInventory()
-    {
-        var inventory = _stringHelper.GetPlayerInventoryAsString(Player);
-        _userInteraction.Print(inventory);
-    }
-
-    private void PrintOverlay()
-    {
-        var menuButton = _stringHelper.GetGameMenuButton();
-        _userInteraction.Print(menuButton);
-
-        var statisticsText = _stringHelper.GetCharacterStatisticsString(Player);
-        _userInteraction.Print(statisticsText);
-
-        var moralityText = _stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum);
-        _userInteraction.Print(moralityText);
-    }
-
-    //public void PrintSavedGames()
-    //{
-    //    var savedGames = new List<SavedGame>();
-
-    //    var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
-    //    if (files is null)
-    //        return;
-    //    foreach (var filePath in files)
-    //    {
-    //        var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-    //        var savedGame = new SavedGame();
-    //        if (!string.IsNullOrEmpty(jsonContent))
-    //        {
-    //            savedGame = _savedGameService.GetSavedGame(jsonContent);
-    //        }
-    //        savedGames.Add(savedGame ?? new SavedGame());
-    //    }
-
-    //    var text = _stringHelper.GetSavedGamesString(savedGames);
-    //    _userInteraction.Print(text);
-    //}
-
-    private void PrintQuest(Quest quest)
-    {
-        var text = _stringHelper.GetQuestWithOptions(quest);
+    public void PrintText(string text) =>
         _userInteraction.Print(text);
-    }
-    #endregion
 }

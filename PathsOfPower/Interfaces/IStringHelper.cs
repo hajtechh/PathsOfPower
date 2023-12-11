@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Core;
-
-namespace PathsOfPower.Core.Interfaces;
+﻿namespace PathsOfPower.Core.Interfaces;
 
 public interface IStringHelper
 {
@@ -22,4 +20,6 @@ public interface IStringHelper
     string GetSurvivorForFightLog(ICharacter character);
     string GetCurrentChapterAsString(string index);
     string GetQuestIndexString(string parentQuestIndex, char choice);
+    string GetTheEndText();
+    string GetExitGame();
 }

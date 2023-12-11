@@ -1,10 +1,9 @@
-﻿using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core.Interfaces;
+﻿namespace PathsOfPower.Core.Interfaces;
 
 public interface ISavedGameService
 {
-    List<SavedGame>? GetSavedGames(string jsonContent);
+    List<SavedGame> GetSavedGames();
     SavedGame? GetSavedGame(string jsonContent);
-    string? CreateSavedGame(SavedGame savedGame);
+    (bool isSaved, string message) SaveGame(Player player, char input, string questIndex);
+    (SavedGame? savedGame, string message) LoadGame(char slotNumber);
 }
