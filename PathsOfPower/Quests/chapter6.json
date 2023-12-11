@@ -47,15 +47,15 @@
   },
   {
     "Index": "6.1.1.1.1",
-    "Description": "You go through the entrance, and step up to the reception-desk. The receptionist asks you what your business with the Ministry is about, and how he can help.",
+    "Description": "You go through the entrance, and walk up to the reception-desk. The receptionist asks you what your business with the Ministry is about, and how he can help.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell him that you are a reporter, covering rare trees and protected wildlife."
+        "Name": "Tell him that you are a reporter, covering rare trees and protected wildlife"
       },
       {
         "Index": 2,
-        "Name": "."
+        "Name": "Threathen him"
       }
     ]
   },
@@ -105,29 +105,25 @@
   },
   {
     "Index": "6.1.1.1.1.1.1.1.1.1",
-    "Description": "He scoffs and tells you that you came to the right man. He asks you what you want to know.",
+    "Description": "He gives you a smug look and tells you that you came to the right man. He asks you what you want to know.",
     "Options": [
       {
         "Index": 1,
         "Name": "Ask him where to find any eldertrees"
-      },
-      {
-        "Index": 2,
-        "Name": "Start with an unsuspecting question"
       }
     ]
   },
   {
     "Index": "6.1.1.1.1.1.1.1.1.1.1",
-    "Description": "He fidgets for a while, then tells you that he can´t say.",
+    "Description": "He fidgets for a while, then tells you that he cannot say.",
     "Options": [
       {
         "Index": 1,
-        "Name": "Go for his ego"
+        "Name": "Use his ego"
       },
       {
         "Index": 2,
-        "Name": "Bribe him"
+        "Name": "Threaten him"
       }
     ]
   },
@@ -170,6 +166,182 @@
   },
 
   {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.2",
+    "Description": "He freezes in his chair. He begs you not to hurt him.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you won´t have to, if he tells you were to find elderwood"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.2",
+    "Description": "He gives you the coordinate for the closest elder tree. You cast a memory-spell on Mr Bloom and leave to find the tree. In a nearby field of oak trees, you now stand on the coordinates Mr Bloom gave you, but you only see oak trees.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.2.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.1.1.1.2",
+    "Description": "You knock on her door and you hear a muffled voice yelling 'come in'. You enter the office and greet Mrs Ordival. You sit down across from her and she asks you how she can help you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell her that you´re a reporter, looking into eldertrees for an article"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1",
+    "Description": "She mumbles to herself, then stops, and tells you that she thinks she has some elderwood in her office.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Huh-- okay? Ask to see it."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1",
+    "Description": "She tells you that she only needs to find it first. She stands up and starts rummaging through the mess in her office´s bookshelves and cabinets. You wait patiently.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Suggest using accio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1",
+    "Description": "She blushes, and casts accio on the elderwood. A cabinet in the corner of her office starts shaking, and suddenly the doors open, and a wooden box comes flying into Mrs Ordivals hands.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask to see it"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1",
+    "Description": "She hands you the wooden box. You recognize the color, it´s elderwood. Suddenly Mrs Ordival interupts your thoughts, and tells you that you can keep it.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Wh-- Huh?"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1.1",
+    "Description": "She continues, that she got it from and old friend but that she has no use for it. She says the color of the wood doesn´t match her desk, so she keeps it in a cabinet anyway.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the box"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1.1.1",
+    "Description": "You try to keep your surprise and shock to yourself, so you thank her and leave the office. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.2",
+    "Description": "He sighs and mumbles 'not again...'. He asks what you want.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him that you need to find elderwood"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1",
+    "Description": "He types something into a computer. You stare at eachother while the computer loads.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask him why he isn´t calling for help"
+      },
+      {
+        "Index": 2,
+        "Name": "Ask him what´s taking so long"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1",
+    "Description": "He gives you a dead look, then tells you that he couldn´t care less about eldertrees. The computer dings and he writes something down on a piece of paper, then gives it to you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the note"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1.1",
+    "Description": "The notes has coordinates, not far from here. You go there, only to find a field of oak trees. You stand on the exact coordinates, but all you can see are oak trees.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1.1.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.2.1.2",
+    "Description": "He gives you a dead look, then tells you that apparently muggle technology is supposed to work better than magic. He sighs. The computer dings and he writes something down on a piece of paper, then gives it to you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the note"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.2.1",
+    "Description": "The notes has coordinates, not far from here. You go there, only to find a field of oak trees. You stand on the exact coordinates, but all you can see are oak trees.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.2.1.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
     "Index": "6.1.1.2",
     "Description": "You decide it´s more likely to find an object made from elderwood. You immediately think an old friend that collects all kinds of magical objects and materials.",
     "Options": [
@@ -179,7 +351,6 @@
       }
     ]
   },
-
   {
     "Index": "6.1.1.2.1",
     "Description": "You wait until the weekend, and you take the train to the village where your friend lives; Ottery St. Catchpole. You walk through the village, to an open field a few minutes away. Suddenly you see a familiar house, and a familiar person sitting outside on the porch. They stand up and greet you, with a surprised and excited look.",
