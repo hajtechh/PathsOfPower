@@ -6,13 +6,14 @@ public class StringHelperTests
     [InlineData("...Test...", "Test")]
     [InlineData("   test   ", "test")]
     [InlineData("!.*test!.*", "test")]
+    [InlineData("      ", "")]
     public void TrimInputStringShouldReturnExpected(string input, string expected)
     {
         // Arrange
         var sut = new StringHelper();
 
         // Act
-        var actual = sut.TrimInputString(input);
+        var actual = sut.TrimInput(input);
         // Assert
         Assert.Equal(expected, actual);
     }

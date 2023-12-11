@@ -2,7 +2,7 @@
 
 public class StringHelper : IStringHelper
 {
-    private const int PAD_RIGHT = 80;
+    private const int PAD_RIGHT = 110;
     private const int MAX_LENGTH = PAD_RIGHT - 10;
     private const int PAD_LEFT = PAD_RIGHT / 2;
     private const string NEW_LINE = "\r\n";
@@ -14,29 +14,31 @@ public class StringHelper : IStringHelper
 
     private readonly string _continueText = $"Press any key to continue{NEW_LINE}";
 
-    private readonly string _emptyinventory = " E M P T Y ";
+    private readonly string _emptyinventory = "E M P T Y ";
     private readonly string _inventory = "~ Inventory ~";
 
     private readonly string _gameMenuButton = $"{NEW_LINE}[M] Game Menu{NEW_LINE}";
 
-    private readonly string _menu = $"[1] Start new game{NEW_LINE}" +
+    private readonly string _menu = $"{NEW_LINE}" +
+        $"[1] Start new game{NEW_LINE}" +
         $"[2] Load game{NEW_LINE}" +
         $"[3] Quit game";
 
-    private readonly string _gameMenu = $"[1] Continue game{NEW_LINE}" +
+    private readonly string _gameMenu = $"{NEW_LINE}" +
+        $"[1] Continue game{NEW_LINE}" +
         $"[2] Save game{NEW_LINE}" +
-        $"[3] Main Menu{NEW_LINE}" +
+        $"[3] Exit to main menu{NEW_LINE}" +
         $"[4] Quit game";
 
     private readonly string _inputNameMessage = "Choose the name of your character.";
 
     private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
 
-    public string GetMenu() => _menu;
+    public string GetMainMenu() => _menu;
 
-    public string GetGameMenuString() => _gameMenu;
+    public string GetGameMenu() => _gameMenu;
 
-    public string GetGameMenuButton() => _gameMenuButton;
+    public string GetGoToGameMenu() => _gameMenuButton;
 
     public string GetContinueText() => _continueText;
 
@@ -48,8 +50,8 @@ public class StringHelper : IStringHelper
     {
         var strings = new List<string>
         {
-            GetCurrentChapterAsString(quest.Index) + NEW_LINE,
-            $"{_rowDeliminator}{NEW_LINE}"
+            GetCurrentChapter(quest.Index) + NEW_LINE,
+            $" {_rowDeliminator}{NEW_LINE}"
         };
 
         if (quest.Description.Length > MAX_LENGTH)
@@ -73,22 +75,22 @@ public class StringHelper : IStringHelper
                 strings.Add($"{BORDER_CHARACTER}{optionDescription.PadLeft(PAD_LEFT + optionDescription.Length / 2).PadRight(PAD_RIGHT)}{BORDER_CHARACTER}{NEW_LINE}");
             }
         }
-        strings.Add($"{_rowDeliminator}");
+        strings.Add($" {_rowDeliminator}");
         var text = BuildString(strings);
         return text;
     }
 
-    public string GetPlayerInventoryAsString(Player player)
+    public string GetPlayerInventory(Player player)
     {
         var strings = new List<string>()
         {
-            $"{_rowDeliminatorInventory}{NEW_LINE}"
+            $" {_rowDeliminatorInventory}{NEW_LINE}"
         };
         if (player.InventoryItems != null && player.InventoryItems.Count == 0)
         {
-            strings.Add($"{INVENTORY_BORDER}" +
-                $"{_inventory.PadLeft(PAD_LEFT + _emptyinventory.Length / 2).PadRight(PAD_RIGHT)}{INVENTORY_BORDER}{NEW_LINE}" +
-                $"{_emptyinventory.PadLeft(PAD_LEFT + _emptyinventory.Length / 2).PadRight(PAD_RIGHT)}{INVENTORY_BORDER}{NEW_LINE}");
+            strings.Add(
+                $"{INVENTORY_BORDER}{_inventory.PadLeft(PAD_LEFT + _emptyinventory.Length / 2).PadRight(PAD_RIGHT)}{INVENTORY_BORDER}{NEW_LINE}" +
+                $"{INVENTORY_BORDER}{_emptyinventory.PadLeft(PAD_LEFT + _emptyinventory.Length / 2).PadRight(PAD_RIGHT)}{INVENTORY_BORDER}{NEW_LINE}");
         }
         else
         {
@@ -103,15 +105,15 @@ public class StringHelper : IStringHelper
                 }
             }
         }
-        strings.Add($"{_rowDeliminatorInventory}");
+        strings.Add($" {_rowDeliminatorInventory}");
         var text = BuildString(strings);
         return text;
     }
 
-    public string GetCharacterStatisticsString(ICharacter character) =>
-        $"Current health: {character.HealthPoints} | Power: {character.Power}{NEW_LINE}";
+    public string GetCharacterStatistics(ICharacter character) =>
+        $"Name: {character.Name} | Health: {character.HealthPoints} | Power: {character.Power}{NEW_LINE}";
 
-    public string GetSavedGamesString(List<SavedGame> savedGames)
+    public string GetSavedGames(List<SavedGame> savedGames)
     {
         var strings = new List<string>()
         {
@@ -120,19 +122,19 @@ public class StringHelper : IStringHelper
         for (int i = 0; i < savedGames.Count; i++)
         {
             strings.Add($"[{i + 1}] " +
-                (savedGames[i].Player != null ? $"{savedGames[i].Player.Name} | {GetCurrentChapterAsString(savedGames[i].QuestIndex)}" : "Empty slot") +
+                (savedGames[i].Player != null ? $"{savedGames[i].Player.Name} | {GetCurrentChapter(savedGames[i].QuestIndex)}" : "Empty slot") +
                 $"{NEW_LINE}{_rowDeliminator}{NEW_LINE}");
         }
         var text = BuildString(strings);
         return text;
     }
 
-    public string GetConfirmationStringForSavedGame(SavedGame savedGame)
+    public string GetConfirmationForSavedGame(SavedGame savedGame)
     {
         return $"Successfully saved game for {savedGame.Player.Name}.{NEW_LINE}{_continueText}";
     }
 
-    public string GetMoralityScaleFromPlayerMoralitySpectrum(int moralitySpectrum)
+    public string GetMoralitySpectrum(int moralitySpectrum)
     {
         var text = "You are:";
         return moralitySpectrum switch
@@ -162,7 +164,7 @@ public class StringHelper : IStringHelper
         return $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NEW_LINE}{_continueText}";
     }
 
-    public string GetCurrentChapterAsString(string index)
+    public string GetCurrentChapter(string index)
     {
         var questIndex = index.Split('.');
         var currentChapter = questIndex.FirstOrDefault();
@@ -180,7 +182,7 @@ public class StringHelper : IStringHelper
         return stringBuilder.ToString();
     }
 
-    public string GetQuestIndexString(string parentQuestIndex, char choice)
+    public string GetQuestIndex(string parentQuestIndex, char choice)
     {
         return $"{parentQuestIndex}.{choice}";
     }
@@ -191,11 +193,13 @@ public class StringHelper : IStringHelper
     public string GetExitGame() =>
         "Game is shutting down";
 
-    public string TrimInputString(string message)
+    public string TrimInput(string message)
     {
-        char[] charsToTrim = { '_', '.', ' ', '!', '*' };
+        char[] charsToTrim = { '_', '.', '\0', '!', '*' };
         message = message.Trim(charsToTrim);
         return message;
     }
+
+    public string GetOptionDoesNotExist() => $"Option doesn't exist.{NEW_LINE}Please try again.";
 }
 
