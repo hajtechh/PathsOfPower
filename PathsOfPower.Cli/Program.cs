@@ -10,12 +10,15 @@ public class Program
     {
         IConsoleWrapper consoleWrapper = new ConsoleWrapper();
         IUserInteraction userInteraction = new UserInteraction(consoleWrapper);
+
         IStringHelper stringHelper = new StringHelper();
         IFileHelper fileHelper = new FileHelper();
         IJsonHelper jsonHelper = new JsonHelper();
-        IQuestService questService = new QuestService(jsonHelper);
-        ISavedGameService savedGameService = new SavedGameService(jsonHelper);
-        var game = new Game(userInteraction, stringHelper, fileHelper, questService, savedGameService);
-        game.Run();
+
+        IQuestService questService = new QuestService(jsonHelper, fileHelper);
+        ISavedGameService savedGameService = new SavedGameService(jsonHelper, fileHelper);
+
+        var pathsOfPowerApp = new PathsOfPowerApp(userInteraction, stringHelper, questService, fileHelper, savedGameService);
+        pathsOfPowerApp.Run();
     }
 }

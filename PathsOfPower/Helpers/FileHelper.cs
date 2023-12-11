@@ -2,13 +2,13 @@
 
 public class FileHelper : IFileHelper
 {
-    const string _basePath = "../../../../PathsOfPower/";
-    private readonly string _baseQuestPath = _basePath + "Quests/chapter";
-    private readonly string _baseSavePath = _basePath + "SavedGameFiles/slot";
+    const string BASE_PATH = "../../../../PathsOfPower/";
+    private readonly string _baseQuestPath = BASE_PATH + "Quests/chapter";
+    private readonly string _baseSavePath = BASE_PATH + "SavedGameFiles/slot";
 
     public string[]? GetAllSavedGameFilesFromDirectory()
     {
-        var path = $"{_basePath}SavedGameFiles/";
+        var path = $"{BASE_PATH}SavedGameFiles/";
         return Directory.GetFiles(path, "*.json");
     }
 

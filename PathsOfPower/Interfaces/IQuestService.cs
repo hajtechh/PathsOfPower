@@ -2,5 +2,6 @@
 
 public interface IQuestService
 {
-    List<Quest>? GetQuests(string jsonContent);
+    List<Quest> GetQuestsFromChapter(int chapter);
+    Quest GetQuestFromIndex(string index, List<Quest> quests);
 }
