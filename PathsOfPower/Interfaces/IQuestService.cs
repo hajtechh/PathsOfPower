@@ -1,8 +1,7 @@
-﻿using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core.Interfaces;
+﻿namespace PathsOfPower.Core.Interfaces;
 
 public interface IQuestService
 {
-    List<Quest>? GetQuests(string jsonContent);
+    List<Quest> GetQuestsFromChapter(int chapter);
+    Quest GetQuestFromIndex(string index, List<Quest> quests);
 }

@@ -1,7 +1,7 @@
 ﻿using PathsOfPower.Core.Interfaces;
 using PathsOfPower.Core.Models;
 
-namespace PathsOfPower.Core;
+namespace PathsOfPower.Core.Helpers;
 
 public class StringHelper : IStringHelper
 {

@@ -19,5 +19,5 @@ public class SavedGameService : ISavedGameService
         _jsonHelper.Deserialize<SavedGame>(jsonContent);
 
     public string? CreateSavedGame(SavedGame savedGame) =>
-        _jsonHelper.Serialize<SavedGame>(savedGame);
+        _jsonHelper.Serialize(savedGame);
 }
