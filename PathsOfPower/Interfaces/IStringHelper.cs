@@ -1,11 +1,11 @@
-﻿using PathsOfPower.Models;
+﻿using PathsOfPower.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathsOfPower.Interfaces
+namespace PathsOfPower.Core.Interfaces
 {
     public interface IStringHelper
     {

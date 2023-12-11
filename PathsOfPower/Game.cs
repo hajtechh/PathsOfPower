@@ -16,8 +16,8 @@ public class Game
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
     private readonly IFileHelper _fileHelper;
-    private readonly IJsonHelper _jsonHelper;
     private readonly IQuestService _questService;
+    private readonly ISavedGameService _savedGameService;
 
     public Game(IUserInteraction userInteraction,
         IStringHelper stringHelper,

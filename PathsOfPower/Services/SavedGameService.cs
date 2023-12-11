@@ -1,7 +1,7 @@
-﻿using PathsOfPower.Interfaces;
-using PathsOfPower.Models;
+﻿using PathsOfPower.Core.Interfaces;
+using PathsOfPower.Core.Models;
 
-namespace PathsOfPower.Services;
+namespace PathsOfPower.Core.Services;
 
 public class SavedGameService : ISavedGameService
 {
