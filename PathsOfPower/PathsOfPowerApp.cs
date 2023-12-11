@@ -67,7 +67,15 @@ public class PathsOfPowerApp
     {
         PrintSavedGames();
 
+
         var input = _userInteraction.GetChar().KeyChar;
+        while (_savedGameService.CheckForValidSlotNumber(input) is false)
+        {
+            _userInteraction.ClearConsole();
+            PrintSavedGames();
+            _userInteraction.Print("Please enter valid slotnumber.");
+            input = _userInteraction.GetChar().KeyChar;
+        }
 
         (var savedGame, var message) = _savedGameService.LoadGame(input);
 

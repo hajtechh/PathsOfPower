@@ -72,7 +72,6 @@ public class Game
                 TheEnd();
         }
     }
-
     private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
         ;

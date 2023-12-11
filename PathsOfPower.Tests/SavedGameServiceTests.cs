@@ -19,7 +19,7 @@ public class SavedGameServiceTests
         var sut = new SavedGameService(mockJsonHelper.Object, fileHelper);
 
         // Act
-        var actual = sut.GetSavedGames(It.IsAny<string>());
+        var actual = sut.GetSavedGames();
 
         // Assert
         Assert.NotNull(actual);

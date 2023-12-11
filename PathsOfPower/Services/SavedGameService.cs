@@ -43,7 +43,7 @@ public class SavedGameService : ISavedGameService
         var savedGame = new SavedGame();
         try
         {
-            if (input < MIN_SLOT_NUMBER || input > MAX_SLOT_NUMBER)
+            if (!CheckForValidSlotNumber(input))
                 throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
 
             var slotNumber = (int)char.GetNumericValue(input);
@@ -125,5 +125,7 @@ public class SavedGameService : ISavedGameService
 
     public SavedGame? GetSavedGame(string jsonContent) =>
         _jsonHelper.Deserialize<SavedGame>(jsonContent);
-
+    public bool CheckForValidSlotNumber(char input) => 
+        (input >= MIN_SLOT_NUMBER && input <= MAX_SLOT_NUMBER);
+    
 }
