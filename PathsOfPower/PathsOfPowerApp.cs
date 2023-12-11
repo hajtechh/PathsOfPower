@@ -1,6 +1,4 @@
-﻿using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Core;
+﻿namespace PathsOfPower.Core;
 
 public class PathsOfPowerApp
 {

@@ -1,8 +1,4 @@
-﻿using PathsOfPower.Core;
-using PathsOfPower.Core.Models;
-using System.Diagnostics;
-
-namespace PathsOfPower.Tests;
+﻿namespace PathsOfPower.Tests;
 
 public class GameTests
 {

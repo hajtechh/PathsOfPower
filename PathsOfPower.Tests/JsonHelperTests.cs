@@ -1,7 +1,4 @@
-﻿
-using PathsOfPower.Core.Models;
-
-namespace PathsOfPower.Tests;
+﻿namespace PathsOfPower.Tests;
 
 public class JsonHelperTests
 {
