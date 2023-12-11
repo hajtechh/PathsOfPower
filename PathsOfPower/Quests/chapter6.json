@@ -55,7 +55,8 @@
       },
       {
         "Index": 2,
-        "Name": "Threathen him"
+        "Name": "Threathen him",
+        "MoralityScore": -2
       }
     ]
   },
@@ -123,7 +124,8 @@
       },
       {
         "Index": 2,
-        "Name": "Threaten him"
+        "Name": "Threaten him",
+        "MoralityScore": -2
       }
     ]
   },
@@ -235,7 +237,7 @@
   },
   {
     "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1",
-    "Description": "She hands you the wooden box. You recognize the color, it´s elderwood. Suddenly Mrs Ordival interupts your thoughts, and tells you that you can keep it.",
+    "Description": "She hands you the wooden box. You recognize the color, it´s elderwood. Suddenly Mrs Ordival interrupts your thoughts, and tells you that you can keep it.",
     "Options": [
       {
         "Index": 1,
@@ -273,7 +275,7 @@
   },
   {
     "Index": "6.1.1.1.1.2.1",
-    "Description": "He types something into a computer. You stare at eachother while the computer loads.",
+    "Description": "He types something into a computer. You stare at each other while the computer loads.",
     "Options": [
       {
         "Index": 1,
@@ -281,13 +283,14 @@
       },
       {
         "Index": 2,
-        "Name": "Ask him what´s taking so long"
+        "Name": "Ask him what´s taking so long",
+        "MoralityScore": -1
       }
     ]
   },
   {
     "Index": "6.1.1.1.1.2.1.1",
-    "Description": "He gives you a dead look, then tells you that he couldn´t care less about eldertrees. The computer dings and he writes something down on a piece of paper, then gives it to you.",
+    "Description": "He gives you a dead look, then tells you that he couldn't care less about eldertrees. The computer dings and he writes something down on a piece of paper, then gives it to you.",
     "Options": [
       {
         "Index": 1,
@@ -367,11 +370,13 @@
     "Options": [
       {
         "Index": 1,
-        "Name": "Tell her about the Elder Wand"
+        "Name": "Tell her about the Elder Wand",
+        "MoralityScore": 2
       },
       {
         "Index": 2,
-        "Name": "Tell her you need the material for your class"
+        "Name": "Tell her you need the material for your class",
+        "MoralityScore": -1
       }
     ]
   },
