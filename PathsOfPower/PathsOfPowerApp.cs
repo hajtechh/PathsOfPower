@@ -24,23 +24,27 @@ public class PathsOfPowerApp
 
     public void Run()
     {
-        _userInteraction.ClearConsole();
-        PrintMenu();
-
-        var menuChoice = _userInteraction.GetChar().KeyChar;
-        switch (menuChoice)
+        var isExiting = false;
+        while (isExiting is false)
         {
-            case '1':
-                StartNewGame("1");
-                break;
-            case '2':
-                LoadGame();
-                break;
-            case '3':
-                QuitGame();
-                break;
-            default:
-                break;
+            _userInteraction.ClearConsole();
+            PrintMenu();
+            var menuChoice = _userInteraction.GetChar().KeyChar;
+            switch (menuChoice)
+            {
+                case '1':
+                    StartNewGame("1");
+                    break;
+                case '2':
+                    LoadGame();
+                    break;
+                case '3':
+                    QuitGame();
+                    isExiting = true;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -49,14 +53,14 @@ public class PathsOfPowerApp
         var (player, quests) = SetupNewGame();
         if (quests is null)
             return;
-        var game = new Game(quests, player, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
         var quest = _questService.GetQuestFromIndex(questIndex, quests);
+        var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
-        var keyActions = SetupKeyActionsInGame(quest, game);
+        var keyActions = SetupKeyActionsInGame(game);
 
         var currentChapter = int.Parse(questIndex);
 
-        game.GameLoop(ref currentChapter, ref quest, keyActions);
+        game.RunLoop(ref currentChapter, keyActions);
     }
 
     public void LoadGame()
@@ -64,32 +68,25 @@ public class PathsOfPowerApp
         PrintSavedGames();
 
         var input = _userInteraction.GetChar().KeyChar;
-        var slotNumber = (int)char.GetNumericValue(input);
-        var text = string.Empty;
-        try
-        {
-            text += _fileHelper.GetSavedGameFromFile(slotNumber);
-        }
-        catch (FileNotFoundException ex)
-        {
-            _userInteraction.Print($"File doesn't exist: {ex.Message}");
-            return;
-        }
-        var savedGame = _savedGameService.GetSavedGame(text);
-        
+
+        (var savedGame, var message) = _savedGameService.LoadGame(input);
+
         if (savedGame is null)
+        {
+            _userInteraction.Print(message);
             return;
+        }
 
         var player = savedGame.Player;
         var chapter = int.Parse(savedGame.QuestIndex[..1]);
         var quests = _questService.GetQuestsFromChapter(chapter);
         var quest = _questService.GetQuestFromIndex(savedGame.QuestIndex, quests);
 
-        var game = new Game(quests, player, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
-        
-        var keyActions = SetupKeyActionsInGame(quest, game);
-        
-        game.GameLoop(ref chapter, ref quest, keyActions);
+        var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+
+        var keyActions = SetupKeyActionsInGame(game);
+
+        game.RunLoop(ref chapter, keyActions);
     }
 
     private void QuitGame()
@@ -120,8 +117,8 @@ public class PathsOfPowerApp
         _userInteraction.Print(text);
     }
 
-    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Quest quest, Game game) =>
-        new() { { ConsoleKey.M, () => game.GameMenu(quest.Index) } };
+    private Dictionary<ConsoleKey, Action> SetupKeyActionsInGame(Game game) =>
+        new() { { ConsoleKey.M, () => game.GameMenu() } };
 
     public (Player player, List<Quest>? quests) SetupNewGame()
     {
