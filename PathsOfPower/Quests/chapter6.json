@@ -1,0 +1,419 @@
+[
+  {
+    "Index": "6",
+    "Description": "You pace back and forth, putting together the information you know about the Elder Wand. You know it´s said to have been created by Death itself, as a gift for a man defying his destined death. You know its made with elderwood and has a core of thestral tail hairs. The key to repairing it must be...",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "...to find the materials its made from, and use alchemy to repair it"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1",
+    "Description": "You need to find elderwood and thestral tail hairs. Then you need to find a talented enough alchemist to repair it.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Acquire elderwood"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1",
+    "Description": "You know eldertrees are very rare, and because of their magical properties, well hidden. Perhaps it would be easier finding an object made out of elderwood instead.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Look for an eldertree"
+      },
+      {
+        "Index": 2,
+        "Name": "Look for an object"
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.1",
+    "Description": "If anyone knows where to find an eldertree, it´s the people protecting them.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to the Ministry of Magic"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1",
+    "Description": "You go through the entrance, and walk up to the reception-desk. The receptionist asks you what your business with the Ministry is about, and how he can help.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him that you are a reporter, covering rare trees and protected wildlife"
+      },
+      {
+        "Index": 2,
+        "Name": "Threathen him",
+        "MoralityScore": -2
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1",
+    "Description": "He pauses for a second, then asks what he should do with that information.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you want to talk to someone that knows a lot about eldertrees."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1",
+    "Description": "He types something into an old computer. After a few seconds, he mumbles about 'these damn muggle-objects'. He tells you to just go to floor five and ask around, because those wildlife specialists are never busy anyways.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to floor five."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1",
+    "Description": "You walk through the corridors on floor five, until you fínd the Department of Wildlife Research and Protection. You read the name-tags outside of the offices. You decide to knock on...",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "...Mr Blooms office"
+      },
+      {
+        "Index": 2,
+        "Name": "...Mrs Ordvalds office"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1",
+    "Description": "The door opens and a man with a big, orange beard greets you with a smile. He tells you to come in and sits down by his desk. He asks you how he can help you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you are writing an article about eldertrees, and need to know more about them"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1",
+    "Description": "He gives you a smug look and tells you that you came to the right man. He asks you what you want to know.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask him where to find any eldertrees"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1",
+    "Description": "He fidgets for a while, then tells you that he cannot say.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Use his ego"
+      },
+      {
+        "Index": 2,
+        "Name": "Threaten him",
+        "MoralityScore": -2
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "You sigh, and tell him you heard he was the best, but you suppose that was wrong. You suggest that maybe Mrs Ordival could answer your questions instead. Mr Bloom laughs mockingly. He says that she can´t even differentiate a phoenix-feather from a duck-feather, and that unlike him, she is not knowledgeble.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask him to prove his knowledge"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "He shrugs and mumbles about what damage it could do, the proceeds to show you a map of a nearby area. He says the trees are cloaked to look like ordinary oak-trees, but they are in fact eldertrees in disguise. You know the area, a few miles outside Hogwarts.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Thank Mr Bloom and go to the eldertree area"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "You go through the area, filled with oak-trees. You remember the map Mr Bloom showed you, and you go toward the middle of the area, where the eldertrees should be.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.1.1.1.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.2",
+    "Description": "He freezes in his chair. He begs you not to hurt him.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him you won´t have to, if he tells you were to find elderwood"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.2",
+    "Description": "He gives you the coordinate for the closest elder tree. You cast a memory-spell on Mr Bloom and leave to find the tree. In a nearby field of oak trees, you now stand on the coordinates Mr Bloom gave you, but you only see oak trees.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.1.1.1.2.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.1.1.1.2",
+    "Description": "You knock on her door and you hear a muffled voice yelling 'come in'. You enter the office and greet Mrs Ordival. You sit down across from her and she asks you how she can help you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell her that you´re a reporter, looking into eldertrees for an article"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1",
+    "Description": "She mumbles to herself, then stops, and tells you that she thinks she has some elderwood in her office.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Huh-- okay? Ask to see it."
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1",
+    "Description": "She tells you that she only needs to find it first. She stands up and starts rummaging through the mess in her office´s bookshelves and cabinets. You wait patiently.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Suggest using accio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1",
+    "Description": "She blushes, and casts accio on the elderwood. A cabinet in the corner of her office starts shaking, and suddenly the doors open, and a wooden box comes flying into Mrs Ordivals hands.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask to see it"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1",
+    "Description": "She hands you the wooden box. You recognize the color, it´s elderwood. Suddenly Mrs Ordival interrupts your thoughts, and tells you that you can keep it.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Wh-- Huh?"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1.1",
+    "Description": "She continues, that she got it from and old friend but that she has no use for it. She says the color of the wood doesn´t match her desk, so she keeps it in a cabinet anyway.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the box"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.1.1.1.2.1.1.1.1.1.1",
+    "Description": "You try to keep your surprise and shock to yourself, so you thank her and leave the office. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.2",
+    "Description": "He sighs and mumbles 'not again...'. He asks what you want.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell him that you need to find elderwood"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1",
+    "Description": "He types something into a computer. You stare at each other while the computer loads.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Ask him why he isn´t calling for help"
+      },
+      {
+        "Index": 2,
+        "Name": "Ask him what´s taking so long",
+        "MoralityScore": -1
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1",
+    "Description": "He gives you a dead look, then tells you that he couldn't care less about eldertrees. The computer dings and he writes something down on a piece of paper, then gives it to you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the note"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1.1",
+    "Description": "The notes has coordinates, not far from here. You go there, only to find a field of oak trees. You stand on the exact coordinates, but all you can see are oak trees.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.1.1.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.1.1.2.1.2",
+    "Description": "He gives you a dead look, then tells you that apparently muggle technology is supposed to work better than magic. He sighs. The computer dings and he writes something down on a piece of paper, then gives it to you.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Take the note"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.2.1",
+    "Description": "The notes has coordinates, not far from here. You go there, only to find a field of oak trees. You stand on the exact coordinates, but all you can see are oak trees.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Cast revelio"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.1.1.2.1.2.1.1",
+    "Description": "Something changes in the corner of your eye. One of the tress changes shape and hue. You go up to it, and you recognize it right away, elderwood. You grab a branch and break it off of the tree. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.2",
+    "Description": "You decide it´s more likely to find an object made from elderwood. You immediately think an old friend that collects all kinds of magical objects and materials.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Go to visit them"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.2.1",
+    "Description": "You wait until the weekend, and you take the train to the village where your friend lives; Ottery St. Catchpole. You walk through the village, to an open field a few minutes away. Suddenly you see a familiar house, and a familiar person sitting outside on the porch. They stand up and greet you, with a surprised and excited look.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Greet them back"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.2.1.1",
+    "Description": "Terra Lovegood smiles wide, and asks you what you´re doing here.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Tell her about the Elder Wand",
+        "MoralityScore": 2
+      },
+      {
+        "Index": 2,
+        "Name": "Tell her you need the material for your class",
+        "MoralityScore": -1
+      }
+    ]
+  },
+
+  {
+    "Index": "6.1.1.2.1.1.1",
+    "Description": "She nods and smiles through your whole story, and at the end, you´re convinced she doesn´t believe you. She laughs and disappears into the house.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Wait for her to come back"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.2.1.1.1.1",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  },
+
+  {
+    "Index": "6.1.1.2.1.1.2",
+    "Description": "She nods through your explanation, and at the end, you´re convinced she doesn´t believe your lie. She laughs and disappears into the house.",
+    "Options": [
+      {
+        "Index": 1,
+        "Name": "Wait for her to come back"
+      }
+    ]
+  },
+  {
+    "Index": "6.1.1.2.1.1.2.1",
+    "Description": "She returns with a wooden box in her hands, and she holds it out for you to take. You grab the box and notice the wood it´s made out of; elderwood. Now there´s only two more steps.",
+    "Item": {
+      "Name": "Elder-wood"
+    }
+  }
+]

@@ -1,9 +1,9 @@
-﻿namespace PathsOfPower.Core.Interfaces;
+﻿
 
+namespace PathsOfPower.Core.Interfaces;
 public interface IStringHelper
 {
     string GetMenu();
-    string BuildString(List<string> strings);
     string GetGameMenuString();
     string GetGameMenuButton();
     string GetContinueText();
@@ -19,6 +19,7 @@ public interface IStringHelper
     string GetActionForFightLog(ICharacter attacker, ICharacter attacked);
     string GetSurvivorForFightLog(ICharacter character);
     string GetCurrentChapterAsString(string index);
+    string BuildString(List<string> strings);
     string GetQuestIndexString(string parentQuestIndex, char choice);
     string TrimInputString(string name);
 }
