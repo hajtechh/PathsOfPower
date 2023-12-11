@@ -107,15 +107,19 @@ public class Game
 
     private void RunQuestWithOptions(Dictionary<ConsoleKey, Action> keyActions)
     {
-        var choice = _userInteraction.GetChar();
-        if (char.IsDigit(choice.KeyChar))
+        var input = _userInteraction.GetChar();
+        if (char.IsDigit(input.KeyChar))
         {
-            GetNextQuestBasenOnChosenOption(choice);
-            HandleOptionEventsInQuest(choice);
+            if (_questService.CheckIfOptionExists(input.KeyChar, Quest))
+                return;
+
+            GetNextQuestBasenOnChosenOption(input);
+            HandleOptionEventsInQuest(input);
+            
         }
         else
         {
-            CheckKeyPressFromKeyActions(keyActions, choice);
+            CheckKeyPressFromKeyActions(keyActions, input);
         }
     }
 

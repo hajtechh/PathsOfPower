@@ -21,4 +21,11 @@ public class QuestService : IQuestService
 
     public Quest GetQuestFromIndex(string index, List<Quest> quests) =>
         quests.First(x => x.Index == index);
+
+    public bool CheckIfOptionExists(char optionIndex, Quest quest)
+    {
+        if (quest.Options is null)
+            return false;
+        return quest.Options.Any(x => x.Index == char.GetNumericValue(optionIndex));
+    }
 }
