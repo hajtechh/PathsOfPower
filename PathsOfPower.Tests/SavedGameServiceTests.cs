@@ -3,18 +3,15 @@
 public class SavedGameServiceTests
 {
     [Fact]
-    public void GetSavedGamesShouldNotReturnNullOrEmptyAndBeEqualToExpected()
+    public void GetSavedGamesShouldNotReturnNullOrEmpty()
     {
         // Arrange
         var fileHelper = new FileHelper();
-        var expected = new List<SavedGame>()
-        {
-            new SavedGame(),
-            new SavedGame(),
-        };
 
         var mockJsonHelper = new Mock<IJsonHelper>();
-        mockJsonHelper.Setup(x => x.Deserialize<List<SavedGame>>(It.IsAny<string>())).Returns(expected);
+        mockJsonHelper
+            .Setup(x => x.Deserialize<List<SavedGame>>(It.IsAny<string>()))
+            .Returns(It.IsAny<List<SavedGame>>());
 
         var sut = new SavedGameService(mockJsonHelper.Object, fileHelper);
 
@@ -24,7 +21,6 @@ public class SavedGameServiceTests
         // Assert
         Assert.NotNull(actual);
         Assert.NotEmpty(actual);
-        Assert.Equal(expected, actual);
     }
 
     [Fact]

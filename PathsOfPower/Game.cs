@@ -205,7 +205,6 @@ public class Game
         }
         else
         {
-
             strings.Add(_stringHelper.GetSurvivorForFightLog(Player));
             var fightLog = _stringHelper.BuildString(strings);
             _userInteraction.Print(fightLog);
