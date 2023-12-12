@@ -49,17 +49,18 @@ public class SavedGameService : ISavedGameService
             var slotNumber = (int)char.GetNumericValue(input);
             var jsonContent = _fileHelper.GetSavedGameFromFile(slotNumber);
 
-            if (jsonContent is null)
-                throw new ArgumentNullException(nameof(jsonContent));
+            if (string.IsNullOrEmpty(jsonContent))
+                throw new FileHelperUnableToDeserialize("You can't load an empty slot. Please choose another slot number.");
 
             savedGame = _jsonHelper.Deserialize<SavedGame>(jsonContent);
-
-            if (savedGame is null)
-                throw new FileHelperUnableToDeserialize("Error.. FileHelper can't deserialize SavedGame object.");
         }
         catch (SlotNumberOutOfBoundsException slotNumberOutOfBoundException)
         {
             return (null, slotNumberOutOfBoundException.Message);
+        }
+        catch (JsonException jsonException)
+        {
+            return (null, jsonException.Message);
         }
         catch (ArgumentNullException argumentNullException)
         {
