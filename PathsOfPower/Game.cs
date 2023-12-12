@@ -19,7 +19,6 @@ public class Game
     public bool IsExitingGameLoop { get; set; }
     #endregion
 
-    #region Constructor
     public Game(List<Quest> quests, Player player, Quest quest,
         IUserInteraction userInteraction,
         IStringHelper stringHelper,
@@ -37,7 +36,6 @@ public class Game
         Quests = quests;
         Quest = quest;
     }
-    #endregion
 
     public Dictionary<ConsoleKey, Action> SetupkeyActionsGoToGameMenu() =>
         new()
@@ -85,24 +83,28 @@ public class Game
             if (Quest.Options is not null)
                 RunQuestWithOptions(keyActions);
             else if (_fileHelper.IsNextChapterExisting(chapter))
-                RunQuestWithoutOptions(chapter + 1, keyActions);
+                chapter = RunQuestWithoutOptions(chapter, keyActions);
             else
                 TheEnd();
         }
     }
-    private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
+
+    private int RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
-        Quests = _questService.GetQuestsFromChapter(chapter);
+        var nextChapter = chapter + 1;
+        Quests = _questService.GetQuestsFromChapter(nextChapter);
 
         if (Quests is not null)
-            Quest = _questService.GetQuestFromIndex(chapter.ToString(), Quests);
+            Quest = _questService.GetQuestFromIndex(nextChapter.ToString(), Quests);
 
         HandleQuestEvents();
 
-        PrintText(_stringHelper.GetContinueText()); // vill ha en input innan denna skrivs ut? 
+        PrintText(_stringHelper.GetContinueText()); // Do we want input before this outputs? 
 
+        
         var input = _userInteraction.GetChar();
         CheckKeyPressFromKeyActions(keyActions, input);
+        return nextChapter;
     }
 
     private void RunQuestWithOptions(Dictionary<ConsoleKey, Action> keyActions)
