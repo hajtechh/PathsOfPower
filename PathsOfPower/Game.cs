@@ -112,8 +112,8 @@ public class Game
         var input = _userInteraction.GetChar();
         if (_questService.CheckIfOptionExists(input.KeyChar, Quest))
         {
-            GetNextQuestBasenOnChosenOption(input);
             HandleOptionEventsInQuest(input);
+            GetNextQuestBasenOnChosenOption(input);
         }
         while (_questService.CheckIfOptionExists(input.KeyChar, Quest) is false) 
         {
@@ -125,8 +125,8 @@ public class Game
             if (char.IsDigit(input.KeyChar) &&
                 _questService.CheckIfOptionExists(input.KeyChar, Quest))
             {
-                GetNextQuestBasenOnChosenOption(input);
                 HandleOptionEventsInQuest(input);
+                GetNextQuestBasenOnChosenOption(input);
             }
             else
             {
@@ -149,7 +149,7 @@ public class Game
 
         var index = int.Parse(choice.KeyChar.ToString());
         var option = Quest.Options?.FirstOrDefault(x => x.Index == index);
-        if (option is null || option.MoralityScore is not 0)
+        if (option is null || option.MoralityScore is 0)
             return;
 
         Player.ApplyMoralityScore(option.MoralityScore);
