@@ -10,7 +10,7 @@ public class Factory : IFactory
 
     public Player CreatePlayer(string name) => new(name);
 
-    public SavedGame CreateSavedGame(IFactory factory) => new(factory);
+    public SavedGame CreateSavedGame() => new();
 
     public List<SavedGame> CreateSavedGames() => new();
 }

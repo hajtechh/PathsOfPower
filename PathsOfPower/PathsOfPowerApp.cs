@@ -109,12 +109,12 @@ public class PathsOfPowerApp
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = _factory.CreateSavedGame(_factory);
+            var savedGame = _factory.CreateSavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
                 savedGame = _savedGameService.GetSavedGame(jsonContent);
             }
-            savedGames.Add(savedGame ?? _factory.CreateSavedGame(_factory));
+            savedGames.Add(savedGame ?? _factory.CreateSavedGame());
         }
 
         var text = _stringHelper.GetSavedGames(savedGames);

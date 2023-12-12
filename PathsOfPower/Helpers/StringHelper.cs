@@ -196,7 +196,7 @@ public class StringHelper : IStringHelper
     public string TrimInput(string message)
     {
         char[] charsToTrim = { '_', '.', '\0', '!', '*' };
-        message = message.Trim(charsToTrim);
+        message = message.Trim().Trim(charsToTrim);
         return message;
     }
 

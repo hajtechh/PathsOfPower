@@ -28,19 +28,19 @@ public class SavedGameService : ISavedGameService
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = _factory.CreateSavedGame(_factory);
+            var savedGame = _factory.CreateSavedGame();
 
             if (!string.IsNullOrEmpty(jsonContent))
                 savedGame = GetSavedGame(jsonContent);
 
-            savedGames.Add(savedGame ?? _factory.CreateSavedGame(_factory));
+            savedGames.Add(savedGame ?? _factory.CreateSavedGame());
         }
         return savedGames;
     }
 
     public (SavedGame? savedGame, string message) LoadGame(char input)
     {
-        var savedGame = _factory.CreateSavedGame(_factory);
+        var savedGame = _factory.CreateSavedGame();
         try
         {
             if (CheckForValidSlotNumber(input) is false)
