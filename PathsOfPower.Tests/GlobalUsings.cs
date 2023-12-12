@@ -7,5 +7,3 @@ global using PathsOfPower.Core.Models;
 global using PathsOfPower.Core.Helpers;
 global using PathsOfPower.Core.Services;
 global using PathsOfPower.Core.Interfaces;
-global using PathsOfPower.Core.Exceptions;
-global using PathsOfPower.Core;

@@ -4,5 +4,3 @@ global using System.Text;
 global using System.Text.RegularExpressions;
 global using PathsOfPower.Core.Models;
 global using PathsOfPower.Core.Exceptions;
-global using PathsOfPower.Core.Helpers;
-global using PathsOfPower.Core.Services;

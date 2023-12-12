@@ -29,7 +29,8 @@ public class SavedGameServiceTests
     {
         // Arrange
         var fileHelper = new FileHelper();
-        var jsonContent = fileHelper.GetSavedGameFromFile(1);
+        var slotNumber = 3;
+        var jsonContent = fileHelper.GetSavedGameFromFile(slotNumber);
         var expected = JsonSerializer.Deserialize<SavedGame>(jsonContent);
 
         var mockFactory = new Mock<IFactory>();
