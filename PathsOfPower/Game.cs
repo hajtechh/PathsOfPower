@@ -91,7 +91,6 @@ public class Game
                 TheEnd();
         }
     }
-
     private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
         Quests = _questService.GetQuestsFromChapter(chapter);
@@ -101,7 +100,7 @@ public class Game
 
         HandleQuestEvents();
 
-        PrintText(_stringHelper.GetContinueText());
+        PrintText(_stringHelper.GetContinueText()); // vill ha en input innan denna skrivs ut? 
 
         var input = _userInteraction.GetChar();
         CheckKeyPressFromKeyActions(keyActions, input);
@@ -109,21 +108,36 @@ public class Game
 
     private void RunQuestWithOptions(Dictionary<ConsoleKey, Action> keyActions)
     {
-        var choice = _userInteraction.GetChar();
-        if (char.IsDigit(choice.KeyChar))
+        var input = _userInteraction.GetChar();
+        if (_questService.CheckIfOptionExists(input.KeyChar, Quest))
         {
-            GetNextQuestBasenOnChosenOption(choice);
-            HandleOptionEventsInQuest(choice);
+            GetNextQuestBasenOnChosenOption(input);
+            HandleOptionEventsInQuest(input);
         }
-        else
+        while (_questService.CheckIfOptionExists(input.KeyChar, Quest) is false) 
         {
-            CheckKeyPressFromKeyActions(keyActions, choice);
+            _userInteraction.ClearConsole();
+            PrintQuestWithOverlayAndInventory();
+            //PrintText(_stringHelper.GetOptionDoesNotExist());
+            input = _userInteraction.GetChar();
+
+            if (char.IsDigit(input.KeyChar) &&
+                _questService.CheckIfOptionExists(input.KeyChar, Quest))
+            {
+                GetNextQuestBasenOnChosenOption(input);
+                HandleOptionEventsInQuest(input);
+            }
+            else
+            {
+                CheckKeyPressFromKeyActions(keyActions, input);
+                break;
+            }
         }
     }
 
     private void GetNextQuestBasenOnChosenOption(ConsoleKeyInfo choice)
     {
-        var index = _stringHelper.GetQuestIndexString(Quest.Index, choice.KeyChar);
+        var index = _stringHelper.GetQuestIndex(Quest.Index, choice.KeyChar);
         Quest = _questService.GetQuestFromIndex(index, Quests);
     }
 
@@ -158,7 +172,7 @@ public class Game
     public void GoToGameMenu()
     {
         _userInteraction.ClearConsole();
-        PrintText(_stringHelper.GetGameMenuString());
+        PrintText(_stringHelper.GetGameMenu());
 
         var keyActionsGoToGameMenu = SetupkeyActionsGoToGameMenu();
 
@@ -213,7 +227,7 @@ public class Game
     public void SaveGame()
     {
         var savedGames = _savedGameService.GetSavedGames();
-        PrintText(_stringHelper.GetSavedGamesString(savedGames));
+        PrintText(_stringHelper.GetSavedGames(savedGames));
 
         var choice = _userInteraction.GetChar().KeyChar;
 
@@ -237,11 +251,11 @@ public class Game
 
     private void PrintQuestWithOverlayAndInventory()
     {
-        PrintText(_stringHelper.GetGameMenuButton());
-        PrintText(_stringHelper.GetCharacterStatisticsString(Player));
-        PrintText(_stringHelper.GetMoralityScaleFromPlayerMoralitySpectrum(Player.MoralitySpectrum));
+        PrintText(_stringHelper.GetGoToGameMenu());
+        PrintText(_stringHelper.GetCharacterStatistics(Player));
+        PrintText(_stringHelper.GetMoralitySpectrum(Player.MoralitySpectrum));
         PrintText(_stringHelper.GetQuestWithOptions(Quest));
-        PrintText(_stringHelper.GetPlayerInventoryAsString(Player));
+        PrintText(_stringHelper.GetPlayerInventory(Player));
     }
 
     public void PrintText(string text) =>
