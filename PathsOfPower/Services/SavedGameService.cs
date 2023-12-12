@@ -41,8 +41,8 @@ public class SavedGameService : ISavedGameService
         var savedGame = new SavedGame();
         try
         {
-            if (input < MIN_SLOT_NUMBER || input > MAX_SLOT_NUMBER)
-                throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+            if (CheckForValidSlotNumber(input) is false)
+                throw new SlotNumberOutOfBoundsException($"Slot number must be equal to or greater than {MIN_SLOT_NUMBER} and equal to or less than {MAX_SLOT_NUMBER}.");
 
             var slotNumber = (int)char.GetNumericValue(input);
             var jsonContent = _fileHelper.GetSavedGameFromFile(slotNumber);
@@ -86,8 +86,8 @@ public class SavedGameService : ISavedGameService
 
             var choice = char.GetNumericValue(slotNumber);
 
-            if (slotNumber < MIN_SLOT_NUMBER || slotNumber > MAX_SLOT_NUMBER)
-                throw new SlotNumberOutOfBoundsException("Slot number was out of bounds");
+            if (CheckForValidSlotNumber(slotNumber) is false)
+                throw new SlotNumberOutOfBoundsException($"Slot number must be equal to or greater than {MIN_SLOT_NUMBER} and equal to or less than {MAX_SLOT_NUMBER}.");
 
             _fileHelper.WriteAllText(jsonContent, slotNumber);
             return (true, $"Successfully saved game for {savedGame.Player.Name}.");
@@ -123,5 +123,7 @@ public class SavedGameService : ISavedGameService
 
     public SavedGame? GetSavedGame(string jsonContent) =>
         _jsonHelper.Deserialize<SavedGame>(jsonContent);
-
+    public bool CheckForValidSlotNumber(char input) => 
+        (input >= MIN_SLOT_NUMBER && input <= MAX_SLOT_NUMBER);
+    
 }

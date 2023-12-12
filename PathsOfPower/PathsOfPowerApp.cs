@@ -66,15 +66,16 @@ public class PathsOfPowerApp
     public void LoadGame()
     {
         PrintSavedGames();
-
         var input = _userInteraction.GetChar().KeyChar;
-
         (var savedGame, var message) = _savedGameService.LoadGame(input);
 
-        if (savedGame is null)
+        while (savedGame is null)
         {
+            _userInteraction.ClearConsole();
+            PrintSavedGames();
             _userInteraction.Print(message);
-            return;
+            input = _userInteraction.GetChar().KeyChar;
+            (savedGame, message) = _savedGameService.LoadGame(input);
         }
 
         var player = savedGame.Player;
@@ -113,7 +114,7 @@ public class PathsOfPowerApp
             savedGames.Add(savedGame ?? new SavedGame());
         }
 
-        var text = _stringHelper.GetSavedGamesString(savedGames);
+        var text = _stringHelper.GetSavedGames(savedGames);
         _userInteraction.Print(text);
     }
 
@@ -133,12 +134,15 @@ public class PathsOfPowerApp
 
         var nameMessage = _stringHelper.GetPlayerNameMessage();
         var name = _userInteraction.GetInput(nameMessage);
+        name = _stringHelper.TrimInput(name);
+        
 
         while (string.IsNullOrEmpty(name))
         {
             _userInteraction.ClearConsole();
             var noInputMessage = _stringHelper.GetNoNameInputMessage();
             name = _userInteraction.GetInput(noInputMessage);
+            name = _stringHelper.TrimInput(name);
         }
 
         return new Player(name);
@@ -146,7 +150,7 @@ public class PathsOfPowerApp
 
     private void PrintMenu()
     {
-        var menu = _stringHelper.GetMenu();
+        var menu = _stringHelper.GetMainMenu();
         _userInteraction.Print(menu);
     }
 }
