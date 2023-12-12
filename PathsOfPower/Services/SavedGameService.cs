@@ -7,11 +7,13 @@ public class SavedGameService : ISavedGameService
 
     private readonly IJsonHelper _jsonHelper;
     private readonly IFileHelper _fileHelper;
+    private readonly IFactory _factory;
 
-    public SavedGameService(IJsonHelper jsonHelper, IFileHelper fileHelper)
+    public SavedGameService(IJsonHelper jsonHelper, IFileHelper fileHelper, IFactory factory)
     {
         _jsonHelper = jsonHelper;
         _fileHelper = fileHelper;
+        _factory = factory;
     }
 
     public List<SavedGame> GetSavedGames()
@@ -26,19 +28,19 @@ public class SavedGameService : ISavedGameService
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = new SavedGame();
+            var savedGame = _factory.CreateSavedGame();
 
             if (!string.IsNullOrEmpty(jsonContent))
                 savedGame = GetSavedGame(jsonContent);
 
-            savedGames.Add(savedGame ?? new SavedGame());
+            savedGames.Add(savedGame ?? _factory.CreateSavedGame());
         }
         return savedGames;
     }
 
     public (SavedGame? savedGame, string message) LoadGame(char input)
     {
-        var savedGame = new SavedGame();
+        var savedGame = _factory.CreateSavedGame();
         try
         {
             if (CheckForValidSlotNumber(input) is false)
@@ -47,17 +49,18 @@ public class SavedGameService : ISavedGameService
             var slotNumber = (int)char.GetNumericValue(input);
             var jsonContent = _fileHelper.GetSavedGameFromFile(slotNumber);
 
-            if (jsonContent is null)
-                throw new ArgumentNullException(nameof(jsonContent));
+            if (string.IsNullOrEmpty(jsonContent))
+                throw new FileHelperUnableToDeserialize("You can't load an empty slot. Please choose another slot number.");
 
             savedGame = _jsonHelper.Deserialize<SavedGame>(jsonContent);
-
-            if (savedGame is null)
-                throw new FileHelperUnableToDeserialize("Error.. FileHelper can't deserialize SavedGame object.");
         }
         catch (SlotNumberOutOfBoundsException slotNumberOutOfBoundException)
         {
             return (null, slotNumberOutOfBoundException.Message);
+        }
+        catch (JsonException jsonException)
+        {
+            return (null, jsonException.Message);
         }
         catch (ArgumentNullException argumentNullException)
         {

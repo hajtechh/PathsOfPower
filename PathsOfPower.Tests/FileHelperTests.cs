@@ -39,7 +39,7 @@ public class FileHelperTests
     {
         // Arrange
         var sut = new FileHelper();
-        var path = "../../../../PathsOfPower/SavedGameFiles/slot1.json";
+        var path = "../../../../PathsOfPower/SavedGameFiles/slot2.json";
 
         // Act
         var actual = sut.GetSavedGameFromFile(path);

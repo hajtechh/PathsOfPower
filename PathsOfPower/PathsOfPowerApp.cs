@@ -2,6 +2,7 @@
 
 public class PathsOfPowerApp
 {
+    private readonly IFactory _factory;
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
     private readonly IQuestService _questService;
@@ -9,12 +10,14 @@ public class PathsOfPowerApp
     private readonly ISavedGameService _savedGameService;
 
     public PathsOfPowerApp(
+        IFactory factory,
         IUserInteraction userInteraction,
         IStringHelper stringHelper,
         IQuestService questService,
         IFileHelper fileHelper,
         ISavedGameService savedGameService)
     {
+        _factory = factory;
         _userInteraction = userInteraction;
         _stringHelper = stringHelper;
         _questService = questService;
@@ -54,7 +57,7 @@ public class PathsOfPowerApp
         if (quests is null)
             return;
         var quest = _questService.GetQuestFromIndex(questIndex, quests);
-        var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+        var game = _factory.CreateGame(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
         var keyActionsGoToGameMenu = GetKeyActionsGoToGameMenu(game);
 
@@ -83,7 +86,7 @@ public class PathsOfPowerApp
         var quests = _questService.GetQuestsFromChapter(chapter);
         var quest = _questService.GetQuestFromIndex(savedGame.QuestIndex, quests);
 
-        var game = new Game(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+        var game = _factory.CreateGame(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
         var keyActions = GetKeyActionsGoToGameMenu(game);
 
@@ -98,7 +101,7 @@ public class PathsOfPowerApp
 
     public void PrintSavedGames()
     {
-        var savedGames = new List<SavedGame>();
+        var savedGames = _factory.CreateSavedGames();
 
         var files = _fileHelper.GetAllSavedGameFilesFromDirectory();
         if (files is null)
@@ -106,12 +109,12 @@ public class PathsOfPowerApp
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = new SavedGame();
+            var savedGame = _factory.CreateSavedGame();
             if (!string.IsNullOrEmpty(jsonContent))
             {
                 savedGame = _savedGameService.GetSavedGame(jsonContent);
             }
-            savedGames.Add(savedGame ?? new SavedGame());
+            savedGames.Add(savedGame ?? _factory.CreateSavedGame());
         }
 
         var text = _stringHelper.GetSavedGames(savedGames);
@@ -145,7 +148,7 @@ public class PathsOfPowerApp
             name = _stringHelper.TrimInput(name);
         }
 
-        return new Player(name);
+        return _factory.CreatePlayer(name);
     }
 
     private void PrintMenu()

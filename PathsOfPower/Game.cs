@@ -19,7 +19,10 @@ public class Game
     public bool IsExitingGameLoop { get; set; }
     #endregion
 
-    public Game(List<Quest> quests, Player player, Quest quest,
+    public Game(
+        List<Quest> quests,
+        Player player,
+        Quest quest,
         IUserInteraction userInteraction,
         IStringHelper stringHelper,
         IFileHelper fileHelper,

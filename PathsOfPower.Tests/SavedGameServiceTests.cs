@@ -8,12 +8,13 @@ public class SavedGameServiceTests
         // Arrange
         var fileHelper = new FileHelper();
 
+        var mockFactory = new Mock<IFactory>();
         var mockJsonHelper = new Mock<IJsonHelper>();
         mockJsonHelper
             .Setup(x => x.Deserialize<List<SavedGame>>(It.IsAny<string>()))
             .Returns(It.IsAny<List<SavedGame>>());
 
-        var sut = new SavedGameService(mockJsonHelper.Object, fileHelper);
+        var sut = new SavedGameService(mockJsonHelper.Object, fileHelper, mockFactory.Object);
 
         // Act
         var actual = sut.GetSavedGames();
@@ -28,13 +29,15 @@ public class SavedGameServiceTests
     {
         // Arrange
         var fileHelper = new FileHelper();
-        var jsonContent = fileHelper.GetSavedGameFromFile(1) ?? string.Empty;
+        var slotNumber = 3;
+        var jsonContent = fileHelper.GetSavedGameFromFile(slotNumber);
         var expected = JsonSerializer.Deserialize<SavedGame>(jsonContent);
 
+        var mockFactory = new Mock<IFactory>();
         var mockJsonHelper = new Mock<IJsonHelper>();
         mockJsonHelper.Setup(x => x.Deserialize<SavedGame>(It.IsAny<string>())).Returns(expected);
 
-        var sut = new SavedGameService(mockJsonHelper.Object, fileHelper);
+        var sut = new SavedGameService(mockJsonHelper.Object, fileHelper, mockFactory.Object);
 
         // Act
         var actual = sut.GetSavedGame(jsonContent);

@@ -2,23 +2,24 @@
 
 public class Factory : IFactory
 {
-    public Game CreateGame()
+    public Game CreateGame(
+        List<Quest> quests,
+        Player player,
+        Quest quest,
+        IUserInteraction _userInteraction,
+        IStringHelper _stringHelper,
+        IFileHelper _fileHelper,
+        IQuestService _questService,
+        ISavedGameService _savedGameService)
     {
-        throw new NotImplementedException();
+        return new(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
     }
 
-    public Player CreatePlayer()
-    {
-        throw new NotImplementedException();
-    }
+    public List<InventoryItem> CreateInventoryItems() => new();
 
-    public SavedGame CreateSavedGame()
-    {
-        throw new NotImplementedException();
-    }
+    public Player CreatePlayer(string name) => new(name);
 
-    public List<SavedGame> CreateSavedGames()
-    {
-        throw new NotImplementedException();
-    }
+    public SavedGame CreateSavedGame() => new();
+
+    public List<SavedGame> CreateSavedGames() => new();
 }
