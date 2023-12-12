@@ -99,7 +99,7 @@ public class Game
 
         HandleQuestEvents();
 
-        PrintText(_stringHelper.GetContinueText());
+        PrintText(_stringHelper.GetContinueText()); // vill ha en input innan denna skrivs ut? 
 
         var input = _userInteraction.GetChar();
         CheckKeyPressFromKeyActions(keyActions, input);
@@ -113,11 +113,11 @@ public class Game
             GetNextQuestBasenOnChosenOption(input);
             HandleOptionEventsInQuest(input);
         }
-        while (_questService.CheckIfOptionExists(input.KeyChar, Quest) is false)
+        while (_questService.CheckIfOptionExists(input.KeyChar, Quest) is false) 
         {
             _userInteraction.ClearConsole();
             PrintQuestWithOverlayAndInventory();
-            PrintText(_stringHelper.GetOptionDoesNotExist());
+            //PrintText(_stringHelper.GetOptionDoesNotExist());
             input = _userInteraction.GetChar();
 
             if (char.IsDigit(input.KeyChar) &&
