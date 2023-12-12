@@ -14,7 +14,7 @@ public class QuestService : IQuestService
     public List<Quest>? GetQuestsFromChapter(int chapter)
     {
         var jsonContent = _fileHelper.GetQuestsFromFile(chapter);
-        if (jsonContent is null)
+        if (string.IsNullOrEmpty(jsonContent))
             return null;
         return _jsonHelper.Deserialize<List<Quest>>(jsonContent);
     }
