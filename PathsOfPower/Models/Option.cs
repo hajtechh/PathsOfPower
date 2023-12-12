@@ -10,5 +10,4 @@ public class Option
     {
         Name = string.Empty;
     }
-
 }

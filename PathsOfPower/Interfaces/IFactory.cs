@@ -2,8 +2,10 @@
 
 public interface IFactory
 {
-    Game CreateGame();
-    SavedGame CreateSavedGame();
+    Game CreateGame(List<Quest> quests, Player player, Quest quest,
+        IFactory factory, IUserInteraction _userInteraction, IStringHelper _stringHelper, IFileHelper _fileHelper, IQuestService _questService, ISavedGameService _savedGameService);
+    SavedGame CreateSavedGame(IFactory factory);
     List<SavedGame> CreateSavedGames();
-    Player CreatePlayer();
+    Player CreatePlayer(string name);
+    List<InventoryItem> CreateInventoryItems();
 }

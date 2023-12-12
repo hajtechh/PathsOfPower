@@ -11,9 +11,9 @@ public class SavedGame
         QuestIndex = questIndex;
     }
 
-    public SavedGame()
+    public SavedGame(IFactory factory)
     {
-        Player = new Player(string.Empty);
+        Player = factory.CreatePlayer(string.Empty);
         QuestIndex = string.Empty;
     }
 }

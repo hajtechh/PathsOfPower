@@ -7,11 +7,13 @@ public class SavedGameService : ISavedGameService
 
     private readonly IJsonHelper _jsonHelper;
     private readonly IFileHelper _fileHelper;
+    private readonly IFactory _factory;
 
-    public SavedGameService(IJsonHelper jsonHelper, IFileHelper fileHelper)
+    public SavedGameService(IJsonHelper jsonHelper, IFileHelper fileHelper, IFactory factory)
     {
         _jsonHelper = jsonHelper;
         _fileHelper = fileHelper;
+        _factory = factory;
     }
 
     public List<SavedGame> GetSavedGames()
@@ -26,19 +28,19 @@ public class SavedGameService : ISavedGameService
         foreach (var filePath in files)
         {
             var jsonContent = _fileHelper.GetSavedGameFromFile(filePath);
-            var savedGame = new SavedGame();
+            var savedGame = _factory.CreateSavedGame(_factory);
 
             if (!string.IsNullOrEmpty(jsonContent))
                 savedGame = GetSavedGame(jsonContent);
 
-            savedGames.Add(savedGame ?? new SavedGame());
+            savedGames.Add(savedGame ?? _factory.CreateSavedGame(_factory));
         }
         return savedGames;
     }
 
     public (SavedGame? savedGame, string message) LoadGame(char input)
     {
-        var savedGame = new SavedGame();
+        var savedGame = _factory.CreateSavedGame(_factory);
         try
         {
             if (input < MIN_SLOT_NUMBER || input > MAX_SLOT_NUMBER)
