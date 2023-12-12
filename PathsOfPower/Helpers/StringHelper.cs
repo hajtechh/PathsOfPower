@@ -2,37 +2,34 @@
 
 public class StringHelper : IStringHelper
 {
+    #region PrivateConsts
     private const int PAD_RIGHT = 110;
     private const int MAX_LENGTH = PAD_RIGHT - 10;
     private const int PAD_LEFT = PAD_RIGHT / 2;
     private const string NEW_LINE = "\r\n";
     private const char BORDER_CHARACTER = '*';
     private const char INVENTORY_BORDER = '+';
+    #endregion
 
+    #region PrivateReadonlys
     private readonly string _rowDeliminator = "".PadRight(PAD_RIGHT, BORDER_CHARACTER);
     private readonly string _rowDeliminatorInventory = "".PadRight(PAD_RIGHT, INVENTORY_BORDER);
-
     private readonly string _continueText = $"Press any key to continue{NEW_LINE}";
-
     private readonly string _emptyinventory = "E M P T Y ";
     private readonly string _inventory = "~ Inventory ~";
-
     private readonly string _gameMenuButton = $"{NEW_LINE}[M] Game Menu{NEW_LINE}";
-
     private readonly string _menu = $"{NEW_LINE}" +
         $"[1] Start new game{NEW_LINE}" +
         $"[2] Load game{NEW_LINE}" +
         $"[3] Quit game";
-
     private readonly string _gameMenu = $"{NEW_LINE}" +
         $"[1] Continue game{NEW_LINE}" +
         $"[2] Save game{NEW_LINE}" +
         $"[3] Exit to main menu{NEW_LINE}" +
         $"[4] Quit game";
-
     private readonly string _inputNameMessage = "Choose the name of your character.";
-
     private readonly string _haveToHaveNameMessage = "Your character have to have a name.";
+    #endregion
 
     public string GetMainMenu() => _menu;
 
@@ -122,17 +119,15 @@ public class StringHelper : IStringHelper
         for (int i = 0; i < savedGames.Count; i++)
         {
             strings.Add($"[{i + 1}] " +
-                (savedGames[i].Player != null ? $"{savedGames[i].Player.Name} | {GetCurrentChapter(savedGames[i].QuestIndex)}" : "Empty slot") +
+                (!string.IsNullOrEmpty(savedGames[i].Player.Name) ? $"{savedGames[i].Player.Name} | {GetCurrentChapter(savedGames[i].QuestIndex)}" : "Empty slot") +
                 $"{NEW_LINE}{_rowDeliminator}{NEW_LINE}");
         }
         var text = BuildString(strings);
         return text;
     }
 
-    public string GetConfirmationForSavedGame(SavedGame savedGame)
-    {
-        return $"Successfully saved game for {savedGame.Player.Name}.{NEW_LINE}{_continueText}";
-    }
+    public string GetConfirmationForSavedGame(SavedGame savedGame) =>
+        $"Successfully saved game for {savedGame.Player.Name}.{NEW_LINE}{_continueText}";
 
     public string GetMoralitySpectrum(int moralitySpectrum)
     {
@@ -149,20 +144,14 @@ public class StringHelper : IStringHelper
         };
     }
 
-    public string GetEnemyForFightLog(Enemy enemy)
-    {
-        return $"Fight against {enemy.Name}!{NEW_LINE}";
-    }
+    public string GetEnemyForFightLog(Enemy enemy) =>
+        $"Fight against {enemy.Name}!{NEW_LINE}";
 
-    public string GetActionForFightLog(ICharacter attacker, ICharacter attacked)
-    {
-        return $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.HealthPoints} healthpoints left.{NEW_LINE}";
-    }
+    public string GetActionForFightLog(ICharacter attacker, ICharacter attacked) =>
+        $"{attacker.Name} attacks for {attacker.Power} damage. {attacked.Name} now has {attacked.HealthPoints} healthpoints left.{NEW_LINE}";
 
-    public string GetSurvivorForFightLog(ICharacter character)
-    {
-        return $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NEW_LINE}{_continueText}";
-    }
+    public string GetSurvivorForFightLog(ICharacter character) =>
+        $"{character.Name} wins, with {character.HealthPoints} healthpoints remaining!{NEW_LINE}{_continueText}";
 
     public string GetCurrentChapter(string index)
     {
@@ -182,10 +171,8 @@ public class StringHelper : IStringHelper
         return stringBuilder.ToString();
     }
 
-    public string GetQuestIndex(string parentQuestIndex, char choice)
-    {
-        return $"{parentQuestIndex}.{choice}";
-    }
+    public string GetQuestIndex(string parentQuestIndex, char choice) =>
+        $"{parentQuestIndex}.{choice}";
 
     public string GetTheEndText() =>
         "The end";
@@ -200,6 +187,7 @@ public class StringHelper : IStringHelper
         return message;
     }
 
-    public string GetOptionDoesNotExist() => $"Option doesn't exist.{NEW_LINE}Please try again.";
+    public string GetOptionDoesNotExist() =>
+        $"Option doesn't exist.{NEW_LINE}Please try again.";
 }
 

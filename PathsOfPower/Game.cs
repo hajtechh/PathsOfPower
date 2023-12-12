@@ -86,24 +86,28 @@ public class Game
             if (Quest.Options is not null)
                 RunQuestWithOptions(keyActions);
             else if (_fileHelper.IsNextChapterExisting(chapter))
-                RunQuestWithoutOptions(chapter + 1, keyActions);
+                chapter = RunQuestWithoutOptions(chapter, keyActions);
             else
                 TheEnd();
         }
     }
-    private void RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
+
+    private int RunQuestWithoutOptions(int chapter, Dictionary<ConsoleKey, Action> keyActions)
     {
-        Quests = _questService.GetQuestsFromChapter(chapter);
+        var nextChapter = chapter + 1;
+        Quests = _questService.GetQuestsFromChapter(nextChapter);
 
         if (Quests is not null)
-            Quest = _questService.GetQuestFromIndex(chapter.ToString(), Quests);
+            Quest = _questService.GetQuestFromIndex(nextChapter.ToString(), Quests);
 
         HandleQuestEvents();
 
-        PrintText(_stringHelper.GetContinueText()); // vill ha en input innan denna skrivs ut? 
+        PrintText(_stringHelper.GetContinueText()); // Do we want input before this outputs? 
 
+        
         var input = _userInteraction.GetChar();
         CheckKeyPressFromKeyActions(keyActions, input);
+        return nextChapter;
     }
 
     private void RunQuestWithOptions(Dictionary<ConsoleKey, Action> keyActions)
@@ -111,8 +115,8 @@ public class Game
         var input = _userInteraction.GetChar();
         if (_questService.CheckIfOptionExists(input.KeyChar, Quest))
         {
-            GetNextQuestBasenOnChosenOption(input);
             HandleOptionEventsInQuest(input);
+            GetNextQuestBasenOnChosenOption(input);
         }
         while (_questService.CheckIfOptionExists(input.KeyChar, Quest) is false) 
         {
@@ -124,8 +128,8 @@ public class Game
             if (char.IsDigit(input.KeyChar) &&
                 _questService.CheckIfOptionExists(input.KeyChar, Quest))
             {
-                GetNextQuestBasenOnChosenOption(input);
                 HandleOptionEventsInQuest(input);
+                GetNextQuestBasenOnChosenOption(input);
             }
             else
             {
@@ -148,7 +152,7 @@ public class Game
 
         var index = int.Parse(choice.KeyChar.ToString());
         var option = Quest.Options?.FirstOrDefault(x => x.Index == index);
-        if (option is null || option.MoralityScore is not 0)
+        if (option is null || option.MoralityScore is 0)
             return;
 
         Player.ApplyMoralityScore(option.MoralityScore);
