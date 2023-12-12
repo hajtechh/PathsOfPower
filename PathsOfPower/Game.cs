@@ -5,7 +5,6 @@ public class Game
     #region PrivateVariables
     private const int MAX_HEALTH_POINTS = 100;
 
-    private readonly IFactory _factory;
     private readonly IUserInteraction _userInteraction;
     private readonly IStringHelper _stringHelper;
     private readonly IFileHelper _fileHelper;
@@ -20,15 +19,16 @@ public class Game
     public bool IsExitingGameLoop { get; set; }
     #endregion
 
-    public Game(List<Quest> quests, Player player, Quest quest,
-        IFactory factory,
+    public Game(
+        List<Quest> quests,
+        Player player,
+        Quest quest,
         IUserInteraction userInteraction,
         IStringHelper stringHelper,
         IFileHelper fileHelper,
         IQuestService questService,
         ISavedGameService savedGameService)
     {
-        _factory = factory;
         _userInteraction = userInteraction;
         _stringHelper = stringHelper;
         _fileHelper = fileHelper;

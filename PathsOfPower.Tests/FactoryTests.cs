@@ -8,7 +8,6 @@ public class FactoryTests
         // Arrange
         var mockUserInteraction = new Mock<IUserInteraction>();
         var mockFileHelper = new Mock<IFileHelper>();
-        var mockFactory = new Mock<IFactory>();
         var mockStringHelper = new Mock<IStringHelper>();
         var mockQuestService = new Mock<IQuestService>();
         var mockSavedGameService = new Mock<ISavedGameService>();
@@ -20,7 +19,6 @@ public class FactoryTests
             new List<Quest>(),
             new Player("Haj"),
             new Quest(),
-            mockFactory.Object,
             mockUserInteraction.Object,
             mockStringHelper.Object,
             mockFileHelper.Object,

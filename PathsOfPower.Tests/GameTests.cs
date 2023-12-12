@@ -8,7 +8,6 @@ public class GameTests
     private Mock<IFileHelper> _mockFileHelper = new();
     private Mock<IQuestService> _mockQuestService = new();
     private Mock<ISavedGameService> _mockSavedGameService = new();
-    private Mock<IFactory> _mockFactory = new();
 
     public GameTests()
     {
@@ -16,7 +15,6 @@ public class GameTests
             new List<Quest>(),
             new Player("Haj"),
             new Quest(),
-            _mockFactory.Object,
             _mockUserInteraction.Object,
             _mockStringHelper.Object,
             _mockFileHelper.Object,

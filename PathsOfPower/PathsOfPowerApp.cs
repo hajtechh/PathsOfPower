@@ -57,7 +57,7 @@ public class PathsOfPowerApp
         if (quests is null)
             return;
         var quest = _questService.GetQuestFromIndex(questIndex, quests);
-        var game = _factory.CreateGame(quests, player, quest, _factory, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+        var game = _factory.CreateGame(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
         var keyActionsGoToGameMenu = GetKeyActionsGoToGameMenu(game);
 
@@ -86,7 +86,7 @@ public class PathsOfPowerApp
         var quests = _questService.GetQuestsFromChapter(chapter);
         var quest = _questService.GetQuestFromIndex(savedGame.QuestIndex, quests);
 
-        var game = _factory.CreateGame(quests, player, quest, _factory, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
+        var game = _factory.CreateGame(quests, player, quest, _userInteraction, _stringHelper, _fileHelper, _questService, _savedGameService);
 
         var keyActions = GetKeyActionsGoToGameMenu(game);
 
