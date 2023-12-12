@@ -76,7 +76,7 @@ public class PathsOfPowerApp
         {
             _userInteraction.ClearConsole();
             PrintSavedGames();
-            _userInteraction.Print(message);
+            PrintText(message);
             input = _userInteraction.GetChar().KeyChar;
             (savedGame, message) = _savedGameService.LoadGame(input);
         }
@@ -95,7 +95,7 @@ public class PathsOfPowerApp
 
     private void ExitApplication()
     {
-        _userInteraction.Print("Game is shutting down");
+        PrintText(_stringHelper.GetExitGame());
         Environment.Exit(0);
     }
 
@@ -118,7 +118,7 @@ public class PathsOfPowerApp
         }
 
         var text = _stringHelper.GetSavedGames(savedGames);
-        _userInteraction.Print(text);
+        PrintText(text);
     }
 
     private Dictionary<ConsoleKey, Action> GetKeyActionsGoToGameMenu(Game game) =>
@@ -134,26 +134,26 @@ public class PathsOfPowerApp
     public Player CreatePlayer()
     {
         _userInteraction.ClearConsole();
-
-        var nameMessage = _stringHelper.GetPlayerNameMessage();
-        var name = _userInteraction.GetInput(nameMessage);
+        var name = PrintTextAndGetInput(_stringHelper.GetPlayerNameMessage());
         name = _stringHelper.TrimInput(name);
         
 
         while (string.IsNullOrEmpty(name))
         {
             _userInteraction.ClearConsole();
-            var noInputMessage = _stringHelper.GetNoNameInputMessage();
-            name = _userInteraction.GetInput(noInputMessage);
+            name = PrintTextAndGetInput(_stringHelper.GetNoNameInputMessage());
             name = _stringHelper.TrimInput(name);
         }
 
         return _factory.CreatePlayer(name);
     }
 
-    private void PrintMenu()
-    {
-        var menu = _stringHelper.GetMainMenu();
-        _userInteraction.Print(menu);
-    }
+    private void PrintMenu() =>
+        PrintText(_stringHelper.GetMainMenu());
+
+    private string PrintTextAndGetInput(string text) =>
+        _userInteraction.GetInput(text);
+
+    private void PrintText(string text) =>
+        _userInteraction.Print(text);
 }
