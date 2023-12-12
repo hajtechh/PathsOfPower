@@ -14,9 +14,9 @@ public class Program
         IQuestService questService = new QuestService(jsonHelper, fileHelper);
         ISavedGameService savedGameService = new SavedGameService(jsonHelper, fileHelper);
 
-        //IFactory factory = new Factory();
+        IFactory factory = new Factory();
 
-        var pathsOfPowerApp = new PathsOfPowerApp(/*factory,*/ userInteraction, stringHelper, questService, fileHelper, savedGameService);
+        var pathsOfPowerApp = new PathsOfPowerApp(userInteraction, stringHelper, questService, fileHelper, savedGameService);
         pathsOfPowerApp.Run();
     }
 }
