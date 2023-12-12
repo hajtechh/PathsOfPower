@@ -119,7 +119,7 @@ public class StringHelper : IStringHelper
         for (int i = 0; i < savedGames.Count; i++)
         {
             strings.Add($"[{i + 1}] " +
-                (savedGames[i].Player != null ? $"{savedGames[i].Player.Name} | {GetCurrentChapter(savedGames[i].QuestIndex)}" : "Empty slot") +
+                (!string.IsNullOrEmpty(savedGames[i].Player.Name) ? $"{savedGames[i].Player.Name} | {GetCurrentChapter(savedGames[i].QuestIndex)}" : "Empty slot") +
                 $"{NEW_LINE}{_rowDeliminator}{NEW_LINE}");
         }
         var text = BuildString(strings);
